@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/recipeListFragment">
+
+    <fragment
+        android:id="@+id/recipeListFragment"
+        android:name="com.me.recipe.RecipeListFragment"
+        android:label="RecipeListFragment" >
+        <action
+            android:id="@+id/action_recipeListFragment_to_recipePageFragment"
+            app:destination="@id/recipePageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipePageFragment"
+        android:name="com.me.recipe.RecipePageFragment"
+        android:label="RecipePageFragment" />
+</navigation>
