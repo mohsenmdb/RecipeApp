@@ -1,6 +1,6 @@
 package com.me.recipe.network
 
-import com.me.recipe.network.model.RecipeNetworkEntity
+import com.me.recipe.network.model.RecipeDto
 import com.me.recipe.network.responses.RecipeSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -19,6 +19,6 @@ interface RecipeService {
     suspend fun get(
         @Header("Authorization") token: String,
         @Query("id") id: Int
-    ): RecipeNetworkEntity
+    ): RecipeDto
 
 }

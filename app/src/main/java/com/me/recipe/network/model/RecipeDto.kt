@@ -2,7 +2,7 @@ package com.me.recipe.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class RecipeNetworkEntity(
+data class RecipeDto(
     @SerializedName("cooking_instructions")
     val cookingInstructions: String?,
     @SerializedName("date_added")
