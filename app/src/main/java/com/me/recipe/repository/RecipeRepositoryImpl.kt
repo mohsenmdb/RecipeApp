@@ -5,8 +5,8 @@ import com.me.recipe.network.RecipeService
 import com.me.recipe.network.model.RecipeDtoMapper
 
 class RecipeRepositoryImpl(
-    val recipeService: RecipeService,
-    val mapper: RecipeDtoMapper
+    private val recipeService: RecipeService,
+    private val mapper: RecipeDtoMapper
 ) : RecipeRepository {
     override suspend fun search(token: String, page: Int, query: String): List<Recipe> {
         return mapper.toDomainList(recipeService.search(token,page,query).results)
