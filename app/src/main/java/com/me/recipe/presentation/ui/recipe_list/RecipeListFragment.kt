@@ -28,8 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecipeListFragment : Fragment() {
 
-//    private val viewModel: RecipeListViewModel by viewModels()
-    private val viewModel: RecipeListViewModel by activityViewModels()
+    private val viewModel: RecipeListViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -37,7 +36,8 @@ class RecipeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        println("hey -------- > ${viewModel.name}")
+        println(viewModel.apiToken)
+
         return ComposeView(requireContext()).apply {
             setContent {
                 PageContent()
@@ -54,7 +54,6 @@ class RecipeListFragment : Fragment() {
             )
             Spacer(modifier = Modifier.padding(16.dp))
             Button(onClick = {
-                viewModel.name = "afshin"
                 findNavController().navigate(R.id.action_recipeListFragment_to_recipePageFragment)
             }) {
                 Text(text = "Go To Page")

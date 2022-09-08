@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -18,11 +19,5 @@ object AppModule {
     @Provides
     fun provideApplication(@ApplicationContext app: Context) : BaseApplication {
         return app as BaseApplication
-    }
-
-    @Singleton
-    @Provides
-    fun provideRandomString() : String {
-        return "Hey look a random string dsfafsagfa"
     }
 }

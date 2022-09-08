@@ -21,14 +21,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
-//    private val viewModel: RecipeListViewModel by viewModels()
-    private val viewModel: RecipeListViewModel by activityViewModels()
+    private val viewModel: RecipeListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        println("hey -------- > ${viewModel.name}")
         return ComposeView(requireContext()).apply {
             setContent {
                 PageContent()
