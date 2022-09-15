@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +25,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.me.recipe.R
+import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.ui.theme.RecipeTheme
 import com.me.recipe.util.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,16 +40,8 @@ class RecipeListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        println(viewModel.apiToken)
-
         return ComposeView(requireContext()).apply {
             setContent {
-                val recipes = viewModel.recipes.value
-                for (recipe in recipes){
-                    Log.d(TAG, recipe.title ?: "")
-                }
-
                 PageContent()
             }
         }
@@ -54,16 +49,13 @@ class RecipeListFragment : Fragment() {
 
     @Composable
     fun PageContent() {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Text(
-                text = "Recipe List ",
-                style = TextStyle(fontSize = 24.sp)
-            )
-            Spacer(modifier = Modifier.padding(16.dp))
-            Button(onClick = {
-                findNavController().navigate(R.id.action_recipeListFragment_to_recipePageFragment)
-            }) {
-                Text(text = "Go To Page")
+        val recipes = viewModel.recipes.value
+
+        LazyColumn{
+            itemsIndexed(recipes) {index, recipe ->
+                RecipeCard(recipe = recipe, onClick = {
+                    findNavController().navigate(R.id.action_recipeListFragment_to_recipePageFragment)
+                })
             }
         }
     }
