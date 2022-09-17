@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.me.recipe.domain.model.Recipe
 import com.me.recipe.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -19,12 +18,16 @@ class RecipeListViewModel @Inject constructor(
 ) : ViewModel() {
 
     val recipes: MutableState<List<Recipe>> = mutableStateOf(listOf())
-
+    val query = mutableStateOf("")
     init {
-        getRecipes()
+        newSearch("chicken")
     }
 
-    private fun getRecipes() = viewModelScope.launch {
-        recipes.value = repository.search(apiToken, 1, "chicken")
+    fun newSearch(query: String) = viewModelScope.launch {
+        recipes.value = repository.search(apiToken, 1, query)
+    }
+
+    fun onQueryChanged(newQuery: String) {
+        query.value = newQuery
     }
 }
