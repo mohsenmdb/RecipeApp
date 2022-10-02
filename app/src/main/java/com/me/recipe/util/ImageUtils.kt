@@ -16,7 +16,7 @@ import com.me.recipe.R
 
 const val DEFAULT_RECIPE_IMAGE = R.drawable.empty_plate
 
-@SuppressLint("UnrememberedMutableState")
+
 @Composable
 fun LoadPicture(
     url: String,
@@ -36,7 +36,6 @@ fun LoadPicture(
             }
             override fun onLoadCleared(placeholder: Drawable?) {
             }
-
         })
 
     Glide.with(LocalContext.current)
@@ -44,11 +43,11 @@ fun LoadPicture(
         .load(url)
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                default = resource
                 bitmapState.value = resource
             }
             override fun onLoadCleared(placeholder: Drawable?) {
             }
-
         })
 
     return bitmapState
