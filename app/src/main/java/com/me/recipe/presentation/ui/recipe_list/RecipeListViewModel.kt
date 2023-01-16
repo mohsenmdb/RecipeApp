@@ -10,7 +10,6 @@ import com.me.recipe.repository.RecipeRepository
 import com.me.recipe.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.text.FieldPosition
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -23,7 +22,7 @@ class RecipeListViewModel @Inject constructor(
     val recipes: MutableState<List<Recipe>> = mutableStateOf(listOf())
     val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
     val query = mutableStateOf("")
-    var categoryScrollPosition :Float = 0f
+    var categoryScrollPosition :Pair<Int,Int> = 0 to 0
 
     init {
         newSearch()
@@ -47,7 +46,7 @@ class RecipeListViewModel @Inject constructor(
         onQueryChanged(category)
     }
 
-    fun onCategoryScrollPositionChanged(position: Float) {
-        categoryScrollPosition = position
+    fun onCategoryScrollPositionChanged(position: Int, offset: Int) {
+        categoryScrollPosition = position to offset
     }
 }

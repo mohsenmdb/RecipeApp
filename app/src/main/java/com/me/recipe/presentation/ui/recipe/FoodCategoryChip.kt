@@ -20,7 +20,7 @@ fun FoodCategoryChip(
     Surface(
         elevation = 4.dp,
         shape = MaterialTheme.shapes.medium,
-        color = if (isSelected) Color.LightGray else MaterialTheme.colors.primary,
+        color = if (isSelected) Color.Magenta else MaterialTheme.colors.primary,
         modifier = Modifier
             .padding(end = 8.dp)
             .toggleable(value = isSelected, onValueChange = {
