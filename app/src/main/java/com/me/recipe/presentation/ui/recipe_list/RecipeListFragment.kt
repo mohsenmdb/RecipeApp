@@ -57,76 +57,16 @@ class RecipeListFragment : Fragment() {
         val recipes = viewModel.recipes.value
         val query = viewModel.query.value
         val selectedCategory = viewModel.selectedCategory.value
-
         Column {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.White,
-                elevation = 4.dp,
-            ) {
-                Column {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        val focusManager = LocalFocusManager.current
-                        TextField(
-                            value = query,
-                            onValueChange = { viewModel.onQueryChanged(it) },
-                            modifier = Modifier
-                                .fillMaxWidth(0.9f)
-                                .padding(8.dp)
-                                .background(MaterialTheme.colors.surface),
-                            label = {
-                                Text(text = "Search")
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Search
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onSearch = {
-                                    viewModel.newSearch()
-                                    focusManager.clearFocus()
-                                }
-                            ),
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Filled.Search,
-                                    contentDescription = "search"
-                                )
-                            },
-                            textStyle = TextStyle(
-                                color = MaterialTheme.colors.onSurface,
-                            ),
-                        )
-                    }
-                    val scope = rememberCoroutineScope()
-                    val scrollState = rememberLazyListState()
-                    LazyRow(
-                        state = scrollState,
-                        modifier = Modifier.padding(8.dp),
-                    ) {
-                        scope.launch {
-                            scrollState.animateScrollToItem(
-                                viewModel.categoryScrollPosition.first,
-                                viewModel.categoryScrollPosition.second
-                            )
-                        }
-                        items(getAllFoodCategories()) { category ->
-                            FoodCategoryChip(
-                                category = category.value,
-                                isSelected = selectedCategory == category,
-                                onClick = viewModel::newSearch,
-                                onSelectedCategoryChanged = {
-                                    viewModel.onSelectedCategoryChanged(it)
-                                    viewModel.onCategoryScrollPositionChanged(
-                                        scrollState.firstVisibleItemIndex,
-                                        scrollState.firstVisibleItemScrollOffset
-                                    )
-                                },
-                            )
-                        }
-                    }
-                }
-            }
+            SearchAppBar(
+                query = query,
+                selectedCategory = selectedCategory,
+                categoryScrollPosition = viewModel.categoryScrollPosition,
+                onQueryChanged = viewModel::onQueryChanged,
+                newSearch = viewModel::newSearch,
+                onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                onCategoryScrollPositionChanged = viewModel::onCategoryScrollPositionChanged
+            )
             LazyColumn {
                 itemsIndexed(recipes) { _, recipe ->
                     RecipeCard(recipe = recipe, onClick = {
