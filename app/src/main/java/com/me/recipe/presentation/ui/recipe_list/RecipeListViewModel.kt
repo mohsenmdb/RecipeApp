@@ -33,12 +33,23 @@ class RecipeListViewModel @Inject constructor(
     fun newSearch() = viewModelScope.launch {
         try {
             isLoading.value = true
+            resetSearchState()
             delay(500)
             recipes.value = repository.search(apiToken, 1, query.value)
             isLoading.value = false
         } catch (e:Exception) {
             Log.d(TAG, "newSearch: ${e.message}")
         }
+    }
+
+    private fun resetSearchState() {
+        recipes.value = listOf()
+        if (selectedCategory.value?.value != query.value)
+            clearSelectedCategory()
+    }
+
+    private fun clearSelectedCategory() {
+        selectedCategory.value = null
     }
 
     fun onQueryChanged(newQuery: String) {
