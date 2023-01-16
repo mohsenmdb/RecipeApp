@@ -9,6 +9,7 @@ import com.me.recipe.domain.model.Recipe
 import com.me.recipe.repository.RecipeRepository
 import com.me.recipe.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,6 +23,7 @@ class RecipeListViewModel @Inject constructor(
     val recipes: MutableState<List<Recipe>> = mutableStateOf(listOf())
     val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
     val query = mutableStateOf("")
+    val isLoading = mutableStateOf(false)
     var categoryScrollPosition :Pair<Int,Int> = 0 to 0
 
     init {
@@ -30,8 +32,10 @@ class RecipeListViewModel @Inject constructor(
 
     fun newSearch() = viewModelScope.launch {
         try {
-            Log.d(TAG, "------------: ${query.value}")
+            isLoading.value = true
+            delay(500)
             recipes.value = repository.search(apiToken, 1, query.value)
+            isLoading.value = false
         } catch (e:Exception) {
             Log.d(TAG, "newSearch: ${e.message}")
         }
