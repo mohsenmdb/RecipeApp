@@ -1,3 +1,3 @@
 package com.me.recipe.util
 
-val TAG = "AppDebug---->"
+val TAG = "@@-->"
