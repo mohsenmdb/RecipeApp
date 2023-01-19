@@ -1,4 +1,4 @@
-package com.me.recipe.presentation.ui.recipe_list
+package com.me.recipe.presentation.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator

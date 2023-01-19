@@ -1,6 +1,7 @@
-package com.me.recipe.presentation.ui.recipe_list
+package com.me.recipe.presentation.component
 
-import com.me.recipe.presentation.ui.recipe_list.FoodCategory.*
+import com.me.recipe.presentation.component.FoodCategory.*
+
 
 enum class FoodCategory(val value: String){
     CHICKEN("Chicken"),
@@ -19,5 +20,5 @@ fun getAllFoodCategories(): List<FoodCategory>{
 }
 
 fun getFoodCategory(value: String): FoodCategory {
-    return FoodCategory.valueOf(value.uppercase())
+    return valueOf(value.uppercase())
 }
