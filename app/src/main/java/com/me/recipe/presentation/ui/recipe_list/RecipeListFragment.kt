@@ -85,7 +85,7 @@ class RecipeListFragment : Fragment() {
                     selectedCategory = selectedCategory,
                     categoryScrollPosition = viewModel.categoryScrollPosition,
                     onQueryChanged = viewModel::onQueryChanged,
-                    newSearch = viewModel::newSearch,
+                    newSearch = { viewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent) },
                     onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
                     onCategoryScrollPositionChanged = viewModel::onCategoryScrollPositionChanged,
                     onToggleTheme = {
@@ -112,7 +112,7 @@ class RecipeListFragment : Fragment() {
                         itemsIndexed(recipes) { index, recipe ->
                             viewModel.onChangeRecipeScrollPosition(index)
                             if ((index + 1) >= (page * PAGE_SIZE) && !isLoading)
-                                viewModel.nextPage()
+                                viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
                             RecipeCard(recipe = recipe, onClick = {
                                 findNavController().navigate(R.id.action_recipeListFragment_to_recipePageFragment)
                             })
