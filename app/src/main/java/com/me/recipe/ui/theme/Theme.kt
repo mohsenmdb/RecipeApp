@@ -37,15 +37,11 @@ private val DarkColorPalette = darkColors(
 
 @Composable
 fun RecipeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = QuickSandTypography,
         shapes = Shapes,
         content = content
     )
