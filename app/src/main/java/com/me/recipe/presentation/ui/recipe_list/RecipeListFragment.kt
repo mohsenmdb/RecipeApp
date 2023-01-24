@@ -8,9 +8,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -21,6 +24,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.me.recipe.R
 import com.me.recipe.presentation.BaseApplication
+import com.me.recipe.presentation.component.MyBottomNav
+import com.me.recipe.presentation.component.MyDrawer
 import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.presentation.component.SearchAppBar
 import com.me.recipe.presentation.component.util.LoadingRecipeListShimmer
@@ -54,21 +59,30 @@ class RecipeListFragment : Fragment() {
         val query = viewModel.query.value
         val selectedCategory = viewModel.selectedCategory.value
         val isLoading = viewModel.isLoading.value
-        Column {
-            SearchAppBar(
-                query = query,
-                selectedCategory = selectedCategory,
-                categoryScrollPosition = viewModel.categoryScrollPosition,
-                onQueryChanged = viewModel::onQueryChanged,
-                newSearch = viewModel::newSearch,
-                onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                onCategoryScrollPositionChanged = viewModel::onCategoryScrollPositionChanged,
-                onToggleTheme = {
-                    application.changeDarkTheme()
-                }
-            )
-
-            Box(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.background)) {
+        Scaffold(
+            topBar = {
+                SearchAppBar(
+                    query = query,
+                    selectedCategory = selectedCategory,
+                    categoryScrollPosition = viewModel.categoryScrollPosition,
+                    onQueryChanged = viewModel::onQueryChanged,
+                    newSearch = viewModel::newSearch,
+                    onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                    onCategoryScrollPositionChanged = viewModel::onCategoryScrollPositionChanged,
+                    onToggleTheme = {
+                        application.changeDarkTheme()
+                    }
+                )
+            },
+            bottomBar = {MyBottomNav()},
+            drawerContent = {MyDrawer()},
+        ) { padding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(padding)
+                    .background(MaterialTheme.colors.background)
+            ) {
                 if (isLoading)
                     LoadingRecipeListShimmer(250.dp)
                 else
@@ -82,6 +96,7 @@ class RecipeListFragment : Fragment() {
             }
         }
     }
+
 
     @Preview(showSystemUi = true, showBackground = true)
     @Composable
