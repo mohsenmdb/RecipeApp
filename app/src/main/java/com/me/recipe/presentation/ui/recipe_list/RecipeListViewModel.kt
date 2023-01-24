@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.domain.model.Recipe
+import com.me.recipe.presentation.component.FoodCategory
+import com.me.recipe.presentation.component.getFoodCategory
 import com.me.recipe.repository.RecipeRepository
 import com.me.recipe.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,6 +41,7 @@ class RecipeListViewModel @Inject constructor(
             isLoading.value = false
         } catch (e:Exception) {
             Log.d(TAG, "newSearch: ${e.message}")
+            isLoading.value = false
         }
     }
 

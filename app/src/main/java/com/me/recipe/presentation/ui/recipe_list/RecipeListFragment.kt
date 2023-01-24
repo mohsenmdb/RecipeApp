@@ -13,13 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.me.recipe.R
-import com.me.recipe.presentation.component.CircularIndeterminateProgressBar
 import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.presentation.component.SearchAppBar
+import com.me.recipe.presentation.component.util.LoadingRecipeListShimmer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,14 +58,16 @@ class RecipeListFragment : Fragment() {
             )
 
             Box(modifier = Modifier.fillMaxWidth()) {
-                LazyColumn {
-                    itemsIndexed(recipes) { _, recipe ->
-                        RecipeCard(recipe = recipe, onClick = {
-                            findNavController().navigate(R.id.action_recipeListFragment_to_recipePageFragment)
-                        })
+                if (isLoading)
+                    LoadingRecipeListShimmer(250.dp)
+                else
+                    LazyColumn {
+                        itemsIndexed(recipes) { _, recipe ->
+                            RecipeCard(recipe = recipe, onClick = {
+                                findNavController().navigate(R.id.action_recipeListFragment_to_recipePageFragment)
+                            })
+                        }
                     }
-                }
-                CircularIndeterminateProgressBar(isLoading)
             }
         }
     }
