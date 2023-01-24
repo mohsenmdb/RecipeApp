@@ -12,16 +12,20 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.me.recipe.presentation.ui.recipe.FoodCategoryChip
 
 @Composable
@@ -33,10 +37,11 @@ fun SearchAppBar(
     newSearch: () -> Unit,
     onSelectedCategoryChanged: (String) -> Unit,
     onCategoryScrollPositionChanged: (Int, Int) -> Unit,
+    onToggleTheme: () -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.White,
+        color = MaterialTheme.colors.surface,
         elevation = 4.dp,
     ) {
         Column {
@@ -72,6 +77,11 @@ fun SearchAppBar(
                         color = MaterialTheme.colors.onSurface,
                     ),
                 )
+                IconButton(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    onClick = { onToggleTheme() }) {
+                    Icon(Icons.Filled.MoreVert, "")
+                }
             }
             val scrollState = rememberLazyListState()
             LaunchedEffect(key1 = scrollState) {
