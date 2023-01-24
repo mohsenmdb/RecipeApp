@@ -28,6 +28,7 @@ import com.me.recipe.R
 import com.me.recipe.presentation.BaseApplication
 import com.me.recipe.presentation.component.*
 import com.me.recipe.presentation.component.util.LoadingRecipeListShimmer
+import com.me.recipe.presentation.component.util.SnackbarController
 import com.me.recipe.ui.theme.RecipeTheme
 import com.me.recipe.util.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,7 @@ class RecipeListFragment : Fragment() {
     @Inject
     lateinit var application: BaseApplication
     private val viewModel: RecipeListViewModel by viewModels()
-
+    private val snackbarController = SnackbarController(lifecycleScope)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,11 +66,11 @@ class RecipeListFragment : Fragment() {
         LaunchedEffect(key1 = viewModel.showSnackbar) {
             viewModel.showSnackbar.observe(viewLifecycleOwner) {
                 it?.let {
-                    lifecycleScope.launch{
-                        scaffoldState.snackbarHostState.showSnackbar(
+                    snackbarController.getScope().launch{
+                        snackbarController.showSnackbar(
+                            scaffoldState = scaffoldState,
                             message = it,
-                            actionLabel = getString(R.string.hide),
-                            duration = SnackbarDuration.Short
+                            actionLabel = getString(R.string.hide)
                         )
                     }
                 }
