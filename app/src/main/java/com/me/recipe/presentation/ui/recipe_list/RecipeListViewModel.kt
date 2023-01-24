@@ -14,11 +14,11 @@ import com.me.recipe.repository.RecipeRepository
 import com.me.recipe.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
+
+const val PAGE_SIZE = 30
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
@@ -31,6 +31,8 @@ class RecipeListViewModel @Inject constructor(
     val query = mutableStateOf("")
     val isLoading = mutableStateOf(false)
     var categoryScrollPosition: Pair<Int, Int> = 0 to 0
+    val page = mutableStateOf(1)
+    var recipeListScrollPosition = 0
 
     private val _showSnackbar : MutableLiveData<String?> = MutableLiveData()
     val showSnackbar: LiveData<String?>
@@ -52,9 +54,36 @@ class RecipeListViewModel @Inject constructor(
             isLoading.value = false
         }
     }
+    fun nextPage()= viewModelScope.launch{
+        // prevent duplicate event due to recompose happening to quickly
+        if((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE) ){
+            isLoading.value = true
+            incrementPage()
+            if(page.value > 1){
+                val result = repository.search(token = apiToken, page = page.value, query = query.value )
+                appendRecipes(result)
+            }
+            isLoading.value = false
+        }
+    }
+
+    private fun appendRecipes(recipes: List<Recipe>) {
+        val currentList = ArrayList(this.recipes.value)
+        currentList.addAll(recipes)
+        this.recipes.value = currentList
+    }
+    private fun incrementPage() {
+        page.value = page.value + 1
+    }
+
+    fun onChangeRecipeScrollPosition(position: Int) {
+        recipeListScrollPosition = position
+    }
 
     private fun resetSearchState() {
         recipes.value = listOf()
+        page.value = 1
+        onChangeRecipeScrollPosition(0)
         if (selectedCategory.value?.value != query.value)
             clearSelectedCategory()
     }

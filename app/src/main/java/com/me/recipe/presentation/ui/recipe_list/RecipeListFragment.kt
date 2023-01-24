@@ -61,6 +61,7 @@ class RecipeListFragment : Fragment() {
         val query = viewModel.query.value
         val selectedCategory = viewModel.selectedCategory.value
         val isLoading = viewModel.isLoading.value
+        val page = viewModel.page.value
         val scaffoldState = rememberScaffoldState()
 
         LaunchedEffect(key1 = viewModel.showSnackbar) {
@@ -104,16 +105,21 @@ class RecipeListFragment : Fragment() {
                     .padding(padding)
                     .background(MaterialTheme.colors.background)
             ) {
-                if (isLoading)
+                if (isLoading && recipes.isEmpty())
                     LoadingRecipeListShimmer(250.dp)
                 else
                     LazyColumn {
-                        itemsIndexed(recipes) { _, recipe ->
+                        itemsIndexed(recipes) { index, recipe ->
+                            viewModel.onChangeRecipeScrollPosition(index)
+                            if ((index + 1) >= (page * PAGE_SIZE) && !isLoading)
+                                viewModel.nextPage()
                             RecipeCard(recipe = recipe, onClick = {
                                 findNavController().navigate(R.id.action_recipeListFragment_to_recipePageFragment)
                             })
                         }
                     }
+                
+                CircularIndeterminateProgressBar(isVisible = (isLoading && recipes.isNotEmpty()))
 
                 DefaultSnackbar(snackbarHostState = scaffoldState.snackbarHostState,
                 modifier = Modifier.align(Alignment.BottomCenter)) {
