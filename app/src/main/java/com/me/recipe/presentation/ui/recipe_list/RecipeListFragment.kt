@@ -4,11 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -23,7 +29,6 @@ import androidx.navigation.fragment.findNavController
 import com.me.recipe.R
 import com.me.recipe.presentation.BaseApplication
 import com.me.recipe.presentation.component.*
-import com.me.recipe.presentation.component.LoadingRecipeListShimmer
 import com.me.recipe.presentation.component.util.SnackbarController
 import com.me.recipe.ui.theme.RecipeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +41,18 @@ class RecipeListFragment : Fragment() {
     lateinit var application: BaseApplication
     private val viewModel: RecipeListViewModel by viewModels()
     private val snackbarController = SnackbarController(lifecycleScope)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (findNavController().currentDestination?.label == "RecipeListFragment")
+                    activity?.finish()
+                else
+                    findNavController().popBackStack()
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,13 +134,13 @@ class RecipeListFragment : Fragment() {
                                         R.id.action_recipeList_to_recipePage,
                                         bundle
                                     )
-                                } ?:  snackbarController.getScope().launch {
-                                        snackbarController.showSnackbar(
-                                            scaffoldState = scaffoldState,
-                                            message = getString(R.string.recipe_error),
-                                            actionLabel = getString(R.string.hide)
-                                        )
-                                    }
+                                } ?: snackbarController.getScope().launch {
+                                    snackbarController.showSnackbar(
+                                        scaffoldState = scaffoldState,
+                                        message = getString(R.string.recipe_error),
+                                        actionLabel = getString(R.string.hide)
+                                    )
+                                }
                             })
                         }
                     }

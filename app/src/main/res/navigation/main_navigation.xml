@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/recipeList">
+    app:startDestination="@id/splash">
 
     <fragment
         android:id="@+id/recipeList"
@@ -16,4 +16,12 @@
         android:id="@+id/recipePage"
         android:name="com.me.recipe.presentation.ui.recipe.RecipeFragment"
         android:label="RecipePageFragment" />
+    <fragment
+        android:id="@+id/splash"
+        android:name="com.me.recipe.presentation.ui.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splash_to_recipeList"
+            app:destination="@id/recipeList" />
+    </fragment>
 </navigation>
