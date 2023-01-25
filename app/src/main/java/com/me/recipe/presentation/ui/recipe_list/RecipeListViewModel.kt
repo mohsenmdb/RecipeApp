@@ -44,23 +44,21 @@ class RecipeListViewModel @Inject constructor(
     }
 
 
-    fun onTriggerEvent(event: RecipeListEvent) {
-        viewModelScope.launch {
-            try {
-                when (event) {
-                    is NewSearchEvent -> {
-                        newSearch()
-                    }
-                    is NextPageEvent -> {
-                        nextPage()
-                    }
+    fun onTriggerEvent(event: RecipeListEvent) = viewModelScope.launch {
+        try {
+            when (event) {
+                is NewSearchEvent -> {
+                    newSearch()
                 }
-            } catch (e: Exception) {
-                _showSnackbar.value = e.message
-                isLoading.value = false
-            } finally {
-                Log.d(TAG, "launchJob: finally called.")
+                is NextPageEvent -> {
+                    nextPage()
+                }
             }
+        } catch (e: Exception) {
+            _showSnackbar.value = e.message
+            isLoading.value = false
+        } finally {
+            Log.d(TAG, "launchJob: finally called.")
         }
     }
 

@@ -14,27 +14,44 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.me.recipe.presentation.BaseApplication
 import com.me.recipe.presentation.ui.recipe_list.RecipeListViewModel
 import com.me.recipe.ui.theme.RecipeTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
-    private val viewModel: RecipeListViewModel by viewModels()
+    @Inject
+    lateinit var application: BaseApplication
+    private val viewModel: RecipeViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.getInt("recipeId")?.let {
+            viewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(it))
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                PageContent()
+                RecipeTheme(application.isDarkTheme.value) {
+                    PageContent()
+                }
             }
         }
     }
 
     @Composable
     fun PageContent() {
+        val recipe = viewModel.recipe.value
+        val isLoading = viewModel.isLoading.value
+
         Column(modifier = Modifier.fillMaxSize()) {
             Text(text = "Recipe Page 1")
         }

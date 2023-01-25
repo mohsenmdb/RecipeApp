@@ -67,7 +67,7 @@ class RecipeListFragment : Fragment() {
         LaunchedEffect(key1 = viewModel.showSnackbar) {
             viewModel.showSnackbar.observe(viewLifecycleOwner) {
                 it?.let {
-                    snackbarController.getScope().launch{
+                    snackbarController.getScope().launch {
                         snackbarController.showSnackbar(
                             scaffoldState = scaffoldState,
                             message = it,
@@ -113,16 +113,32 @@ class RecipeListFragment : Fragment() {
                             viewModel.onChangeRecipeScrollPosition(index)
                             if ((index + 1) >= (page * PAGE_SIZE) && !isLoading)
                                 viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
+
                             RecipeCard(recipe = recipe, onClick = {
-                                findNavController().navigate(R.id.action_recipeListFragment_to_recipePageFragment)
+                                recipe.id?.let {
+                                    val bundle = Bundle()
+                                    bundle.putInt("recipeId", it)
+                                    findNavController().navigate(
+                                        R.id.action_recipeList_to_recipePage,
+                                        bundle
+                                    )
+                                } ?:  snackbarController.getScope().launch {
+                                        snackbarController.showSnackbar(
+                                            scaffoldState = scaffoldState,
+                                            message = getString(R.string.recipe_error),
+                                            actionLabel = getString(R.string.hide)
+                                        )
+                                    }
                             })
                         }
                     }
-                
+
                 CircularIndeterminateProgressBar(isVisible = (isLoading && recipes.isNotEmpty()))
 
-                DefaultSnackbar(snackbarHostState = scaffoldState.snackbarHostState,
-                modifier = Modifier.align(Alignment.BottomCenter)) {
+                DefaultSnackbar(
+                    snackbarHostState = scaffoldState.snackbarHostState,
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                ) {
                     scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
                 }
             }
