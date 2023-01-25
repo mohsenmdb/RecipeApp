@@ -1,7 +1,6 @@
 package com.me.recipe.presentation.ui.recipe_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -27,10 +23,9 @@ import androidx.navigation.fragment.findNavController
 import com.me.recipe.R
 import com.me.recipe.presentation.BaseApplication
 import com.me.recipe.presentation.component.*
-import com.me.recipe.presentation.component.util.LoadingRecipeListShimmer
+import com.me.recipe.presentation.component.LoadingRecipeListShimmer
 import com.me.recipe.presentation.component.util.SnackbarController
 import com.me.recipe.ui.theme.RecipeTheme
-import com.me.recipe.util.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject

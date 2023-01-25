@@ -1,4 +1,4 @@
-package com.me.recipe.presentation.component.util
+package com.me.recipe.presentation.component
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.BoxWithConstraints

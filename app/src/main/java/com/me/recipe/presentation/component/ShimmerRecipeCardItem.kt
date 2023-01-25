@@ -1,4 +1,4 @@
-package com.me.recipe.presentation.component.util
+package com.me.recipe.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
