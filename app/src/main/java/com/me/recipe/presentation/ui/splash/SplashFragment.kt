@@ -64,12 +64,12 @@ class SplashFragment : Fragment() {
                 maxHeight = maxHeight
             )
         }
-        LaunchedEffect(key1 = animationState) {
-            delay(1000)
-            animationState.value = true
-            delay(2000)
+//        LaunchedEffect(key1 = animationState) {
+//            delay(1000)
+//            animationState.value = true
+//            delay(2000)
             findNavController().navigate(R.id.action_splash_to_recipeList)
-        }
+//        }
 
     }
 

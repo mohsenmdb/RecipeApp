@@ -72,7 +72,7 @@ class RecipeListFragment : Fragment() {
         val recipes = viewModel.recipes.value
         val query = viewModel.query.value
         val selectedCategory = viewModel.selectedCategory.value
-        val isLoading = viewModel.isLoading.value
+        val isLoading = viewModel.loading.value
         val page = viewModel.page.value
         val scaffoldState = rememberScaffoldState()
 
