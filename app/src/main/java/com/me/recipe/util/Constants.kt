@@ -1,3 +1,5 @@
 package com.me.recipe.util
 
-val TAG = "@@-->"
+const val TAG = "@@-->"
+
+const val RECIPE_PAGINATION_PAGE_SIZE = 30

@@ -2,41 +2,35 @@ package com.me.recipe.network.model
 
 import com.me.recipe.domain.model.Recipe
 import com.me.recipe.domain.util.DomainMapper
+import com.me.recipe.util.DateUtils
 
 class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
+
     override fun mapToDomainModel(model: RecipeDto): Recipe {
         return Recipe(
-            id = model.pk,
-            cookingInstructions = model.cookingInstructions,
-            dateAdded = model.dateAdded,
-            dateUpdated = model.dateUpdated,
-            description = model.description,
-            featuredImage = model.featuredImage,
-            ingredients = model.ingredients ?: listOf(),
-            longDateAdded = model.longDateAdded,
-            longDateUpdated = model.longDateUpdated,
-            publisher = model.publisher,
+            id = model.pk ?: 0,
+            title = model.title.orEmpty(),
+            featuredImage = model.featuredImage.orEmpty(),
             rating = model.rating,
-            sourceUrl = model.sourceUrl,
-            title = model.title,
+            publisher = model.publisher.orEmpty(),
+            sourceUrl = model.sourceUrl.orEmpty(),
+            ingredients = model.ingredients,
+            dateAdded = DateUtils.longToDate(model.longDateAdded ?: 0),
+            dateUpdated = DateUtils.longToDate(model.longDateUpdated ?: 0),
         )
     }
 
     override fun mapFromDomainModel(domainModel: Recipe): RecipeDto {
         return RecipeDto(
             pk = domainModel.id,
-            cookingInstructions = domainModel.cookingInstructions,
-            dateAdded = domainModel.dateAdded,
-            dateUpdated = domainModel.dateUpdated,
-            description = domainModel.description,
-            featuredImage = domainModel.featuredImage,
-            ingredients = domainModel.ingredients,
-            longDateAdded = domainModel.longDateAdded,
-            longDateUpdated = domainModel.longDateUpdated,
-            publisher = domainModel.publisher,
-            rating = domainModel.rating,
-            sourceUrl = domainModel.sourceUrl,
             title = domainModel.title,
+            featuredImage = domainModel.featuredImage,
+            rating = domainModel.rating,
+            publisher = domainModel.publisher,
+            sourceUrl = domainModel.sourceUrl,
+            ingredients = domainModel.ingredients,
+            longDateAdded = DateUtils.dateToLong(domainModel.dateAdded),
+            longDateUpdated = DateUtils.dateToLong(domainModel.dateUpdated),
         )
     }
 
