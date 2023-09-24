@@ -8,23 +8,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.me.recipe.presentation.ui.navigation.NavigationDestination
 import com.me.recipe.R
 import com.me.recipe.presentation.component.CircularIndeterminateProgressBar
 import com.me.recipe.presentation.component.DefaultSnackbar
 import com.me.recipe.presentation.component.LoadingRecipeListShimmer
 import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.presentation.component.SearchAppBar
+import com.me.recipe.presentation.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
 
 object RecipeListDestination : NavigationDestination {
@@ -34,7 +31,7 @@ object RecipeListDestination : NavigationDestination {
 
 @Composable
 fun RecipeListScreen(
-    navigateToRecipePage: (recipeId : Int) -> Unit
+    navigateToRecipePage: (recipeId: Int) -> Unit
 ) {
     RecipeListScreen(
         viewModel = hiltViewModel(),
@@ -46,7 +43,7 @@ fun RecipeListScreen(
 @Composable
 private fun RecipeListScreen(
     viewModel: RecipeListViewModel,
-    navigateToRecipePage: (recipeId : Int) -> Unit
+    navigateToRecipePage: (recipeId: Int) -> Unit
 ) {
 
     val recipes = viewModel.recipes.value
@@ -54,12 +51,15 @@ private fun RecipeListScreen(
     val selectedCategory = viewModel.selectedCategory.value
     val isLoading = viewModel.loading.value
     val page = viewModel.page.value
-    val scaffoldState = rememberScaffoldState()
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = {
+            DefaultSnackbar(snackbarHostState = snackbarHostState) {
+                snackbarHostState.currentSnackbarData?.dismiss()
+            }
+        },
         topBar = {
             SearchAppBar(
                 query = query,
@@ -74,7 +74,6 @@ private fun RecipeListScreen(
                 }
             )
         },
-        scaffoldState = scaffoldState,
 //            bottomBar = { MyBottomNav() },
 //            drawerContent = { MyDrawer() },
     ) { padding ->
@@ -100,7 +99,7 @@ private fun RecipeListScreen(
                                 recipe.id?.let {
                                     navigateToRecipePage(it)
                                 } ?: coroutineScope.launch {
-                                    snackbarHostState.showSnackbar("there is no id")
+                                    snackbarHostState.showSnackbar("there is no id", "Ok")
                                 }
                             }
                         )
@@ -108,13 +107,6 @@ private fun RecipeListScreen(
                 }
 
             CircularIndeterminateProgressBar(isVisible = (isLoading && recipes.isNotEmpty()))
-
-            DefaultSnackbar(
-                snackbarHostState = scaffoldState.snackbarHostState,
-                modifier = Modifier.align(Alignment.BottomCenter)
-            ) {
-                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-            }
         }
     }
 }
