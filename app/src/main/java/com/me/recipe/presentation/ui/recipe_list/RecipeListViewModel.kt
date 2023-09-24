@@ -9,6 +9,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.domain.model.Recipe
+import com.me.recipe.presentation.BaseApplication
 import com.me.recipe.presentation.component.FoodCategory
 import com.me.recipe.presentation.component.getFoodCategory
 import com.me.recipe.presentation.ui.recipe_list.RecipeListEvent.*
@@ -34,6 +35,7 @@ constructor(
     private val repository: RecipeRepository,
     @Named("auth_token") private val token: String,
     private val savedStateHandle: SavedStateHandle,
+    private val application: BaseApplication
 ) : ViewModel() {
 
 
@@ -219,5 +221,9 @@ constructor(
 
     fun onCategoryScrollPositionChanged(position: Int, offset: Int) {
         categoryScrollPosition = position to offset
+    }
+
+    fun toggleDarkTheme() {
+        application.changeDarkTheme()
     }
 }

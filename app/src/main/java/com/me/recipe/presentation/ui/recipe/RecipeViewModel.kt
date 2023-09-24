@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.domain.model.Recipe
@@ -20,8 +21,13 @@ import javax.inject.Named
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
     @Named("auth_token") private val apiToken: String,
-    private val recipeRepository: RecipeRepository
+    private val recipeRepository: RecipeRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+
+    private val itemId: Int = checkNotNull(savedStateHandle[RecipeDestination.itemIdArg])
+
     val recipe: MutableState<Recipe?> = mutableStateOf(null)
     val isLoading = mutableStateOf(false)
 
@@ -29,14 +35,26 @@ class RecipeViewModel @Inject constructor(
     val showSnackbar: LiveData<String?>
         get() = _showSnackbar
 
+    init {
+        viewModelScope.launch {
+            try {
+                getRecipe(itemId)
+
+            } catch (e: Exception) {
+                _showSnackbar.value = e.message
+                isLoading.value = false
+            } finally {
+                Log.d(TAG, "launchJob: finally called.")
+            }
+        }
+    }
 
     fun onTriggerEvent(event: RecipeEvent) = viewModelScope.launch {
         try {
-            when (event) {
-                is RecipeEvent.GetRecipeEvent -> {
-                    getRecipe(event.id)
-                }
-            }
+//            when (event) {
+//                is RecipeEvent.GetRecipeEvent -> {
+//                }
+//            }
         } catch (e: Exception) {
             _showSnackbar.value = e.message
             isLoading.value = false

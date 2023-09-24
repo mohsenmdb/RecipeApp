@@ -2,4 +2,8 @@
     <string name="app_name">Recipe</string>
     <string name="hide">Hide</string>
     <string name="recipe_error">something wrong with recipe</string>
+
+    <string name="navigate_splash_title">Splash</string>
+    <string name="navigate_recipe_list_title">Recipe list</string>
+    <string name="navigate_recipe_title">Recipe</string>
 </resources>
