@@ -25,8 +25,7 @@ import javax.inject.Named
 class RecipeViewModel @Inject constructor(
     @Named("auth_token") private val apiToken: String,
     private val getRecipeUsecase: Lazy<GetRecipeUsecase>,
-            savedStateHandle
-    : SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
 
@@ -68,8 +67,8 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getRecipe(id: Int){
-        getRecipeUsecase.get().invoke(id, apiToken, true).onEach {dataState ->
+    private suspend fun getRecipe(id: Int) {
+        getRecipeUsecase.get().invoke(id, apiToken, true).onEach { dataState ->
             isLoading.value = dataState.loading
 
             dataState.data?.let { list ->
