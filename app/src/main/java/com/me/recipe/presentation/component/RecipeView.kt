@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.me.recipe.domain.model.Recipe
+import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.util.DEFAULT_RECIPE_IMAGE
 import com.me.recipe.util.loadPicture
 

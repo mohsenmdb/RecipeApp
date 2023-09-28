@@ -8,11 +8,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.me.recipe.domain.model.Recipe
-import com.me.recipe.presentation.ui.recipe_list.RecipeListEvent
-import com.me.recipe.repository.RecipeRepository
+import com.me.recipe.domain.features.recipe.model.Recipe
+import com.me.recipe.domain.features.recipe.repository.RecipeRepository
+import com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase
 import com.me.recipe.util.TAG
+import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -21,11 +24,13 @@ import javax.inject.Named
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
     @Named("auth_token") private val apiToken: String,
-    private val recipeRepository: RecipeRepository,
-    savedStateHandle: SavedStateHandle,
+    private val getRecipeUsecase: Lazy<GetRecipeUsecase>,
+            savedStateHandle
+    : SavedStateHandle,
 ) : ViewModel() {
 
 
+    //sent by navigation args
     private val itemId: Int = checkNotNull(savedStateHandle[RecipeDestination.itemIdArg])
 
     val recipe: MutableState<Recipe?> = mutableStateOf(null)
@@ -63,10 +68,18 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-
     private suspend fun getRecipe(id: Int){
-        isLoading.value = true
-        recipe.value = recipeRepository.get(apiToken, id)
+        getRecipeUsecase.get().invoke(id, apiToken, true).onEach {dataState ->
+            isLoading.value = dataState.loading
+
+            dataState.data?.let { list ->
+                recipe.value = list
+            }
+
+            dataState.error?.let { error ->
+//                dialogQueue.appendErrorMessage("An Error Occurred", error)
+            }
+        }.launchIn(viewModelScope)
         isLoading.value = false
     }
 
