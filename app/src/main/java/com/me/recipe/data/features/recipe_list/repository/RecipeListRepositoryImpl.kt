@@ -32,24 +32,19 @@ class RecipeListRepositoryImpl @Inject constructor(
                 //delay(1000)
 
                 // force error for testing
-                if (query == "error") {
-                    throw Exception("Search FAILED!")
-                }
+//                if (query == "error") {
+//                    throw Exception("Search FAILED!")
+//                }
 
-                try {
-                    // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
-                    val recipes = getRecipesFromNetwork(
-                        token = token,
-                        page = page,
-                        query = query,
-                    )
+                // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
+                val recipes = getRecipesFromNetwork(
+                    token = token,
+                    page = page,
+                    query = query,
+                )
 
-                    // insert into cache
-                    recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
-                } catch (e: Exception) {
-                    // There was a network issue
-                    e.printStackTrace()
-                }
+                // insert into cache
+                recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
 
                 // query the cache
                 val cacheResult = if (query.isBlank()) {

@@ -13,6 +13,8 @@ import com.me.recipe.domain.features.recipe_list.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipe_list.usecases.SearchRecipesUsecase
 import com.me.recipe.presentation.BaseApplication
 import com.me.recipe.presentation.component.FoodCategory
+import com.me.recipe.presentation.component.GenericDialogInfo
+import com.me.recipe.presentation.component.PositiveAction
 import com.me.recipe.presentation.component.getFoodCategory
 import com.me.recipe.presentation.ui.recipe_list.RecipeListEvent.*
 import com.me.recipe.util.TAG
@@ -33,6 +35,7 @@ class RecipeListViewModel @Inject constructor(
     private val application: BaseApplication
 ) : ViewModel() {
     val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
+    val errors: MutableState<GenericDialogInfo?> = mutableStateOf(null)
 
     val query = mutableStateOf("")
 
@@ -98,17 +101,18 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private suspend fun restoreState() {
-        restoreRecipesUsecase.get().invoke(page = page.value, query = query.value).onEach { dataState ->
-            loading.value = dataState.loading
+        restoreRecipesUsecase.get().invoke(page = page.value, query = query.value)
+            .onEach { dataState ->
+                loading.value = dataState.loading
 
-            dataState.data?.let { list ->
-                recipes.value = list
-            }
+                dataState.data?.let { list ->
+                    recipes.value = list
+                }
 
-            dataState.error?.let { error ->
+                dataState.error?.let { error ->
 //                dialogQueue.appendErrorMessage("An Error Occurred", error)
-            }
-        }.launchIn(viewModelScope)
+                }
+            }.launchIn(viewModelScope)
     }
 
     private suspend fun newSearch() {
@@ -126,7 +130,17 @@ class RecipeListViewModel @Inject constructor(
 
                 dataState.error?.let { error ->
                     Log.e(TAG, "newSearch: ${error}")
-//                dialogQueue.appendErrorMessage("An Error Occurred", error)
+                    errors.value = GenericDialogInfo.Builder()
+                        .title("Error")
+                        .description(error)
+                        .positive(
+                            PositiveAction(
+                                positiveBtnTxt= "Ok",
+                                onPositiveAction = { errors.value = null }
+                            )
+                        )
+                        .onDismiss { errors.value = null }
+                        .build()
                 }
             }.launchIn(viewModelScope)
     }
@@ -137,7 +151,8 @@ class RecipeListViewModel @Inject constructor(
             Log.d(TAG, "nextPage: triggered: ${page.value}")
 
             if (page.value > 1) {
-                searchRecipesUsecase.get().invoke(token = token, page = page.value, query = query.value)
+                searchRecipesUsecase.get()
+                    .invoke(token = token, page = page.value, query = query.value)
                     .onEach { dataState ->
                         loading.value = dataState.loading
 

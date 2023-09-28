@@ -18,10 +18,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.me.recipe.R
 import com.me.recipe.presentation.component.CircularIndeterminateProgressBar
 import com.me.recipe.presentation.component.DefaultSnackbar
+import com.me.recipe.presentation.component.GenericDialog
 import com.me.recipe.presentation.component.LoadingRecipeListShimmer
 import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.presentation.component.SearchAppBar
 import com.me.recipe.presentation.ui.navigation.NavigationDestination
+import com.me.recipe.presentation.ui.recipe_list.RecipeListViewModel.Companion.PAGE_SIZE
 import kotlinx.coroutines.launch
 
 object RecipeListDestination : NavigationDestination {
@@ -47,6 +49,7 @@ private fun RecipeListScreen(
 ) {
 
     val recipes = viewModel.recipes.value
+    val errors = viewModel.errors.value
     val query = viewModel.query.value
     val selectedCategory = viewModel.selectedCategory.value
     val isLoading = viewModel.loading.value
@@ -107,6 +110,16 @@ private fun RecipeListScreen(
                 }
 
             CircularIndeterminateProgressBar(isVisible = (isLoading && recipes.isNotEmpty()))
+
+            if (errors != null) {
+                GenericDialog(
+                    onDismiss = errors.onDismiss,
+                    title = errors.title,
+                    description = errors.description,
+                    positiveAction = errors.positiveAction,
+                    negativeAction = errors.negativeAction
+                )
+            }
         }
     }
 }
