@@ -69,10 +69,7 @@ class RecipeListRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun restore(
-        page: Int,
-        query: String
-    ): Flow<DataState<List<Recipe>>> = flow {
+    override suspend fun restore(page: Int, query: String): Flow<DataState<List<Recipe>>> = flow {
         try {
             emit(DataState.loading())
 
