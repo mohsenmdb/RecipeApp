@@ -77,8 +77,9 @@ fun Rocket(
             y = maxHeight - rocketSize,
         )
     } else {
-        val infiniteTransition = rememberInfiniteTransition()
+        val infiniteTransition = rememberInfiniteTransition(label = "")
         val engineState = infiniteTransition.animateFloat(
+            label = "",
             initialValue = 0f,
             targetValue = 1f,
             animationSpec = infiniteRepeatable(
@@ -88,7 +89,8 @@ fun Rocket(
                 )
             )
         )
-        val xPositionState = infiniteTransition.animateFloat(
+        val positionState = infiniteTransition.animateFloat(
+            label = "",
             initialValue = 0f,
             targetValue = 1f,
             animationSpec = infiniteRepeatable(
@@ -104,8 +106,8 @@ fun Rocket(
             painterResource(id = R.drawable.rocket2)
         }
         modifier = Modifier.offset(
-            x = (maxWidth - rocketSize) * xPositionState.value,
-            y = (maxHeight - rocketSize) - (maxHeight) * xPositionState.value,
+            x = (maxWidth - rocketSize) * positionState.value,
+            y = (maxHeight - rocketSize) - (maxHeight) * positionState.value,
         )
     }
     Image(
