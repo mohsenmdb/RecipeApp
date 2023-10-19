@@ -1,4 +1,4 @@
-package com.bluevod.android.data.core.utils
+package com.me.recipe.data.core.utils
 
 import androidx.core.text.HtmlCompat
 

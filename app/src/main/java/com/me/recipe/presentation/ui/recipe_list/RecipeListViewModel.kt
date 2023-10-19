@@ -8,10 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.me.recipe.cache.datastore.SettingsDataStore
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipe_list.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipe_list.usecases.SearchRecipesUsecase
-import com.me.recipe.presentation.BaseApplication
 import com.me.recipe.presentation.component.FoodCategory
 import com.me.recipe.presentation.component.GenericDialogInfo
 import com.me.recipe.presentation.component.PositiveAction
@@ -32,7 +32,7 @@ class RecipeListViewModel @Inject constructor(
     private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
     @Named("auth_token") private val token: String,
     private val savedStateHandle: SavedStateHandle,
-    private val application: BaseApplication
+    private val settingsDataStore: SettingsDataStore
 ) : ViewModel() {
     val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
     val errors: MutableState<GenericDialogInfo?> = mutableStateOf(null)
@@ -236,7 +236,7 @@ class RecipeListViewModel @Inject constructor(
     }
 
     fun toggleDarkTheme() {
-        application.changeDarkTheme()
+        settingsDataStore.toggleTheme()
     }
 
     companion object {
