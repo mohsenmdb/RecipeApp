@@ -10,10 +10,9 @@ class SearchRecipesUsecase @Inject constructor(
     private val recipeListRepository: RecipeListRepository
 ) {
     suspend operator fun invoke(
-        token: String,
         page: Int,
         query: String
     ): Flow<DataState<List<Recipe>>> {
-        return recipeListRepository.search(token, page, query)
+        return recipeListRepository.search(page, query)
     }
 }

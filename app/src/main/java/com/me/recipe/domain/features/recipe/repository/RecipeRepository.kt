@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface RecipeRepository {
     suspend fun getRecipe(
         recipeId: Int,
-        token: String,
         isNetworkAvailable: Boolean
     ): Flow<DataState<Recipe>>
 }

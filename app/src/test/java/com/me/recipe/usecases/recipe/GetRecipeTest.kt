@@ -1,4 +1,4 @@
-package com.me.recipe.interactors.recipe
+package com.me.recipe.usecases.recipe
 
 import com.me.recipe.cache.AppDatabaseFake
 import com.me.recipe.cache.RecipeDaoFake
@@ -95,13 +95,13 @@ class GetRecipeTest {
     assert(recipeDao.getAllRecipes(1, 30).isEmpty())
 
     // get recipes from network and insert into cache
-    val searchResult = searchRecipesUsecase.invoke(DUMMY_TOKEN, 1, DUMMY_QUERY).toList()
+    val searchResult = searchRecipesUsecase.invoke(1, DUMMY_QUERY).toList()
 
     // confirm the cache is no longer empty
     assert(recipeDao.getAllRecipes(1, 30).isNotEmpty())
 
     // run use case
-    val recipeAsFlow = getRecipeUsecase.invoke(RECIPE_ID, DUMMY_TOKEN, true).toList()
+    val recipeAsFlow = getRecipeUsecase.invoke(RECIPE_ID, true).toList()
 
     // first emission should be `loading`
     assert(recipeAsFlow[0].loading)
@@ -137,7 +137,7 @@ class GetRecipeTest {
     assert(recipeDao.getAllRecipes(1, 30).isEmpty())
 
     // run use case
-    val recipeAsFlow = getRecipeUsecase.invoke(RECIPE_ID, DUMMY_TOKEN, true).toList()
+    val recipeAsFlow = getRecipeUsecase.invoke(RECIPE_ID, true).toList()
 
     // first emission should be `loading`
     assert(recipeAsFlow[0].loading)

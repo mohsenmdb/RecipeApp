@@ -21,7 +21,6 @@ class RecipeRepositoryImpl @Inject constructor(
 ) : RecipeRepository {
     override suspend fun getRecipe(
         recipeId: Int,
-        token: String,
         isNetworkAvailable: Boolean
     ): Flow<DataState<Recipe>> = flow {
         try {
@@ -40,7 +39,7 @@ class RecipeRepositoryImpl @Inject constructor(
 
                 if (isNetworkAvailable) {
                     // get recipe from network
-                    val networkRecipe = getRecipeFromNetwork(token, recipeId) // dto -> domain
+                    val networkRecipe = getRecipeFromNetwork(recipeId) // dto -> domain
 
                     // insert into cache
                     recipeDao.insertRecipe(
@@ -71,7 +70,7 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getRecipeFromNetwork(token: String, recipeId: Int): Recipe {
-        return recipeMapper.mapToDomainModel(recipeService.get(token, recipeId))
+    private suspend fun getRecipeFromNetwork(recipeId: Int): Recipe {
+        return recipeMapper.mapToDomainModel(recipeService.get(recipeId))
     }
 }

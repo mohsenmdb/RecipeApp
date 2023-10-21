@@ -1,4 +1,4 @@
-package com.me.recipe.interactors.recipe_list
+package com.me.recipe.usecases.recipe_list
 
 import com.me.recipe.cache.AppDatabaseFake
 import com.me.recipe.cache.RecipeDaoFake
@@ -85,7 +85,7 @@ class RestoreRecipesTest{
     assert(recipeDao.getAllRecipes(1, 30).isEmpty())
 
     // get recipes from network and insert into cache
-    val searchResult = searchRecipesUsecase.invoke(DUMMY_TOKEN, 1, DUMMY_QUERY).toList()
+    val searchResult = searchRecipesUsecase.invoke(1, DUMMY_QUERY).toList()
 
     // confirm the cache is no longer empty
     assert(recipeDao.getAllRecipes(1, 30).isNotEmpty())

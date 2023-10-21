@@ -20,7 +20,6 @@ class RecipeListRepositoryImpl @Inject constructor(
     private val recipeMapper: RecipeMapper,
 ) : RecipeListRepository {
     override suspend fun search(
-        token: String,
         page: Int,
         query: String
     ): Flow<DataState<List<Recipe>>> =
@@ -38,7 +37,6 @@ class RecipeListRepositoryImpl @Inject constructor(
 
                 // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
                 val recipes = getRecipesFromNetwork(
-                    token = token,
                     page = page,
                     query = query,
                 )
@@ -102,13 +100,11 @@ class RecipeListRepositoryImpl @Inject constructor(
 
     // WARNING: This will throw exception if there is no network connection
     private suspend fun getRecipesFromNetwork(
-        token: String,
         page: Int,
         query: String
     ): List<Recipe> {
         return recipeMapper.toDomainList(
             recipeService.search(
-                token = token,
                 page = page,
                 query = query,
             ).results

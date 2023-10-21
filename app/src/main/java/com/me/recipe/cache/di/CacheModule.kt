@@ -1,9 +1,7 @@
 package com.me.recipe.cache.di
 
 import androidx.room.Room
-import com.me.recipe.cache.features.recipe.RecipeDao
 import com.me.recipe.cache.database.AppDatabase
-import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.presentation.BaseApplication
 import dagger.Module
 import dagger.Provides

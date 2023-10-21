@@ -1,4 +1,4 @@
-package com.me.recipe.interactors.recipe_list
+package com.me.recipe.usecases.recipe_list
 
 import com.me.recipe.cache.AppDatabaseFake
 import com.me.recipe.cache.RecipeDaoFake
@@ -81,7 +81,7 @@ class SearchRecipesTest {
     // confirm the cache is empty to start
     assert(recipeDao.getAllRecipes(1, 30).isEmpty())
 
-    val flowItems = searchRecipesUsecase.invoke(DUMMY_TOKEN, 1, DUMMY_QUERY).toList()
+    val flowItems = searchRecipesUsecase.invoke(1, DUMMY_QUERY).toList()
 
     // confirm the cache is no longer empty
     assert(recipeDao.getAllRecipes(1, 30).isNotEmpty())
@@ -113,7 +113,7 @@ class SearchRecipesTest {
         .setBody("{}")
     )
 
-    val flowItems = searchRecipesUsecase.invoke(DUMMY_TOKEN, 1, DUMMY_QUERY).toList()
+    val flowItems = searchRecipesUsecase.invoke(1, DUMMY_QUERY).toList()
 
     // first emission should be `loading`
     assert(flowItems[0].loading)

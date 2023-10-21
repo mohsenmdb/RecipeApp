@@ -30,7 +30,6 @@ import javax.inject.Named
 class RecipeListViewModel @Inject constructor(
     private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
     private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
-    @Named("auth_token") private val token: String,
     private val savedStateHandle: SavedStateHandle,
     private val settingsDataStore: SettingsDataStore
 ) : ViewModel() {
@@ -120,7 +119,7 @@ class RecipeListViewModel @Inject constructor(
         // New search. Reset the state
         resetSearchState()
 
-        searchRecipesUsecase.get().invoke(token = token, page = page.value, query = query.value)
+        searchRecipesUsecase.get().invoke(page = page.value, query = query.value)
             .onEach { dataState ->
                 loading.value = dataState.loading
 
@@ -152,7 +151,7 @@ class RecipeListViewModel @Inject constructor(
 
             if (page.value > 1) {
                 searchRecipesUsecase.get()
-                    .invoke(token = token, page = page.value, query = query.value)
+                    .invoke(page = page.value, query = query.value)
                     .onEach { dataState ->
                         loading.value = dataState.loading
 
