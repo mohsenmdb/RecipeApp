@@ -26,45 +26,28 @@ class RecipeListRepositoryImpl @Inject constructor(
         flow {
             try {
                 emit(DataState.loading())
-
-                // just to show pagination, api is fast
-                //delay(1000)
-
-                // force error for testing
-//                if (query == "error") {
-//                    throw Exception("Search FAILED!")
-//                }
-
-                // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
-                val recipes = getRecipesFromNetwork(
-                    page = page,
-                    query = query,
-                )
-
-                // insert into cache
+                val recipes = getRecipesFromNetwork(page = page, query = query)
                 recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
-
-                // query the cache
-                val cacheResult = if (query.isBlank()) {
-                    recipeDao.getAllRecipes(
-                        pageSize = RECIPE_PAGINATION_PAGE_SIZE,
-                        page = page
-                    )
-                } else {
-                    recipeDao.searchRecipes(
-                        query = query,
-                        pageSize = RECIPE_PAGINATION_PAGE_SIZE,
-                        page = page
-                    )
-                }
-
-                // emit List<Recipe> from cache
-                val list = entityMapper.fromEntityList(cacheResult)
-
-                emit(DataState.success(list))
             } catch (e: Exception) {
                 emit(DataState.error(e.message ?: "Unknown Error"))
             }
+
+            // query the cache
+            val cacheResult = if (query.isBlank()) {
+                recipeDao.getAllRecipes(
+                    pageSize = RECIPE_PAGINATION_PAGE_SIZE,
+                    page = page
+                )
+            } else {
+                recipeDao.searchRecipes(
+                    query = query,
+                    pageSize = RECIPE_PAGINATION_PAGE_SIZE,
+                    page = page
+                )
+            }
+
+            val list = entityMapper.fromEntityList(cacheResult)
+            emit(DataState.success(list))
         }
 
     override suspend fun restore(page: Int, query: String): Flow<DataState<List<Recipe>>> = flow {
@@ -106,7 +89,7 @@ class RecipeListRepositoryImpl @Inject constructor(
         return recipeMapper.toDomainList(
             recipeService.search(
                 page = page,
-                query = query,
+                query = query
             ).results
         )
     }
