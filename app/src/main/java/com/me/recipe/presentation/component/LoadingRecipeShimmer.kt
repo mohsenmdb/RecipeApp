@@ -4,8 +4,8 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -25,7 +25,7 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
         val cardHeightPx = with(LocalDensity.current) { (imageHeight - padding).toPx() }
         val gradientWidth: Float = (0.2f * cardHeightPx)
 
-        val infiniteTransition = rememberInfiniteTransition()
+        val infiniteTransition = rememberInfiniteTransition(label = "")
         val xCardShimmer = infiniteTransition.animateFloat(
             initialValue = 0f,
             targetValue = (cardWidthPx + gradientWidth),
@@ -36,7 +36,7 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
                     delayMillis = 300
                 ),
                 repeatMode = RepeatMode.Restart
-            )
+            ), label = ""
         )
         val yCardShimmer = infiniteTransition.animateFloat(
             initialValue = 0f,
@@ -48,7 +48,7 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
                     delayMillis = 300
                 ),
                 repeatMode = RepeatMode.Restart
-            )
+            ), label = ""
         )
 
         val colors = listOf(

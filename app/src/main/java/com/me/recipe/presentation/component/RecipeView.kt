@@ -4,8 +4,8 @@ package com.me.recipe.presentation.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +21,7 @@ fun RecipeView(recipe: Recipe) {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         item {
             val image =
-                loadPicture(url = recipe.featuredImage!!, defaultImage = DEFAULT_RECIPE_IMAGE).value
+                loadPicture(url = recipe.featuredImage, defaultImage = DEFAULT_RECIPE_IMAGE).value
             image?.let { img ->
                 Image(
                     bitmap = img.asImageBitmap(),
@@ -47,7 +47,7 @@ fun RecipeView(recipe: Recipe) {
                         modifier = Modifier
                             .fillMaxWidth(0.85f)
                             .wrapContentWidth(Alignment.Start),
-                        style = MaterialTheme.typography.h3
+                        style = MaterialTheme.typography.displaySmall
                     )
                     val rank = recipe.rating.toString()
                     Text(
@@ -56,7 +56,7 @@ fun RecipeView(recipe: Recipe) {
                             .fillMaxWidth()
                             .wrapContentWidth(Alignment.End)
                             .align(Alignment.CenterVertically),
-                        style = MaterialTheme.typography.h5
+                        style = MaterialTheme.typography.headlineSmall
                     )
                 }
                 val updated = recipe.dateUpdated
@@ -65,7 +65,7 @@ fun RecipeView(recipe: Recipe) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp),
-                    style = MaterialTheme.typography.caption
+                    style = MaterialTheme.typography.bodySmall
                 )
                 for (ingredient in recipe.ingredients) {
                     Text(
@@ -73,7 +73,7 @@ fun RecipeView(recipe: Recipe) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 4.dp),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }

@@ -1,94 +1,146 @@
 package com.me.recipe.ui.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextMotion
 import androidx.compose.ui.unit.sp
 import com.me.recipe.R
 
+val IranSans = FontFamily(
+    Font(R.font.iran_sans, FontWeight.Normal),
+    Font(R.font.iran_sans_medium, FontWeight.Medium),
+    Font(R.font.iran_sans_bold, FontWeight.Bold),
+    Font(R.font.iran_sans_light, FontWeight.Light),
+    Font(R.font.iran_sans_extra_light, FontWeight.ExtraLight),
+    Font(R.font.iran_sans_black, FontWeight.Black)
+)
+
 // Set of Material typography styles to start with
+@OptIn(ExperimentalTextApi::class)
 val Typography = Typography(
-    body1 = TextStyle(
-        fontFamily = FontFamily.Default,
+    displayLarge = TextStyle(
+        fontSize = 57.sp,
+        lineHeight = 64.sp,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    )
-)
-
-private val QuickSand = FontFamily(
-    Font(R.font.quicksand_light, FontWeight.W300),
-    Font(R.font.quicksand_regular, FontWeight.W400),
-    Font(R.font.quicksand_medium, FontWeight.W500),
-    Font(R.font.quicksand_bold, FontWeight.W600)
-)
-
-val QuickSandTypography = Typography(
-    h1 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
-        fontSize = 30.sp,
+        letterSpacing = (-0.25).sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
     ),
-    h2 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
+    displayMedium = TextStyle(
+        fontSize = 45.sp,
+        lineHeight = 52.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 0.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    displaySmall = TextStyle(
+        fontSize = 36.sp,
+        lineHeight = 44.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 0.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    headlineLarge = TextStyle(
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 0.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    headlineMedium = TextStyle(
+        fontSize = 28.sp,
+        lineHeight = 36.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 0.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    headlineSmall = TextStyle(
         fontSize = 24.sp,
-    ),
-    h3 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
-        fontSize = 20.sp,
-    ),
-    h4 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 18.sp,
-    ),
-    h5 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 16.sp,
-    ),
-    h6 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 14.sp,
-    ),
-    subtitle1 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
-        fontSize = 16.sp,
-    ),
-    subtitle2 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 14.sp,
-    ),
-    body1 = TextStyle(
-        fontFamily = QuickSand,
+        lineHeight = 32.sp,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        letterSpacing = 0.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
     ),
-    body2 = TextStyle(
-        fontFamily = QuickSand,
-        fontSize = 14.sp
-    ),
-    button = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 15.sp,
-        color = Color.White
-    ),
-    caption = TextStyle(
-        fontFamily = QuickSand,
+    titleLarge = TextStyle(
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        letterSpacing = 0.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
     ),
-    overline = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 12.sp
+    titleMedium = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        fontWeight = FontWeight.Medium,
+        letterSpacing = 0.15.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    titleSmall = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        fontWeight = FontWeight.Medium,
+        letterSpacing = 0.1.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    labelLarge = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        fontWeight = FontWeight.Medium,
+        letterSpacing = 0.1.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    labelMedium = TextStyle(
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        fontWeight = FontWeight.Medium,
+        letterSpacing = 0.25.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    labelSmall = TextStyle(
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        fontWeight = FontWeight.Medium,
+        letterSpacing = 0.1.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    bodyLarge = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 0.5.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    bodyMedium = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 0.25.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
+    ),
+    bodySmall = TextStyle(
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 0.2.sp,
+        fontFamily = IranSans,
+        textMotion = TextMotion.Animated
     )
 )

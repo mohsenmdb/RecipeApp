@@ -4,9 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.me.recipe.R
-import com.me.recipe.presentation.component.DefaultSnackbar
+import com.me.recipe.presentation.component.util.DefaultSnackbar
 import com.me.recipe.presentation.component.LoadingRecipeShimmer
 import com.me.recipe.presentation.component.RecipeView
 import com.me.recipe.presentation.ui.navigation.NavigationDestination
@@ -52,7 +52,7 @@ private fun RecipeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(MaterialTheme.colors.background)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             if (isLoading && recipe == null)
                 LoadingRecipeShimmer(imageHeight = 250.dp)

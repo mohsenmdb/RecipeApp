@@ -13,8 +13,8 @@ import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipe_list.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipe_list.usecases.SearchRecipesUsecase
 import com.me.recipe.presentation.component.FoodCategory
-import com.me.recipe.presentation.component.GenericDialogInfo
-import com.me.recipe.presentation.component.PositiveAction
+import com.me.recipe.presentation.component.util.GenericDialogInfo
+import com.me.recipe.presentation.component.util.PositiveAction
 import com.me.recipe.presentation.component.getFoodCategory
 import com.me.recipe.presentation.ui.recipe_list.RecipeListEvent.*
 import com.me.recipe.util.TAG
@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(

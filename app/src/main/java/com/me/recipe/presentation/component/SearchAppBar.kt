@@ -10,23 +10,24 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import com.me.recipe.presentation.ui.recipe.FoodCategoryChip
 
 @Composable
 fun SearchAppBar(
@@ -41,8 +42,8 @@ fun SearchAppBar(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colors.surface,
-        elevation = 4.dp,
+        color = MaterialTheme.colorScheme.surface,
+        shadowElevation = 4.dp,
     ) {
         Column {
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -53,7 +54,7 @@ fun SearchAppBar(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
                         .padding(8.dp)
-                        .background(MaterialTheme.colors.surface),
+                        .background(MaterialTheme.colorScheme.surface),
                     label = {
                         Text(text = "Search")
                     },
@@ -74,7 +75,7 @@ fun SearchAppBar(
                         )
                     },
                     textStyle = TextStyle(
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                     ),
                 )
                 IconButton(

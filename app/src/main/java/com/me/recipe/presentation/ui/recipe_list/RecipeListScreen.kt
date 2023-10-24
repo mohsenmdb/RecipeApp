@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.me.recipe.R
 import com.me.recipe.presentation.component.CircularIndeterminateProgressBar
-import com.me.recipe.presentation.component.DefaultSnackbar
-import com.me.recipe.presentation.component.GenericDialog
+import com.me.recipe.presentation.component.util.DefaultSnackbar
+import com.me.recipe.presentation.component.util.GenericDialog
 import com.me.recipe.presentation.component.LoadingRecipeListShimmer
 import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.presentation.component.SearchAppBar
@@ -85,7 +85,7 @@ private fun RecipeListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(MaterialTheme.colors.background)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             if (isLoading && recipes.isEmpty())
                 LoadingRecipeListShimmer(250.dp)

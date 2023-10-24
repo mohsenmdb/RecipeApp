@@ -1,22 +1,23 @@
-package com.me.recipe.presentation.component
+package com.me.recipe.presentation.component.util
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun GenericDialog(
-  modifier: Modifier = Modifier,
-  onDismiss: () -> Unit,
-  title: String,
-  description: String? = null,
-  positiveAction: PositiveAction?,
-  negativeAction: NegativeAction?,
+    modifier: Modifier = Modifier,
+    onDismiss: () -> Unit,
+    title: String,
+    description: String? = null,
+    positiveAction: PositiveAction?,
+    negativeAction: NegativeAction?,
 ) {
   AlertDialog(
     modifier = modifier,
@@ -27,29 +28,24 @@ fun GenericDialog(
         Text(text = description)
       }
     },
-    buttons = {
-      Row(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(8.dp),
-        horizontalArrangement = Arrangement.End,
-      ) {
-        if(negativeAction != null){
-          Button(
-            modifier = Modifier.padding(end = 8.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onError),
-            onClick = negativeAction.onNegativeAction
-          ) {
-            Text(text = negativeAction.negativeBtnTxt)
-          }
+    confirmButton = {
+      if(positiveAction != null){
+        Button(
+          modifier = Modifier.padding(end = 8.dp),
+          onClick = positiveAction.onPositiveAction,
+        ) {
+          Text(text = positiveAction.positiveBtnTxt)
         }
-        if(positiveAction != null){
-          Button(
-            modifier = Modifier.padding(end = 8.dp),
-            onClick = positiveAction.onPositiveAction,
-          ) {
-            Text(text = positiveAction.positiveBtnTxt)
-          }
+      }
+    },
+    dismissButton = {
+      if(negativeAction != null){
+        Button(
+          modifier = Modifier.padding(end = 8.dp),
+          colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onError),
+          onClick = negativeAction.onNegativeAction
+        ) {
+          Text(text = negativeAction.negativeBtnTxt)
         }
       }
     }
@@ -67,7 +63,7 @@ data class NegativeAction(
 )
 
 
-class GenericDialogInfo private constructor(builder: GenericDialogInfo.Builder){
+class GenericDialogInfo private constructor(builder: Builder){
 
   val title: String
   val onDismiss: () -> Unit
@@ -106,25 +102,25 @@ class GenericDialogInfo private constructor(builder: GenericDialogInfo.Builder){
     var negativeAction: NegativeAction? = null
       private set
 
-    fun title(title: String): Builder{
+    fun title(title: String): Builder {
       this.title = title
       return this
     }
 
-    fun onDismiss(onDismiss: () -> Unit): Builder{
+    fun onDismiss(onDismiss: () -> Unit): Builder {
       this.onDismiss = onDismiss
       return this
     }
 
     fun description(
       description: String
-    ): Builder{
+    ): Builder {
       this.description = description
       return this
     }
 
     fun positive(
-      positiveAction: PositiveAction?,
+        positiveAction: PositiveAction?,
     ) : Builder {
       this.positiveAction = positiveAction
       return this

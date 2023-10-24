@@ -1,9 +1,9 @@
 package com.me.recipe.presentation.component
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,12 +22,12 @@ fun CircularIndeterminateProgressBar(isVisible: Boolean) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colorScheme.primary
             )
 
             Text(
                 text = "Loading...",
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(top = 8.dp).constrainAs(text) {
                     top.linkTo(progressBar.bottom)
                     start.linkTo(progressBar.start)

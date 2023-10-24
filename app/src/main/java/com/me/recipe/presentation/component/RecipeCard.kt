@@ -3,9 +3,10 @@ package com.me.recipe.presentation.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +22,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
 
     Card(
         shape = MaterialTheme.shapes.small,
-        elevation = 4.dp,
+        elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
             .padding(bottom = 6.dp, top = 6.dp, start = 12.dp, end = 12.dp)
             .fillMaxWidth()
@@ -53,7 +54,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .wrapContentWidth(Alignment.Start),
-                        style = MaterialTheme.typography.h4
+                        style = MaterialTheme.typography.headlineMedium
                     )
                     Text(
                         text = recipe.rating.toString(),
@@ -61,7 +62,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
                             .fillMaxWidth()
                             .wrapContentWidth(Alignment.End)
                             .align(Alignment.CenterVertically),
-                        style = MaterialTheme.typography.h5
+                        style = MaterialTheme.typography.headlineSmall
                     )
                 }
             }
