@@ -1,5 +1,17 @@
 # RecipeApp
-this app just to learning these features:
-Kotlin - mvvm - Hilt - Retrofit - Coroutines - Jetpack Compose - clean Architecture .
+RecipeApp is for showing a list of food recipes.
+This is an offline-first application
 
-with Mitch Tabian tutorial :https://www.youtube.com/playlist?list=PLgCYzUzKIBE_I0_tU5TvkfQpnmrP_9XV8
+Features:
+MVVM
+Compose navigation (one activity, zero fragments)
+Retrieve Network Data from API (REST API)
+Database caching(Room)
+Dependency Injection (HILT)
+Use cases
+Datastore (New Shared Preferences)
+Unit Testing
+MockWebServer (Okhttp)
+Dependency management with VersionCatalog
+
+thanks to Mitch Tabian
