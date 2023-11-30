@@ -1,17 +1,13 @@
 buildscript {
-    ext {
-        kotlinVersion = '1.8.0'
-        compose_version = '1.4.0-alpha05'
-    }
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.47'
+        classpath(libs.tools.buildGradle)
+        classpath (libs.kotlin.pluginGradle)
+        classpath (libs.hilt.pluginGradle)
     }
 }
 

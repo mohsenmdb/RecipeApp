@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.me.recipe.R
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.util.DEFAULT_RECIPE_IMAGE
 import com.me.recipe.util.loadPicture
 
 @Composable
@@ -21,7 +21,7 @@ fun RecipeView(recipe: Recipe) {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         item {
             val image =
-                loadPicture(url = recipe.featuredImage, defaultImage = DEFAULT_RECIPE_IMAGE).value
+                loadPicture(url = recipe.featuredImage, defaultImage = R.drawable.empty_plate).value
             image?.let { img ->
                 Image(
                     bitmap = img.asImageBitmap(),

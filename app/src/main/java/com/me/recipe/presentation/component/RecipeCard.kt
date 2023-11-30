@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.me.recipe.R
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.util.DEFAULT_RECIPE_IMAGE
 import com.me.recipe.util.loadPicture
 
 @Composable
@@ -30,7 +30,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             recipe.featuredImage?.let {
-                val image = loadPicture(url = it, defaultImage = DEFAULT_RECIPE_IMAGE).value
+                val image = loadPicture(url = it, defaultImage = R.drawable.empty_plate).value
                 image?.let { img ->
                     Image(
                         bitmap = img.asImageBitmap(),
