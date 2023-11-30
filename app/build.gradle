@@ -59,6 +59,7 @@ dependencies {
     implementation libs.compose.navigation
     implementation libs.compose.activity
     implementation libs.compose.constraintlayout
+    implementation libs.compose.coil
 
     implementation libs.retrofit
     implementation libs.retrofit.converter.gson
@@ -67,11 +68,6 @@ dependencies {
     implementation libs.hilt
     kapt libs.hilt.compiler
     implementation libs.hilt.navigation.compose
-
-
-    implementation libs.glide
-    annotationProcessor libs.glide.compiler
-
 
     implementation libs.room.runtime
     kapt libs.room.compiler

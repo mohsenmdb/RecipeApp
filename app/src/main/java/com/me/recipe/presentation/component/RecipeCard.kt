@@ -1,8 +1,12 @@
 package com.me.recipe.presentation.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -10,12 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.me.recipe.R
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.util.loadPicture
+import com.me.recipe.presentation.component.image.CoilImage
 
 @Composable
 fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
@@ -29,21 +31,16 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
             .clickable(onClick = onClick),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            recipe.featuredImage?.let {
-                val image = loadPicture(url = it, defaultImage = R.drawable.empty_plate).value
-                image?.let { img ->
-                    Image(
-                        bitmap = img.asImageBitmap(),
-                        contentDescription = "recipe image",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .requiredHeight(225.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
+            CoilImage(
+                data = recipe.featuredImage,
+                contentDescription = "recipe image",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .requiredHeight(225.dp),
+                contentScale = ContentScale.Crop
+            )
 
-            recipe.title?.let { title ->
+            recipe.title.let { title ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
