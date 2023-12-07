@@ -80,6 +80,10 @@ class RecipeListRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getTopRecipe(): Recipe {
+        return getRecipesFromNetwork(1,"").firstOrNull() ?: Recipe.EMPTY
+    }
+
 
     // WARNING: This will throw exception if there is no network connection
     private suspend fun getRecipesFromNetwork(

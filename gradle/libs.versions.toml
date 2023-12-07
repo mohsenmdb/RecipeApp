@@ -1,5 +1,5 @@
 [versions]
-toolsBuildGradle = "8.1.4"
+toolsBuildGradle = "8.2.0"
 junit5Plugin = "1.9.3.0"
 
 kotlinCompilerExtensionVersion = "1.5.3"
@@ -18,8 +18,9 @@ composeActivity = "1.8.1"
 composeConstraintlayout = "1.1.0-alpha13"
 composeCoil = "2.5.0"
 okhttpLoggingInterceptor = "4.11.0"
-hiltNavigationCompose = "1.1.0"
+hiltAndroidx = "1.1.0"
 datastorePreferences = "1.0.0"
+workKtx = "2.9.0"
 androidxTestExt = "1.1.5"
 androidxTestEspresso = "3.5.1"
 junitJupiter = "5.9.3"
@@ -49,7 +50,9 @@ okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-intercepto
 
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion" }
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltAndroidx" }
+hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltAndroidx" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltAndroidx" }
 
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
@@ -57,6 +60,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
+work = { module = "androidx.work:work-runtime-ktx", version.ref = "workKtx" }
 
 
 

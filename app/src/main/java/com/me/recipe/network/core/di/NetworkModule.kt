@@ -46,7 +46,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesDirectLoginApi(retrofit: Retrofit): RecipeService {
+    fun providesRecipeService(retrofit: Retrofit): RecipeService {
         return retrofit.create(RecipeService::class.java)
     }
 }

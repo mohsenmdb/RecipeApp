@@ -68,6 +68,8 @@ dependencies {
     implementation libs.hilt
     kapt libs.hilt.compiler
     implementation libs.hilt.navigation.compose
+    implementation libs.hilt.work
+    kapt libs.androidx.hilt.compiler
 
     implementation libs.room.runtime
     kapt libs.room.compiler
@@ -75,6 +77,7 @@ dependencies {
 
     implementation libs.datastore.preferences
     implementation libs.timber
+    implementation libs.work
 
 
     testImplementation libs.junit

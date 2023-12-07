@@ -5,6 +5,7 @@ import com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase
 import com.me.recipe.domain.features.recipe_list.repository.RecipeListRepository
 import com.me.recipe.domain.features.recipe_list.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipe_list.usecases.SearchRecipesUsecase
+import com.me.recipe.domain.features.recipe_list.usecases.TopRecipeUsecase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,6 +38,13 @@ object RecipeUsecaseModule {
         recipeRepository: RecipeRepository
     ): GetRecipeUsecase {
         return GetRecipeUsecase(recipeRepository = recipeRepository)
+    }
+    @ViewModelScoped
+    @Provides
+    fun provideTopRecipeUsecase(
+        recipeListRepository: RecipeListRepository
+    ): TopRecipeUsecase {
+        return TopRecipeUsecase(recipeListRepository = recipeListRepository)
     }
 
 }
