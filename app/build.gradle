@@ -75,6 +75,7 @@ dependencies {
 
     implementation libs.datastore.preferences
     implementation libs.timber
+    implementation libs.work
 
 
     testImplementation libs.junit

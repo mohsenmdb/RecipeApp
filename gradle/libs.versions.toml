@@ -1,5 +1,5 @@
 [versions]
-toolsBuildGradle = "8.1.4"
+toolsBuildGradle = "8.2.0"
 junit5Plugin = "1.9.3.0"
 
 kotlinCompilerExtensionVersion = "1.5.3"
@@ -20,6 +20,7 @@ composeCoil = "2.5.0"
 okhttpLoggingInterceptor = "4.11.0"
 hiltNavigationCompose = "1.1.0"
 datastorePreferences = "1.0.0"
+workKtx = "2.9.0"
 androidxTestExt = "1.1.5"
 androidxTestEspresso = "3.5.1"
 junitJupiter = "5.9.3"
@@ -57,6 +58,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
+work = { module = "androidx.work:work-runtime-ktx", version.ref = "workKtx" }
 
 
 
