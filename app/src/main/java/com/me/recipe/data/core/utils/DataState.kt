@@ -26,15 +26,3 @@ data class DataState<out T>(
         fun <T> loading(): DataState<T> = DataState(loading = true)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

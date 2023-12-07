@@ -5,21 +5,24 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.me.recipe.R
 import timber.log.Timber
 
 object NotificationBuilder {
 
-    val VERBOSE_NOTIFICATION_CHANNEL_NAME: CharSequence = "Verbose WorkManager Notifications"
-    const val VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION = "Shows notifications whenever work starts"
-    const val CHANNEL_ID = "VERBOSE_NOTIFICATION"
-    const val NOTIFICATION_ID = 1
+    private val VERBOSE_NOTIFICATION_CHANNEL_NAME: CharSequence = "Verbose WorkManager Notifications"
+    private const val VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION = "Shows notifications whenever work starts"
+    private const val CHANNEL_ID = "VERBOSE_NOTIFICATION"
+    private const val NOTIFICATION_ID = 1
 
-    fun showNotification(title: String, message: String, context: Context) {
+    fun showNotification(title: String, message: String, banner: String, context: Context) {
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
@@ -53,6 +56,24 @@ object NotificationBuilder {
             Timber.tag(TAG).e("NO PERMISSION TO SHOW NOTIFICATION")
             return
         }
+
+        if (banner.isNotEmpty()) {
+            val loader = ImageLoader(context)
+            val req = ImageRequest.Builder(context)
+                .data(banner)
+                .target { result ->
+                    val bitmap = (result as BitmapDrawable).bitmap
+//                    builder.setLargeIcon(bitmap)
+                    builder.setStyle(
+                        NotificationCompat.BigPictureStyle().bigPicture(bitmap)
+                    )
+                    NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
+                }
+                .build()
+            loader.enqueue(req)
+            return
+        }
+
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
     }
 }

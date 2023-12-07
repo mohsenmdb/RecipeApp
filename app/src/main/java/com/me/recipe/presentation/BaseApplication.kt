@@ -1,13 +1,18 @@
 package com.me.recipe.presentation
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.me.recipe.BuildConfig
 import com.me.recipe.util.worker.WorkerUtil
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltAndroidApp
-class BaseApplication : Application() {
+class BaseApplication : Application() , Configuration.Provider{
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
     override fun onCreate() {
         super.onCreate()
 
@@ -16,4 +21,10 @@ class BaseApplication : Application() {
 
         WorkerUtil.startRecommendationWorker(this)
     }
+
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
 }
