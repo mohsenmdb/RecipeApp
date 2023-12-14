@@ -1,4 +1,4 @@
-package com.me.recipe.util
+package com.me.recipe.util.extention
 
 import android.Manifest
 import android.app.Activity

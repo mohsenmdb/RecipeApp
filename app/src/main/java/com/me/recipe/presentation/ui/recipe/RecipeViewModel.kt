@@ -1,21 +1,23 @@
 package com.me.recipe.presentation.ui.recipe
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase
 import com.me.recipe.util.TAG
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -23,61 +25,46 @@ import javax.inject.Inject
 class RecipeViewModel @Inject constructor(
     private val getRecipeUsecase: Lazy<GetRecipeUsecase>,
     savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+) : ViewModel(), RecipeContract {
 
+    private val _mutableState = MutableStateFlow(RecipeContract.State(loading = true))
+    override val state: StateFlow<RecipeContract.State> = _mutableState.asStateFlow()
+
+    private val effectChannel = Channel<RecipeContract.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<RecipeContract.Effect> = effectChannel.receiveAsFlow()
+
+    override fun event(event: RecipeContract.Event) {}
 
     //sent by navigation args
     private val itemId: Int = checkNotNull(savedStateHandle[RecipeDestination.itemIdArg])
-
-    val recipe: MutableState<Recipe?> = mutableStateOf(null)
-    val isLoading = mutableStateOf(false)
-
-    private val _showSnackbar: MutableLiveData<String?> = MutableLiveData()
-    val showSnackbar: LiveData<String?>
-        get() = _showSnackbar
 
     init {
         viewModelScope.launch {
             try {
                 getRecipe(itemId)
-
             } catch (e: Exception) {
-                _showSnackbar.value = e.message
-                isLoading.value = false
+                _mutableState.update { it.copy(loading = false) }
+                if (e.message != null) {
+                    effectChannel.trySend(RecipeContract.Effect.ShowSnackbar(e.message!!))
+                }
             } finally {
-                Log.d(TAG, "launchJob: finally called.")
+                Timber.tag(TAG).d("launchJob: finally called.")
             }
-        }
-    }
-
-    fun onTriggerEvent(event: RecipeEvent) = viewModelScope.launch {
-        try {
-//            when (event) {
-//                is RecipeEvent.GetRecipeEvent -> {
-//                }
-//            }
-        } catch (e: Exception) {
-            _showSnackbar.value = e.message
-            isLoading.value = false
-        } finally {
-            Log.d(TAG, "launchJob: finally called.")
         }
     }
 
     private suspend fun getRecipe(id: Int) {
         getRecipeUsecase.get().invoke(id,true).onEach { dataState ->
-            isLoading.value = dataState.loading
+            _mutableState.update { it.copy(loading = dataState.loading) }
 
-            dataState.data?.let { list ->
-                recipe.value = list
+            dataState.data?.let { recipe ->
+                _mutableState.update { it.copy(recipe = recipe) }
             }
 
             dataState.error?.let { error ->
 //                dialogQueue.appendErrorMessage("An Error Occurred", error)
             }
         }.launchIn(viewModelScope)
-        isLoading.value = false
+        _mutableState.update { it.copy(loading = false) }
     }
-
-
 }

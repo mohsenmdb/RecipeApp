@@ -1,6 +1,10 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.me.recipe.presentation.component
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +24,7 @@ import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.presentation.component.image.CoilImage
 
 @Composable
-fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
+fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
 
     Card(
         shape = MaterialTheme.shapes.small,
@@ -28,7 +32,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
         modifier = Modifier
             .padding(bottom = 6.dp, top = 6.dp, start = 12.dp, end = 12.dp)
             .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .combinedClickable(onClick = onClick, onLongClick = onLongClick),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             CoilImage(
