@@ -9,6 +9,7 @@ Retrieve Network Data from API (REST API)
 Database caching(Room)
 Dependency Injection (HILT)
 Use cases
+Worker
 Datastore (New Shared Preferences)
 Unit Testing
 MockWebServer (Okhttp)
