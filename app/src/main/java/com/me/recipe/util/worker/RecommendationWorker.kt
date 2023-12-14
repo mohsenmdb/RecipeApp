@@ -28,6 +28,7 @@ class RecommendationWorker @AssistedInject constructor(
                     return@withContext Result.failure()
                 }
                 NotificationBuilder.showNotification(
+                    id = recipe.id,
                     title = recipe.title,
                     message = recipe.publisher,
                     banner = recipe.featuredImage,

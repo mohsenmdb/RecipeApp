@@ -9,14 +9,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.me.recipe.R
-import com.me.recipe.presentation.component.util.DefaultSnackbar
 import com.me.recipe.presentation.component.LoadingRecipeShimmer
 import com.me.recipe.presentation.component.RecipeView
+import com.me.recipe.presentation.component.util.DefaultSnackbar
 import com.me.recipe.presentation.ui.navigation.NavigationDestination
 
 object RecipeDestination : NavigationDestination {
@@ -24,6 +23,7 @@ object RecipeDestination : NavigationDestination {
     override val titleRes = R.string.navigate_recipe_title
     const val itemIdArg = "itemId"
     val routeWithArgs = "$route/{$itemIdArg}"
+    const val deeplinkWithArgs = "recipe://composables.com/{$itemIdArg}"
 }
 
 @Composable
@@ -33,13 +33,12 @@ fun RecipeScreen() {
 
 @Composable
 private fun RecipeScreen(
-    viewModel: RecipeViewModel,
+    viewModel: RecipeViewModel
 ) {
 
     val recipe = viewModel.recipe.value
     val isLoading = viewModel.isLoading.value
     val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         snackbarHost = {

@@ -7,12 +7,14 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.me.recipe.presentation.ui.recipe.RecipeDestination
 import com.me.recipe.presentation.ui.recipe.RecipeScreen
 import com.me.recipe.presentation.ui.recipe_list.RecipeListDestination
 import com.me.recipe.presentation.ui.recipe_list.RecipeListScreen
 import com.me.recipe.presentation.ui.splash.SplashDestination
 import com.me.recipe.presentation.ui.splash.SplashScreen
+import timber.log.Timber
 
 /**
  * Provides Navigation graph for the application.
@@ -47,9 +49,12 @@ fun RecipeNavHost(
         }
         composable(
             route = RecipeDestination.routeWithArgs,
-            arguments = listOf(navArgument(RecipeDestination.itemIdArg) {
-                type = NavType.IntType
-            })
+            arguments = listOf(
+                navArgument(RecipeDestination.itemIdArg) { type = NavType.IntType }
+            ),
+            deepLinks = listOf(
+                navDeepLink { uriPattern = RecipeDestination.deeplinkWithArgs }
+            )
         ) {
             RecipeScreen()
         }

@@ -16,13 +16,22 @@
             android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:launchMode="standard"
             android:theme="@style/Theme.Recipe">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="composables.com"
+                    android:scheme="recipe" />
+            </intent-filter>
         </activity>
+
 
         <provider
             android:name="androidx.startup.InitializationProvider"

@@ -3,9 +3,12 @@ package com.me.recipe.util
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -22,7 +25,7 @@ object NotificationBuilder {
     private const val CHANNEL_ID = "VERBOSE_NOTIFICATION"
     private const val NOTIFICATION_ID = 1
 
-    fun showNotification(title: String, message: String, banner: String, context: Context) {
+    fun showNotification(id: Int, title: String, message: String, banner: String, context: Context) {
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
@@ -40,6 +43,11 @@ object NotificationBuilder {
             notificationManager?.createNotificationChannel(channel)
         }
 
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("recipe://composables.com/$id")
+        )
+        val activity = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         // Create the notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -47,6 +55,8 @@ object NotificationBuilder {
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVibrate(LongArray(0))
+            .setContentIntent(activity)
+            .setAutoCancel(true)
 
         // Show the notification
         if (ActivityCompat.checkSelfPermission(
