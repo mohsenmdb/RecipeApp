@@ -1,9 +1,6 @@
 package com.me.recipe.presentation.ui.recipe_list
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -16,13 +13,20 @@ import com.me.recipe.presentation.component.FoodCategory
 import com.me.recipe.presentation.component.util.GenericDialogInfo
 import com.me.recipe.presentation.component.util.PositiveAction
 import com.me.recipe.presentation.component.getFoodCategory
-import com.me.recipe.presentation.ui.recipe_list.RecipeListEvent.*
 import com.me.recipe.util.TAG
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,24 +35,48 @@ class RecipeListViewModel @Inject constructor(
     private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
     private val settingsDataStore: SettingsDataStore
-) : ViewModel() {
-    val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
-    val errors: MutableState<GenericDialogInfo?> = mutableStateOf(null)
+) : ViewModel(), RecipeListContract {
 
-    val query = mutableStateOf("")
+    private val _mutableState = MutableStateFlow(RecipeListContract.State(loading = true))
+    override val state: StateFlow<RecipeListContract.State> = _mutableState.asStateFlow()
 
-    val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
+    private val effectChannel = Channel<RecipeListContract.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<RecipeListContract.Effect> = effectChannel.receiveAsFlow()
 
-    val loading = mutableStateOf(false)
+    override fun event(event: RecipeListContract.Event) {
+        viewModelScope.launch {
+            try {
+                when (event) {
+                    is RecipeListContract.Event.NewSearchEvent -> {
+                        newSearch()
+                    }
 
-    // Pagination starts at '1' (-1 = exhausted)
-    val page = mutableStateOf(1)
-    var recipeListScrollPosition = 0
-    var categoryScrollPosition: Pair<Int, Int> = 0 to 0
+                    is RecipeListContract.Event.NextPageEvent -> {
+                        nextPage()
+                    }
+
+                    is RecipeListContract.Event.RestoreStateEvent -> {
+                        restoreState()
+                    }
+
+                    is RecipeListContract.Event.LongClickOnRecipeEvent -> {
+                        effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(event.title))
+                    }
+                }
+            } catch (e: Exception) {
+                Timber.tag(TAG).e("Exception: %s", e)
+                _mutableState.update { it.copy(loading = false) }
+                if (e.message != null) {
+                    effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(e.message!!))
+                }
+            } finally {
+                Timber.tag(TAG).d("launchJob: finally called.")
+            }
+        }
+    }
+
 
     private val _showSnackbar: MutableLiveData<String?> = MutableLiveData()
-    val showSnackbar: LiveData<String?>
-        get() = _showSnackbar
 
     init {
         savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
@@ -64,47 +92,21 @@ class RecipeListViewModel @Inject constructor(
             setSelectedCategory(c)
         }
 
-        if (recipeListScrollPosition != 0) {
-            onTriggerEvent(RestoreStateEvent)
+        if (state.value.recipeListScrollPosition != 0) {
+            event(RecipeListContract.Event.RestoreStateEvent)
         } else {
-            onTriggerEvent(NewSearchEvent)
+            event(RecipeListContract.Event.NewSearchEvent)
         }
 
-    }
-
-    fun onTriggerEvent(event: RecipeListEvent) {
-        viewModelScope.launch {
-            try {
-                when (event) {
-                    is NewSearchEvent -> {
-                        newSearch()
-                    }
-
-                    is NextPageEvent -> {
-                        nextPage()
-                    }
-
-                    is RestoreStateEvent -> {
-                        restoreState()
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "launchJob: Exception: ${e}, ${e.cause}")
-                _showSnackbar.value = e.message
-                loading.value = false
-            } finally {
-                Log.d(TAG, "launchJob: finally called.")
-            }
-        }
     }
 
     private suspend fun restoreState() {
-        restoreRecipesUsecase.get().invoke(page = page.value, query = query.value)
+        restoreRecipesUsecase.get().invoke(page = state.value.page, query = state.value.query)
             .onEach { dataState ->
-                loading.value = dataState.loading
+                _mutableState.update { it.copy(loading = dataState.loading) }
 
                 dataState.data?.let { list ->
-                    recipes.value = list
+                    _mutableState.update { it.copy(recipes = list) }
                 }
 
                 dataState.error?.let { error ->
@@ -114,45 +116,48 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private suspend fun newSearch() {
-        Log.d(TAG, "newSearch: query: ${query.value}, page: ${page.value}")
+        Timber.tag(TAG).d("newSearch:%S query:%s ", state.value.query, state.value.page)
         // New search. Reset the state
         resetSearchState()
 
-        searchRecipesUsecase.get().invoke(page = page.value, query = query.value)
+        searchRecipesUsecase.get().invoke(page = state.value.page, query = state.value.query)
             .onEach { dataState ->
-                loading.value = dataState.loading
+                _mutableState.update { it.copy(loading = dataState.loading) }
 
                 dataState.data?.let { list ->
-                    recipes.value = list
+                    _mutableState.update { it.copy(recipes = list) }
                 }
 
                 dataState.error?.let { error ->
-                    Log.e(TAG, "newSearch: ${error}")
-                    errors.value = GenericDialogInfo.Builder()
+                    Timber.tag(TAG).e("newSearch: %s", error)
+                    val errors = GenericDialogInfo.Builder()
                         .title("Error")
                         .description(error)
                         .positive(
                             PositiveAction(
-                                positiveBtnTxt= "Ok",
-                                onPositiveAction = { errors.value = null }
+                                positiveBtnTxt = "Ok",
+                                onPositiveAction = {
+                                    _mutableState.update { it.copy(errors = null) }
+                                }
                             )
                         )
-                        .onDismiss { errors.value = null }
+                        .onDismiss { _mutableState.update { it.copy(errors = null) } }
                         .build()
+                    _mutableState.update { it.copy(errors = errors) }
                 }
             }.launchIn(viewModelScope)
     }
 
     private suspend fun nextPage() {
-        if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
+        if ((state.value.recipeListScrollPosition + 1) >= (state.value.page * PAGE_SIZE)) {
             incrementPage()
-            Log.d(TAG, "nextPage: triggered: ${page.value}")
+            Log.d(TAG, "nextPage: triggered: ${state.value.page}")
 
-            if (page.value > 1) {
+            if (state.value.page > 1) {
                 searchRecipesUsecase.get()
-                    .invoke(page = page.value, query = query.value)
+                    .invoke(page = state.value.page, query = state.value.query)
                     .onEach { dataState ->
-                        loading.value = dataState.loading
+                        _mutableState.update { it.copy(loading = dataState.loading) }
 
                         dataState.data?.let { list ->
                             appendRecipes(list)
@@ -171,13 +176,13 @@ class RecipeListViewModel @Inject constructor(
      * Append new recipes to the current list of recipes
      */
     private fun appendRecipes(recipes: List<Recipe>) {
-        val current = ArrayList(this.recipes.value)
+        val current = ArrayList(state.value.recipes)
         current.addAll(recipes)
-        this.recipes.value = current
+        _mutableState.update { it.copy(recipes = current) }
     }
 
     private fun incrementPage() {
-        setPage(page.value + 1)
+        setPage(state.value.page + 1)
     }
 
     fun onChangeRecipeScrollPosition(position: Int) {
@@ -188,15 +193,19 @@ class RecipeListViewModel @Inject constructor(
      * Called when a new search is executed.
      */
     private fun resetSearchState() {
-        recipes.value = listOf()
-        page.value = 1
+        _mutableState.update {
+            it.copy(
+                recipes = listOf(),
+                page = 1
+            )
+        }
         onChangeRecipeScrollPosition(0)
-        if (selectedCategory.value?.value != query.value) clearSelectedCategory()
+        if (state.value.selectedCategory?.value != state.value.query) clearSelectedCategory()
     }
 
     private fun clearSelectedCategory() {
         setSelectedCategory(null)
-        selectedCategory.value = null
+        _mutableState.update { it.copy(selectedCategory = null) }
     }
 
     fun onQueryChanged(query: String) {
@@ -210,27 +219,27 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private fun setListScrollPosition(position: Int) {
-        recipeListScrollPosition = position
+        _mutableState.update { it.copy(recipeListScrollPosition = position) }
         savedStateHandle.set(STATE_KEY_LIST_POSITION, position)
     }
 
     private fun setPage(page: Int) {
-        this.page.value = page
+        _mutableState.update { it.copy(page = page) }
         savedStateHandle.set(STATE_KEY_PAGE, page)
     }
 
     private fun setSelectedCategory(category: FoodCategory?) {
-        selectedCategory.value = category
+        _mutableState.update { it.copy(selectedCategory = category) }
         savedStateHandle.set(STATE_KEY_SELECTED_CATEGORY, category)
     }
 
     private fun setQuery(query: String) {
-        this.query.value = query
+        _mutableState.update { it.copy(query = query) }
         savedStateHandle[STATE_KEY_QUERY] = query
     }
 
     fun onCategoryScrollPositionChanged(position: Int, offset: Int) {
-        categoryScrollPosition = position to offset
+        _mutableState.update { it.copy(categoryScrollPosition = position to offset) }
     }
 
     fun toggleDarkTheme() {

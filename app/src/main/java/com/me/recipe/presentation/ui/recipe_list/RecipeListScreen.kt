@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.me.recipe.R
+import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.presentation.component.CircularIndeterminateProgressBar
 import com.me.recipe.presentation.component.util.DefaultSnackbar
 import com.me.recipe.presentation.component.util.GenericDialog
@@ -24,6 +25,9 @@ import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.presentation.component.SearchAppBar
 import com.me.recipe.presentation.ui.navigation.NavigationDestination
 import com.me.recipe.presentation.ui.recipe_list.RecipeListViewModel.Companion.PAGE_SIZE
+import com.me.recipe.util.compose.collectInLaunchedEffect
+import com.me.recipe.util.compose.use
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
 object RecipeListDestination : NavigationDestination {
@@ -42,20 +46,25 @@ fun RecipeListScreen(
 }
 
 
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 private fun RecipeListScreen(
     viewModel: RecipeListViewModel,
     navigateToRecipePage: (recipeId: Int) -> Unit
 ) {
-
-    val recipes = viewModel.recipes.value
-    val errors = viewModel.errors.value
-    val query = viewModel.query.value
-    val selectedCategory = viewModel.selectedCategory.value
-    val isLoading = viewModel.loading.value
-    val page = viewModel.page.value
+    val (state, effect, event) = use(viewModel = viewModel)
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+
+    effect.collectInLaunchedEffect{effect ->
+        when (effect) {
+            is RecipeListContract.Effect.ShowSnackbar -> {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(effect.message, "Ok")
+                }
+            }
+        }
+    }
 
     Scaffold(
         snackbarHost = {
@@ -65,11 +74,11 @@ private fun RecipeListScreen(
         },
         topBar = {
             SearchAppBar(
-                query = query,
-                selectedCategory = selectedCategory,
-                categoryScrollPosition = viewModel.categoryScrollPosition,
+                query = state.query,
+                selectedCategory = state.selectedCategory,
+                categoryScrollPosition = state.categoryScrollPosition,
                 onQueryChanged = viewModel::onQueryChanged,
-                newSearch = { viewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent) },
+                newSearch = { event.invoke(RecipeListContract.Event.NewSearchEvent) },
                 onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
                 onCategoryScrollPositionChanged = viewModel::onCategoryScrollPositionChanged,
                 onToggleTheme = {
@@ -87,38 +96,45 @@ private fun RecipeListScreen(
                 .padding(padding)
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            if (isLoading && recipes.isEmpty())
+            if (state.loading && state.recipes.isEmpty()) {
                 LoadingRecipeListShimmer(250.dp)
-            else
+            } else {
                 LazyColumn {
-                    itemsIndexed(recipes) { index, recipe ->
+                    itemsIndexed(state.recipes) { index, recipe ->
                         viewModel.onChangeRecipeScrollPosition(index)
-                        if ((index + 1) >= (page * PAGE_SIZE) && !isLoading)
-                            viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
+                        if ((index + 1) >= (state.page * PAGE_SIZE) && !state.loading) {
+                            event.invoke(RecipeListContract.Event.NextPageEvent)
+                        }
 
                         RecipeCard(
                             recipe = recipe,
                             onClick = {
-                                recipe.id?.let {
-                                    navigateToRecipePage(it)
-                                } ?: coroutineScope.launch {
-                                    snackbarHostState.showSnackbar("there is no id", "Ok")
+                                if (recipe.id != Recipe.EMPTY.id) {
+                                    navigateToRecipePage(recipe.id)
+                                } else {
+                                    coroutineScope.launch {
+                                        snackbarHostState.showSnackbar("there is no id", "Ok")
+                                    }
                                 }
+                            },
+                            onLongClick = {
+                                event.invoke(RecipeListContract.Event.LongClickOnRecipeEvent(recipe.title))
                             }
                         )
                     }
                 }
 
-            CircularIndeterminateProgressBar(isVisible = (isLoading && recipes.isNotEmpty()))
+                CircularIndeterminateProgressBar(isVisible = (state.loading && state.recipes.isNotEmpty()))
 
-            if (errors != null) {
-                GenericDialog(
-                    onDismiss = errors.onDismiss,
-                    title = errors.title,
-                    description = errors.description,
-                    positiveAction = errors.positiveAction,
-                    negativeAction = errors.negativeAction
-                )
+                if (state.errors != null) {
+                    GenericDialog(
+                        onDismiss = state.errors.onDismiss,
+                        title = state.errors.title,
+                        description = state.errors.description,
+                        positiveAction = state.errors.positiveAction,
+                        negativeAction = state.errors.negativeAction
+                    )
+                }
             }
         }
     }

@@ -9,7 +9,7 @@ class RecipeMapper : DomainMapper<RecipeNetwork, Recipe> {
 
     override fun mapToDomainModel(model: RecipeNetwork): Recipe {
         return Recipe(
-            id = model.pk ?: 0,
+            id = model.pk ?: -1,
             title = model.title.orEmpty(),
             featuredImage = model.featuredImage.orEmpty(),
             rating = model.rating,

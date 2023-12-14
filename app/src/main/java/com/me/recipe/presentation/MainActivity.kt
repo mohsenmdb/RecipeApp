@@ -7,7 +7,7 @@ import com.me.recipe.cache.datastore.SettingsDataStore
 import com.me.recipe.cache.datastore.UserDataStore
 import com.me.recipe.presentation.ui.RecipeApp
 import com.me.recipe.ui.theme.RecipeTheme
-import com.me.recipe.util.getPushNotificationPermission
+import com.me.recipe.util.extention.getPushNotificationPermission
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
