@@ -2,8 +2,8 @@
 
 package com.me.recipe.presentation.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.presentation.component.image.CoilImage
+import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
 fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
@@ -68,5 +70,21 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
                 }
             }
         }
+    }
+}
+
+@Preview(group = "firstGroup",
+    showBackground = true,
+    backgroundColor = 0xFF292C3C,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Composable
+fun RecipeCardPreview() {
+    RecipeTheme {
+        RecipeCard(
+            recipe = Recipe.EMPTY.copy(title= "RecipeCard", rating = 44),
+            onClick = {},
+            onLongClick = {}
+        )
     }
 }
