@@ -55,7 +55,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .wrapContentWidth(Alignment.Start),
-                        style = MaterialTheme.typography.headlineMedium
+                        style = MaterialTheme.typography.titleLarge
                     )
                     Text(
                         text = recipe.rating.toString(),

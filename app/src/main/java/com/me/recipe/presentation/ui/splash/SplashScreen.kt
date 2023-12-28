@@ -55,12 +55,11 @@ fun SplashScreen(
     LaunchedEffect(key1 = animationState) {
         delay(1000)
         animationState.value = true
-        delay(2000)
+        delay(1200)
         navigateToRecipeList()
     }
 
 }
-
 
 @Composable
 fun Rocket(

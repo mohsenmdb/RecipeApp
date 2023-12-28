@@ -40,6 +40,14 @@ fun SearchAppBar(
     onCategoryScrollPositionChanged: (Int, Int) -> Unit,
     onToggleTheme: () -> Unit,
 ) {
+    val scrollState = rememberLazyListState()
+    LaunchedEffect(key1 = scrollState) {
+        scrollState.scrollToItem(
+            categoryScrollPosition.first,
+            categoryScrollPosition.second
+        )
+    }
+
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
@@ -84,13 +92,6 @@ fun SearchAppBar(
                     Icon(Icons.Filled.MoreVert, "")
                 }
             }
-            val scrollState = rememberLazyListState()
-            LaunchedEffect(key1 = scrollState) {
-                scrollState.scrollToItem(
-                    categoryScrollPosition.first,
-                    categoryScrollPosition.second
-                )
-            }
             LazyRow(
                 state = scrollState,
                 modifier = Modifier.padding(8.dp),
@@ -106,7 +107,7 @@ fun SearchAppBar(
                                 scrollState.firstVisibleItemIndex,
                                 scrollState.firstVisibleItemScrollOffset
                             )
-                        },
+                        }
                     )
                 }
             }

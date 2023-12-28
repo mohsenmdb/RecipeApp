@@ -75,9 +75,6 @@ class RecipeListViewModel @Inject constructor(
         }
     }
 
-
-    private val _showSnackbar: MutableLiveData<String?> = MutableLiveData()
-
     init {
         savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
             setPage(p)
@@ -151,7 +148,7 @@ class RecipeListViewModel @Inject constructor(
     private suspend fun nextPage() {
         if ((state.value.recipeListScrollPosition + 1) >= (state.value.page * PAGE_SIZE)) {
             incrementPage()
-            Log.d(TAG, "nextPage: triggered: ${state.value.page}")
+            Timber.tag(TAG).d("nextPage: triggered: %s", state.value.page)
 
             if (state.value.page > 1) {
                 searchRecipesUsecase.get()
@@ -164,7 +161,7 @@ class RecipeListViewModel @Inject constructor(
                         }
 
                         dataState.error?.let { error ->
-                            Log.e(TAG, "nextPage: ${error}")
+                            Timber.tag(TAG).e("nextPage: %s", error)
 //                        dialogQueue.appendErrorMessage("An Error Occurred", error)
                         }
                     }.launchIn(viewModelScope)

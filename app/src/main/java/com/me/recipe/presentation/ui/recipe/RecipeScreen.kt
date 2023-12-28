@@ -71,7 +71,7 @@ private fun RecipeScreen(
                 .padding(padding)
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            if (state.loading && state.recipe.id != Recipe.EMPTY.id) {
+            if (state.loading) {
                 LoadingRecipeShimmer(imageHeight = 250.dp)
             } else if (state.recipe.id != Recipe.EMPTY.id) {
                 RecipeView(recipe = state.recipe)
