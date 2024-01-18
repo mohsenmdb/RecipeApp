@@ -15,25 +15,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.me.recipe.R
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.presentation.component.CircularIndeterminateProgressBar
-import com.me.recipe.presentation.component.util.DefaultSnackbar
-import com.me.recipe.presentation.component.util.GenericDialog
 import com.me.recipe.presentation.component.LoadingRecipeListShimmer
 import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.presentation.component.SearchAppBar
-import com.me.recipe.presentation.ui.navigation.NavigationDestination
+import com.me.recipe.presentation.component.util.DefaultSnackbar
+import com.me.recipe.presentation.component.util.GenericDialog
 import com.me.recipe.presentation.ui.recipe_list.RecipeListViewModel.Companion.PAGE_SIZE
 import com.me.recipe.util.compose.collectInLaunchedEffect
 import com.me.recipe.util.compose.use
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
-
-object RecipeListDestination : NavigationDestination {
-    override val route = "RecipeList"
-    override val titleRes = R.string.navigate_recipe_list_title
-}
 
 @Composable
 fun RecipeListScreen(

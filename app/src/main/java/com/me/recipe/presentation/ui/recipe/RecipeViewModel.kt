@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase
+import com.me.recipe.presentation.ui.navigation.RecipeDestination
 import com.me.recipe.util.TAG
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel

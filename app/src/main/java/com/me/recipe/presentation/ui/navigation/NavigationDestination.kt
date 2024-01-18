@@ -1,16 +1,67 @@
 package com.me.recipe.presentation.ui.navigation
 
-/**
- * Interface to describe the navigation destinations for the app
- */
-interface NavigationDestination {
-    /**
-     * Unique name to define the path for a composable
-     */
-    val route: String
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
+import com.me.recipe.R
 
-    /**
-     * String resource id to that contains title to be displayed for the screen.
-     */
+interface NavigationDestination {
+    val route: String
     val titleRes: Int
 }
+
+object SplashDestination : NavigationDestination {
+    override val route = "splash"
+    override val titleRes = R.string.navigate_splash_title
+}
+
+object RecipeListDestination : NavigationDestination {
+    override val route = "RecipeList"
+    override val titleRes = R.string.navigate_recipe_list_title
+}
+
+object RecipeDestination : NavigationDestination {
+    override val route = "Recipe"
+    override val titleRes = R.string.navigate_recipe_title
+    const val itemIdArg = "itemId"
+    val routeWithArgs = "$route/{$itemIdArg}"
+    val arguments = listOf(
+        navArgument(itemIdArg) { type = NavType.IntType }
+    )
+    val deepLinks = listOf(
+        navDeepLink { uriPattern = "recipe://composables.com/{$itemIdArg}" }
+    )
+}
+
+object ComingSoonDestination : NavigationDestination {
+    override val route = "ComingSoon"
+    override val titleRes = R.string.navigate_coming_soon_title
+}
+
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        // Pop up to the start destination of the graph to
+        // avoid building up a large stack of destinations
+        // on the back stack as users select items
+        //we can use navController.graph.findStartDestination().id instead of RecipeListDestination.route (without splash)
+        popUpTo(
+            RecipeListDestination.route
+        ) {
+            saveState = true
+        }
+        // Avoid multiple copies of the same destination when
+        // reselecting the same item
+        launchSingleTop = true
+        // Restore state when reselecting a previously selected item
+        restoreState = true
+    }
+fun NavHostController.navigateSingleTopFromSplash(route: String) =
+    this.navigate(route) {
+        popUpTo(SplashDestination.route) {
+            inclusive = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }

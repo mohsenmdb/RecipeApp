@@ -23,16 +23,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.me.recipe.presentation.ui.navigation.NavigationDestination
 import com.me.recipe.R
 import com.me.recipe.ui.theme.RecipeTheme
 import kotlinx.coroutines.delay
 
-
-object SplashDestination : NavigationDestination {
-    override val route = "splash"
-    override val titleRes = R.string.navigate_splash_title
-}
 
 @Composable
 fun SplashScreen(
