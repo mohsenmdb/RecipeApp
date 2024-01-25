@@ -17,6 +17,7 @@ private val LightColorScheme = lightColorScheme(
     primaryContainer = Blue400,
     onPrimary = Black2,
     secondary = Color.White,
+    tertiary = Grey1,
     secondaryContainer = Teal300,
     onSecondary = Black2,
     error = RedErrorDark,
@@ -25,19 +26,22 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Color.Black,
     surface = Color.White,
     onSurface = Black2,
+    onSurfaceVariant = Black1,
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary = Blue700,
-    primaryContainer = Color.White,
+    primaryContainer = Black1,
     onPrimary = Color.White,
     secondary = Black1,
+    tertiary = Blue800,
     onSecondary = Color.White,
     error = RedErrorLight,
     background = Color.Black,
     onBackground = Color.White,
     surface = Black1,
     onSurface = Color.White,
+    onSurfaceVariant = Grey1,
 )
 
 @Composable
@@ -48,10 +52,10 @@ fun RecipeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colors.primary.toArgb()
+            window.statusBarColor = colors.primaryContainer.toArgb()
             WindowCompat
                 .getInsetsController(window, view)
-                .isAppearanceLightStatusBars = darkTheme
+                .isAppearanceLightStatusBars = !darkTheme
         }
     }
     MaterialTheme(
