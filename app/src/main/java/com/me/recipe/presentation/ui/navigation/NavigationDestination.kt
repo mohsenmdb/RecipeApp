@@ -39,6 +39,8 @@ object ComingSoonDestination : NavigationDestination {
     override val titleRes = R.string.navigate_coming_soon_title
 }
 
+val bottomNavigationScreens = listOf(RecipeListDestination, ComingSoonDestination)
+
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
