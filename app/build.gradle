@@ -58,6 +58,9 @@ android {
 
 dependencies {
     api(platform(libs.compose.bom))
+    androidTestImplementation(platform(libs.compose.bom))
+    debugImplementation(platform(libs.compose.bom))
+
     implementation libs.compose.ui
     implementation libs.compose.ui.preview
     implementation libs.compose.material3
@@ -90,6 +93,7 @@ dependencies {
     androidTestImplementation libs.androidx.test.ext
     androidTestImplementation libs.androidx.test.espresso
     androidTestImplementation libs.androidx.compose.ui.test.junit4
+    androidTestImplementation libs.androidx.navigation.testing
     debugImplementation libs.androidx.compose.ui.tooling
     debugImplementation libs.androidx.compose.ui.test.manifest
 
