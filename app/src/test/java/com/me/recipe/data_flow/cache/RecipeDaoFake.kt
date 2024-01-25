@@ -1,4 +1,4 @@
-package com.me.recipe.cache
+package com.me.recipe.data_flow.cache
 
 import com.me.recipe.cache.features.recipe.RecipeDao
 import com.me.recipe.cache.features.recipe.model.RecipeEntity

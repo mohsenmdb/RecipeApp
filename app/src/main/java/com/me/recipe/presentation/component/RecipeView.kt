@@ -45,7 +45,8 @@ fun RecipeView(recipe: Recipe) {
                         modifier = Modifier
                             .fillMaxWidth(0.85f)
                             .wrapContentWidth(Alignment.Start),
-                        style = MaterialTheme.typography.displaySmall
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     val rank = recipe.rating.toString()
                     Text(
@@ -54,7 +55,8 @@ fun RecipeView(recipe: Recipe) {
                             .fillMaxWidth()
                             .wrapContentWidth(Alignment.End)
                             .align(Alignment.CenterVertically),
-                        style = MaterialTheme.typography.headlineSmall
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 val updated = recipe.dateUpdated
@@ -63,7 +65,8 @@ fun RecipeView(recipe: Recipe) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 for (ingredient in recipe.ingredients) {
                     Text(
@@ -71,7 +74,8 @@ fun RecipeView(recipe: Recipe) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 4.dp),
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }

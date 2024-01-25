@@ -1,8 +1,8 @@
-package com.me.recipe.usecases.recipe
+package com.me.recipe.data_flow.usecases.recipe
 
-import com.me.recipe.cache.AppDatabaseFake
-import com.me.recipe.cache.RecipeDaoFake
-import com.me.recipe.data.MockWebServerResponses
+import com.me.recipe.data_flow.cache.AppDatabaseFake
+import com.me.recipe.data_flow.cache.RecipeDaoFake
+import com.me.recipe.data_flow.data.MockWebServerResponses
 import com.google.gson.GsonBuilder
 import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper

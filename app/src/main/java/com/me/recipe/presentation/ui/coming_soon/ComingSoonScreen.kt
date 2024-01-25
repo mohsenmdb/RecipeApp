@@ -16,6 +16,10 @@ fun ComingSoonScreen(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Coming Soon", style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = "Coming Soon",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
