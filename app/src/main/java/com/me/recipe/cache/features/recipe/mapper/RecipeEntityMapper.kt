@@ -4,6 +4,7 @@ import com.me.recipe.cache.features.recipe.model.RecipeEntity
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.util.DomainMapper
 import com.me.recipe.util.DateUtils
+import kotlinx.collections.immutable.toPersistentList
 
 
 class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
@@ -16,7 +17,7 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
             rating = model.rating,
             publisher = model.publisher,
             sourceUrl = model.sourceUrl,
-            ingredients = convertIngredientsToList(model.ingredients),
+            ingredients = convertIngredientsToList(model.ingredients).toPersistentList(),
             dateAdded = DateUtils.longToDate(model.dateAdded),
             dateUpdated = DateUtils.longToDate(model.dateUpdated),
         )

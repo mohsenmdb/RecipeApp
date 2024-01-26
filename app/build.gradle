@@ -87,6 +87,7 @@ dependencies {
     implementation libs.datastore.preferences
     implementation libs.timber
     implementation libs.work
+    implementation libs.kotlinx.collections.immutable
 
 
     testImplementation libs.junit

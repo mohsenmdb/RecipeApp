@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
@@ -50,7 +51,7 @@ fun LoadingRecipeListShimmer(
             ), label = ""
         )
 
-        val colors = listOf(
+        val colors = persistentListOf(
             Color.LightGray.copy(alpha = .9f),
             Color.LightGray.copy(alpha = .3f),
             Color.LightGray.copy(alpha = .9f),

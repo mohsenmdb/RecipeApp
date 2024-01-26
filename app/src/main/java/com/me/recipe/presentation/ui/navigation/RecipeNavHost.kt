@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.me.recipe.presentation.ui.coming_soon.ComingSoonScreen
 import com.me.recipe.presentation.ui.recipe.RecipeScreen
 import com.me.recipe.presentation.ui.recipe_list.RecipeListScreen
@@ -12,7 +13,7 @@ import com.me.recipe.presentation.ui.splash.SplashScreen
 
 @Composable
 fun RecipeNavHost(
-    navController: NavHostController,
+    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
 ) {
     NavHost(

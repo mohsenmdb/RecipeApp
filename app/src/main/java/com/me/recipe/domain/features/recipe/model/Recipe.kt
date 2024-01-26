@@ -1,7 +1,11 @@
 package com.me.recipe.domain.features.recipe.model
 
+import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.util.Date
 
+@Immutable
 data class Recipe(
     val id: Int,
     val title: String,
@@ -9,7 +13,7 @@ data class Recipe(
     val featuredImage: String,
     val rating: Int,
     val sourceUrl: String,
-    val ingredients: List<String>,
+    val ingredients: ImmutableList<String>,
     val dateAdded: Date,
     val dateUpdated: Date,
 ) {
@@ -21,7 +25,7 @@ data class Recipe(
             featuredImage = "",
             rating = 0,
             sourceUrl = "",
-            ingredients = listOf(),
+            ingredients = persistentListOf(),
             dateAdded = Date(),
             dateUpdated = Date(),
         )

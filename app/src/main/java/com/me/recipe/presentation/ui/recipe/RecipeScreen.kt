@@ -25,13 +25,8 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
 @Composable
-fun RecipeScreen() {
-    RecipeScreen(hiltViewModel())
-}
-
-@Composable
-private fun RecipeScreen(
-    viewModel: RecipeViewModel
+fun RecipeScreen(
+    viewModel: RecipeViewModel = hiltViewModel()
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
     val snackbarHostState = remember { SnackbarHostState() }
