@@ -26,6 +26,7 @@ androidxTestEspresso = "3.5.1"
 junitJupiter = "5.9.3"
 mockWebserver = "4.11.0"
 navigationTesting = "2.7.6"
+kotlinxCollectionsImmutable = "0.3.6"
 
 
 [libraries]
@@ -62,6 +63,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 work = { module = "androidx.work:work-runtime-ktx", version.ref = "workKtx" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 
 
 

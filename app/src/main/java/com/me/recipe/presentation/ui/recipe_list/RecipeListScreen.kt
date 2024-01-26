@@ -28,21 +28,11 @@ import com.me.recipe.util.compose.use
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@Composable
-fun RecipeListScreen(
-    navigateToRecipePage: (recipeId: Int) -> Unit
-) {
-    RecipeListScreen(
-        viewModel = hiltViewModel(),
-        navigateToRecipePage
-    )
-}
-
 
 @OptIn(InternalCoroutinesApi::class)
 @Composable
-private fun RecipeListScreen(
-    viewModel: RecipeListViewModel,
+fun RecipeListScreen(
+    viewModel: RecipeListViewModel = hiltViewModel(),
     navigateToRecipePage: (recipeId: Int) -> Unit
 ) {
     val (state, effect, event) = use(viewModel = viewModel)

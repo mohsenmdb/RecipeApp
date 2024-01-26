@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         google()
@@ -16,6 +18,25 @@ allprojects {
         maven { url "https://jitpack.io" }
         google()
         mavenCentral()
+    }
+
+    tasks.withType(KotlinCompile).configureEach {
+        kotlinOptions {
+            // to create compose metric files run this
+            //./gradlew assembleRelease -P recipeApp.enableComposeCompilerReports=true
+            if (project.findProperty("recipeApp.enableComposeCompilerReports") == "true") {
+                freeCompilerArgs += [
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                                project.buildDir.absolutePath + "/compose_metrics"
+                ]
+                freeCompilerArgs += [
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                                project.buildDir.absolutePath + "/compose_metrics"
+                ]
+            }
+        }
     }
 }
 
