@@ -2,8 +2,8 @@
 toolsBuildGradle = "8.2.2"
 junit5Plugin = "1.9.3.0"
 
-kotlinCompilerExtensionVersion = "1.5.3"
-kotlinVersion = "1.9.10"
+kotlinCompilerExtensionVersion = "1.5.12"
+kotlinVersion = "1.9.23"
 composeVersion = "1.6.7"
 retrofitVersion = "2.11.0"
 converterMoshi = "2.11.0"
@@ -29,6 +29,7 @@ junitJupiter = "5.9.3"
 mockWebserver = "4.11.0"
 navigationTesting = "2.7.7"
 kotlinxCollectionsImmutable = "0.3.6"
+ksp= "1.9.23-1.0.19"
 
 
 [libraries]
@@ -86,4 +87,5 @@ androidx-navigation-testing = { module = "androidx.navigation:navigation-testing
 
 
 [plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 junit-plugin = { id = "de.mannodermaus.android-junit5", version.ref = "junit5Plugin" }
