@@ -1,4 +1,4 @@
-package com.me.recipe.network.core.di
+package com.me.recipe.network.core.di.retrofit
 
 import com.me.recipe.cache.datastore.UserDataStore
 import com.me.recipe.network.core.interceptors.AuthenticationInterceptor

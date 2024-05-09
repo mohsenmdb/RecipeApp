@@ -71,8 +71,11 @@ dependencies {
     implementation libs.compose.coil
 
     implementation libs.retrofit
-    implementation libs.retrofit.converter.gson
     implementation libs.okhttp.logging.interceptor
+    implementation libs.moshi
+    implementation libs.moshi.kotlin
+    kapt libs.moshi.kotlin.codegen
+    implementation libs.converter.moshi
 
     implementation libs.hilt
     kapt libs.hilt.compiler

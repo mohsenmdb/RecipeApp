@@ -1,11 +1,15 @@
 package com.me.recipe.network.core.interceptors
 
-import android.util.Log
 import com.me.recipe.cache.datastore.UserDataStore
 import okhttp3.Interceptor
 import okhttp3.Response
 import timber.log.Timber
 import javax.inject.Inject
+
+/**
+ * to use api without token add this header above api call function
+ *@Headers("$NO_AUTHENTICATION:true")
+* */
 
 const val NO_AUTHENTICATION = "NO-AUTHENTICATION"
 const val AUTHORIZATION_HEADER = "Authorization"
@@ -17,14 +21,15 @@ class AuthenticationInterceptor @Inject constructor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
         var request = request()
-        val hasToken = request.header(NO_AUTHENTICATION)
+        val noAuthentication = request.header(NO_AUTHENTICATION)
 
-        if (hasToken != "true") {
+
+        if (noAuthentication != "true") {
             val token = userDataStore.accessToken.value
             Timber.d("Need to add auth [%s]", token)
             request = if (token.isNotEmpty()) {
                 request.newBuilder()
-                    .addHeader(AUTHORIZATION_HEADER, "$token")
+                    .addHeader(AUTHORIZATION_HEADER, token)
                     .addHeader(USER_AGENT_HEADER, USER_AGENT_VALUE)
                     .build()
             } else {

@@ -3,10 +3,9 @@ package com.me.recipe.network.features.recipe
 import com.me.recipe.network.features.recipe.model.RecipeNetwork
 import com.me.recipe.network.features.recipe.model.RecipeSearchResponse
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
-interface RecipeService {
+interface RecipeApi {
 
     @GET("search")
     suspend fun search(
