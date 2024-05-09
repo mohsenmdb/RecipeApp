@@ -1,10 +1,8 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'dagger.hilt.android.plugin'
     id "de.mannodermaus.android-junit5" version "1.9.3.0"
 }
@@ -74,17 +72,17 @@ dependencies {
     implementation libs.okhttp.logging.interceptor
     implementation libs.moshi
     implementation libs.moshi.kotlin
-    kapt libs.moshi.kotlin.codegen
+    ksp libs.moshi.kotlin.codegen
     implementation libs.converter.moshi
 
     implementation libs.hilt
-    kapt libs.hilt.compiler
+    ksp libs.hilt.compiler
     implementation libs.hilt.navigation.compose
     implementation libs.hilt.work
-    kapt libs.androidx.hilt.compiler
+    ksp libs.androidx.hilt.compiler
 
     implementation libs.room.runtime
-    kapt libs.room.compiler
+    ksp libs.room.compiler
     implementation libs.room.ktx
 
     implementation libs.datastore.preferences
