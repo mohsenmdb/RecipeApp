@@ -8,8 +8,8 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.me.recipe.BuildConfig
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import timber.log.Timber
 
 object WorkerUtil {
     fun startRecommendationWorker(context: Context) {
@@ -33,7 +33,7 @@ object WorkerUtil {
                 /* existingPeriodicWorkPolicy = */
                 ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
                 /* periodicWork = */
-                builder.build()
+                builder.build(),
             )
     }
 }

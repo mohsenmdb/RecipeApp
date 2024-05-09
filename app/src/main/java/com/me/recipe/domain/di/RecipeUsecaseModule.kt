@@ -2,10 +2,10 @@ package com.me.recipe.domain.di
 
 import com.me.recipe.domain.features.recipe.repository.RecipeRepository
 import com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase
-import com.me.recipe.domain.features.recipe_list.repository.RecipeListRepository
-import com.me.recipe.domain.features.recipe_list.usecases.RestoreRecipesUsecase
-import com.me.recipe.domain.features.recipe_list.usecases.SearchRecipesUsecase
-import com.me.recipe.domain.features.recipe_list.usecases.TopRecipeUsecase
+import com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
+import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
+import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
+import com.me.recipe.domain.features.recipelist.usecases.TopRecipeUsecase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,7 @@ object RecipeUsecaseModule {
     @ViewModelScoped
     @Provides
     fun provideSearchRecipeUsecase(
-        recipeListRepository: RecipeListRepository
+        recipeListRepository: RecipeListRepository,
     ): SearchRecipesUsecase {
         return SearchRecipesUsecase(recipeListRepository = recipeListRepository)
     }
@@ -27,7 +27,7 @@ object RecipeUsecaseModule {
     @ViewModelScoped
     @Provides
     fun provideRestoreRecipesUsecase(
-        recipeListRepository: RecipeListRepository
+        recipeListRepository: RecipeListRepository,
     ): RestoreRecipesUsecase {
         return RestoreRecipesUsecase(recipeListRepository = recipeListRepository)
     }
@@ -35,27 +35,16 @@ object RecipeUsecaseModule {
     @ViewModelScoped
     @Provides
     fun provideGetRecipeUsecase(
-        recipeRepository: RecipeRepository
+        recipeRepository: RecipeRepository,
     ): GetRecipeUsecase {
         return GetRecipeUsecase(recipeRepository = recipeRepository)
     }
+
     @ViewModelScoped
     @Provides
     fun provideTopRecipeUsecase(
-        recipeListRepository: RecipeListRepository
+        recipeListRepository: RecipeListRepository,
     ): TopRecipeUsecase {
         return TopRecipeUsecase(recipeListRepository = recipeListRepository)
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-

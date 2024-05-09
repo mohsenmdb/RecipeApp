@@ -8,7 +8,7 @@ interface RecipeContract :
     UnidirectionalViewModel<RecipeContract.Event, RecipeContract.Effect, RecipeContract.State> {
 
     sealed interface Event {
-        data class  GetRecipeEvent(val id: Int) : Event
+        data class GetRecipeEvent(val id: Int) : Event
     }
 
     sealed interface Effect {

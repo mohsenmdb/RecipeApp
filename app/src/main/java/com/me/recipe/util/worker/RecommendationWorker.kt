@@ -5,7 +5,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.domain.features.recipe_list.usecases.TopRecipeUsecase
+import com.me.recipe.domain.features.recipelist.usecases.TopRecipeUsecase
 import com.me.recipe.util.NotificationBuilder
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -17,7 +17,7 @@ import timber.log.Timber
 class RecommendationWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
-    private val topRecipeUsecase: TopRecipeUsecase
+    private val topRecipeUsecase: TopRecipeUsecase,
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         return withContext(Dispatchers.IO) {
@@ -32,7 +32,7 @@ class RecommendationWorker @AssistedInject constructor(
                     title = recipe.title,
                     message = recipe.publisher,
                     banner = recipe.featuredImage,
-                    context = context
+                    context = context,
                 )
 //                val output = workDataOf(KEY_WORKER_IMAGE_URI to imageUrl)
                 Result.success()

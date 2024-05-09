@@ -24,13 +24,13 @@ object RecipeListDestination : NavigationDestination {
 object RecipeDestination : NavigationDestination {
     override val route = "Recipe"
     override val titleRes = R.string.navigate_recipe_title
-    const val itemIdArg = "itemId"
-    val routeWithArgs = "$route/{$itemIdArg}"
+    const val ITEM_ID_ARG = "itemId"
+    val routeWithArgs = "$route/{$ITEM_ID_ARG}"
     val arguments = listOf(
-        navArgument(itemIdArg) { type = NavType.IntType }
+        navArgument(ITEM_ID_ARG) { type = NavType.IntType },
     )
     val deepLinks = listOf(
-        navDeepLink { uriPattern = "recipe://composables.com/{$itemIdArg}" }
+        navDeepLink { uriPattern = "recipe://composables.com/{$ITEM_ID_ARG}" },
     )
 }
 
@@ -41,15 +41,14 @@ object ComingSoonDestination : NavigationDestination {
 
 val bottomNavigationScreens = listOf(RecipeListDestination, ComingSoonDestination)
 
-
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
         // on the back stack as users select items
-        //we can use navController.graph.findStartDestination().id instead of RecipeListDestination.route (without splash)
+        // we can use navController.graph.findStartDestination().id instead of RecipeListDestination.route (without splash)
         popUpTo(
-            RecipeListDestination.route
+            RecipeListDestination.route,
         ) {
             saveState = true
         }

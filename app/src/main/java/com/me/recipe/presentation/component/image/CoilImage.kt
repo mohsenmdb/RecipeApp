@@ -17,7 +17,7 @@ internal fun CoilImage(
     contentScale: ContentScale = ContentScale.Fit,
     contentDescription: String? = null,
     @DrawableRes placeholder: Int? = R.drawable.empty_plate,
-    @DrawableRes errorImage: Int? = R.drawable.empty_plate
+    @DrawableRes errorImage: Int? = R.drawable.empty_plate,
 ) {
     AsyncImage(
         modifier = modifier,
@@ -28,6 +28,6 @@ internal fun CoilImage(
         contentDescription = contentDescription,
         contentScale = contentScale,
         error = if (errorImage != null) painterResource(id = errorImage) else null,
-        placeholder = if (placeholder != null) painterResource(id = placeholder) else null
+        placeholder = if (placeholder != null) painterResource(id = placeholder) else null,
     )
 }

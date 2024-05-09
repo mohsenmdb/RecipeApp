@@ -1,9 +1,20 @@
 package com.me.recipe.presentation.component
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -15,11 +26,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         val cardWidthPx = with(LocalDensity.current) { (maxWidth - (padding * 2)).toPx() }
         val cardHeightPx = with(LocalDensity.current) { (imageHeight - padding).toPx() }
@@ -33,10 +43,11 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
                 animation = tween(
                     durationMillis = 1300,
                     easing = LinearEasing,
-                    delayMillis = 300
+                    delayMillis = 300,
                 ),
-                repeatMode = RepeatMode.Restart
-            ), label = ""
+                repeatMode = RepeatMode.Restart,
+            ),
+            label = "",
         )
         val yCardShimmer = infiniteTransition.animateFloat(
             initialValue = 0f,
@@ -45,10 +56,11 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
                 animation = tween(
                     durationMillis = 1300,
                     easing = LinearEasing,
-                    delayMillis = 300
+                    delayMillis = 300,
                 ),
-                repeatMode = RepeatMode.Restart
-            ), label = ""
+                repeatMode = RepeatMode.Restart,
+            ),
+            label = "",
         )
 
         val colors = listOf(
@@ -59,7 +71,7 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
         val brush = Brush.linearGradient(
             colors,
             start = Offset(xCardShimmer.value - gradientWidth, yCardShimmer.value - gradientWidth),
-            end = Offset(xCardShimmer.value, yCardShimmer.value)
+            end = Offset(xCardShimmer.value, yCardShimmer.value),
         )
         Column(modifier = Modifier.padding(padding)) {
             Surface(
@@ -69,7 +81,7 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .size(imageHeight)
-                        .background(brush = brush)
+                        .background(brush = brush),
                 )
             }
 
@@ -77,13 +89,13 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
             Surface(
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 8.dp),
             ) {
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(imageHeight / 10)
-                        .background(brush = brush)
+                        .background(brush = brush),
                 )
             }
 
@@ -91,13 +103,13 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
             Surface(
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 8.dp),
             ) {
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(imageHeight / 10)
-                        .background(brush = brush)
+                        .background(brush = brush),
                 )
             }
 
@@ -105,16 +117,15 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
             Surface(
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 8.dp),
             ) {
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(imageHeight / 10)
-                        .background(brush = brush)
+                        .background(brush = brush),
                 )
             }
-
         }
     }
 }

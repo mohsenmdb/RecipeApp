@@ -6,12 +6,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,7 +22,7 @@ object NetworkModule {
     @Singleton
     internal fun provideOkHttpClient(
         @AuthenticationInterceptorQualifier interceptor: Interceptor,
-        @LoggingInterceptorQualifier interceptor2: Interceptor
+        @LoggingInterceptorQualifier interceptor2: Interceptor,
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .connectTimeout(HTTP_TIMEOUT_S.toLong(), TimeUnit.SECONDS)
@@ -42,8 +42,8 @@ object NetworkModule {
             .client(client)
             .addConverterFactory(
                 MoshiConverterFactory.create(
-                    Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-                )
+                    Moshi.Builder().add(KotlinJsonAdapterFactory()).build(),
+                ),
             )
             .build()
     }

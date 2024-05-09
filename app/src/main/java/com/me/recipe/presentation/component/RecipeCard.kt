@@ -27,7 +27,6 @@ import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
 fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
-
     Card(
         shape = MaterialTheme.shapes.small,
         elevation = CardDefaults.cardElevation(4.dp),
@@ -43,14 +42,14 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(225.dp),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
 
             recipe.title.let { title ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 12.dp, bottom = 12.dp, start = 8.dp, end = 8.dp)
+                        .padding(top = 12.dp, bottom = 12.dp, start = 8.dp, end = 8.dp),
                 ) {
                     Text(
                         text = title,
@@ -58,7 +57,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
                             .fillMaxWidth(0.8f)
                             .wrapContentWidth(Alignment.Start),
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Text(
                         text = recipe.rating.toString(),
@@ -67,7 +66,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
                             .wrapContentWidth(Alignment.End)
                             .align(Alignment.CenterVertically),
                         style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
@@ -75,18 +74,19 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, onLongClick: () -> Unit) {
     }
 }
 
-@Preview(group = "firstGroup",
+@Preview(
+    group = "firstGroup",
     showBackground = true,
     backgroundColor = 0xFF292C3C,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
 )
 @Composable
 fun RecipeCardPreview() {
     RecipeTheme {
         RecipeCard(
-            recipe = Recipe.EMPTY.copy(title= "RecipeCard", rating = 44),
+            recipe = Recipe.EMPTY.copy(title = "RecipeCard", rating = 44),
             onClick = {},
-            onLongClick = {}
+            onLongClick = {},
         )
     }
 }

@@ -10,12 +10,11 @@ interface RecipeApi {
     @GET("search")
     suspend fun search(
         @Query("page") page: Int,
-        @Query("query") query: String
+        @Query("query") query: String,
     ): RecipeSearchResponse
 
     @GET("get")
     suspend fun get(
-        @Query("id") id: Int
+        @Query("id") id: Int,
     ): RecipeNetwork
-
 }

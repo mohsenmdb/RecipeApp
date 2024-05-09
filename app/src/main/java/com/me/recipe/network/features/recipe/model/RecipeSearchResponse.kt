@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class RecipeSearchResponse(
     @Json(name = "count") var count: Int,
-    @Json(name = "results") var results: List<RecipeNetwork>
+    @Json(name = "results") var results: List<RecipeNetwork>,
 )

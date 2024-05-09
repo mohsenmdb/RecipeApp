@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 
-
 @Composable
 fun ShimmerRecipeCardItem(
     colors: ImmutableList<Color>,
@@ -26,12 +25,12 @@ fun ShimmerRecipeCardItem(
     yShimmer: Float,
     cardHeight: Dp,
     gradientWidth: Float,
-    padding: Dp
+    padding: Dp,
 ) {
     val brush = linearGradient(
         colors,
         start = Offset(xShimmer - gradientWidth, yShimmer - gradientWidth),
-        end = Offset(xShimmer, yShimmer)
+        end = Offset(xShimmer, yShimmer),
     )
     Column(modifier = Modifier.padding(padding)) {
         Surface(
@@ -41,20 +40,20 @@ fun ShimmerRecipeCardItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .size(cardHeight)
-                    .background(brush = brush)
+                    .background(brush = brush),
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Surface(
             shape = MaterialTheme.shapes.small,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(vertical = 8.dp),
         ) {
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(cardHeight / 10)
-                    .background(brush = brush)
+                    .background(brush = brush),
             )
         }
     }

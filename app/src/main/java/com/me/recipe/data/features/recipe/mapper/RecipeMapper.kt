@@ -36,11 +36,11 @@ class RecipeMapper : DomainMapper<RecipeNetwork, Recipe> {
         )
     }
 
-    fun toDomainList(initial : List<RecipeNetwork>): List<Recipe> {
+    fun toDomainList(initial: List<RecipeNetwork>): List<Recipe> {
         return initial.map { mapToDomainModel(it) }
     }
 
-    fun fromDomainList(initial : List<Recipe>): List<RecipeNetwork> {
+    fun fromDomainList(initial: List<Recipe>): List<RecipeNetwork> {
         return initial.map { mapFromDomainModel(it) }
     }
 }

@@ -5,12 +5,12 @@ import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.core.utils.DataState
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.network.features.recipe.RecipeApi
 import com.me.recipe.domain.features.recipe.repository.RecipeRepository
+import com.me.recipe.network.features.recipe.RecipeApi
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
 class RecipeRepositoryImpl @Inject constructor(
     private val recipeDao: RecipeDao,
@@ -20,7 +20,7 @@ class RecipeRepositoryImpl @Inject constructor(
 ) : RecipeRepository {
     override suspend fun getRecipe(
         recipeId: Int,
-        isNetworkAvailable: Boolean
+        isNetworkAvailable: Boolean,
     ): Flow<DataState<Recipe>> = flow {
         try {
             emit(DataState.loading())
@@ -32,10 +32,8 @@ class RecipeRepositoryImpl @Inject constructor(
 
             if (recipe != null) {
                 emit(DataState.success(recipe))
-            }
-            // if the recipe is null, it means it was not in the cache for some reason. So get from network.
-            else {
-
+            } else {
+                // if the recipe is null, it means it was not in the cache for some reason. So get from network.
                 if (isNetworkAvailable) {
                     // get recipe from network
                     val networkRecipe = getRecipeFromNetwork(recipeId) // dto -> domain
@@ -43,7 +41,7 @@ class RecipeRepositoryImpl @Inject constructor(
                     // insert into cache
                     recipeDao.insertRecipe(
                         // map domain -> entity
-                        entityMapper.mapFromDomainModel(networkRecipe)
+                        entityMapper.mapFromDomainModel(networkRecipe),
                     )
                 }
 
@@ -57,7 +55,6 @@ class RecipeRepositoryImpl @Inject constructor(
                     throw Exception("Unable to get recipe from the cache.")
                 }
             }
-
         } catch (e: Exception) {
             emit(DataState.error(e.message ?: "Unknown Error"))
         }

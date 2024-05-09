@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.stateIn
 fun <T> Flow<T>.stateInDefault(
     scope: CoroutineScope,
     initialValue: T,
-    started: SharingStarted = SharingStarted.WhileSubscribed(5_000L)
+    started: SharingStarted = SharingStarted.WhileSubscribed(5_000L),
 ) = stateIn(scope, started, initialValue)

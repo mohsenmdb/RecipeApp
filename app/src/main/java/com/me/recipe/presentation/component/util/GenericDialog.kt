@@ -19,133 +19,119 @@ fun GenericDialog(
     positiveAction: PositiveAction?,
     negativeAction: NegativeAction?,
 ) {
-  AlertDialog(
-    modifier = modifier,
-    onDismissRequest = onDismiss,
-    title = { Text(title) },
-    text = {
-      if (description != null) {
-        Text(text = description)
-      }
-    },
-    confirmButton = {
-      if(positiveAction != null){
-        Button(
-          modifier = Modifier.padding(end = 8.dp),
-          onClick = positiveAction.onPositiveAction,
-        ) {
-          Text(text = positiveAction.positiveBtnTxt)
-        }
-      }
-    },
-    dismissButton = {
-      if(negativeAction != null){
-        Button(
-          modifier = Modifier.padding(end = 8.dp),
-          colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onError),
-          onClick = negativeAction.onNegativeAction
-        ) {
-          Text(text = negativeAction.negativeBtnTxt)
-        }
-      }
-    }
-  )
+    AlertDialog(
+        modifier = modifier,
+        onDismissRequest = onDismiss,
+        title = { Text(title) },
+        text = {
+            if (description != null) {
+                Text(text = description)
+            }
+        },
+        confirmButton = {
+            if (positiveAction != null) {
+                Button(
+                    modifier = Modifier.padding(end = 8.dp),
+                    onClick = positiveAction.onPositiveAction,
+                ) {
+                    Text(text = positiveAction.positiveBtnTxt)
+                }
+            }
+        },
+        dismissButton = {
+            if (negativeAction != null) {
+                Button(
+                    modifier = Modifier.padding(end = 8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onError),
+                    onClick = negativeAction.onNegativeAction,
+                ) {
+                    Text(text = negativeAction.negativeBtnTxt)
+                }
+            }
+        },
+    )
 }
 
 data class PositiveAction(
-  val positiveBtnTxt: String,
-  val onPositiveAction: () -> Unit,
+    val positiveBtnTxt: String,
+    val onPositiveAction: () -> Unit,
 )
 
 data class NegativeAction(
-  val negativeBtnTxt: String,
-  val onNegativeAction: () -> Unit,
+    val negativeBtnTxt: String,
+    val onNegativeAction: () -> Unit,
 )
 
+class GenericDialogInfo private constructor(builder: Builder) {
 
-class GenericDialogInfo private constructor(builder: Builder){
+    val title: String
+    val onDismiss: () -> Unit
+    val description: String?
+    val positiveAction: PositiveAction?
+    val negativeAction: NegativeAction?
 
-  val title: String
-  val onDismiss: () -> Unit
-  val description: String?
-  val positiveAction: PositiveAction?
-  val negativeAction: NegativeAction?
-
-  init {
-    if(builder.title == null){
-      throw Exception("GenericDialog title cannot be null.")
-    }
-    if(builder.onDismiss == null){
-      throw Exception("GenericDialog onDismiss function cannot be null.")
-    }
-    this.title = builder.title!!
-    this.onDismiss = builder.onDismiss!!
-    this.description = builder.description
-    this.positiveAction = builder.positiveAction
-    this.negativeAction = builder.negativeAction
-  }
-
-  class Builder {
-
-    var title: String? = null
-      private set
-
-    var onDismiss: (() -> Unit)? = null
-      private set
-
-    var description: String? = null
-      private set
-
-    var positiveAction: PositiveAction? = null
-      private set
-
-    var negativeAction: NegativeAction? = null
-      private set
-
-    fun title(title: String): Builder {
-      this.title = title
-      return this
+    init {
+        if (builder.title == null) {
+            throw Exception("GenericDialog title cannot be null.")
+        }
+        if (builder.onDismiss == null) {
+            throw Exception("GenericDialog onDismiss function cannot be null.")
+        }
+        this.title = builder.title!!
+        this.onDismiss = builder.onDismiss!!
+        this.description = builder.description
+        this.positiveAction = builder.positiveAction
+        this.negativeAction = builder.negativeAction
     }
 
-    fun onDismiss(onDismiss: () -> Unit): Builder {
-      this.onDismiss = onDismiss
-      return this
-    }
+    class Builder {
 
-    fun description(
-      description: String
-    ): Builder {
-      this.description = description
-      return this
-    }
+        var title: String? = null
+            private set
 
-    fun positive(
-        positiveAction: PositiveAction?,
-    ) : Builder {
-      this.positiveAction = positiveAction
-      return this
-    }
+        var onDismiss: (() -> Unit)? = null
+            private set
 
-    fun negative(
-      negativeAction: NegativeAction
-    ) : Builder {
-      this.negativeAction = negativeAction
-      return this
-    }
+        var description: String? = null
+            private set
 
-    fun build() = GenericDialogInfo(this)
-  }
+        var positiveAction: PositiveAction? = null
+            private set
+
+        var negativeAction: NegativeAction? = null
+            private set
+
+        fun title(title: String): Builder {
+            this.title = title
+            return this
+        }
+
+        fun onDismiss(onDismiss: () -> Unit): Builder {
+            this.onDismiss = onDismiss
+            return this
+        }
+
+        fun description(
+            description: String,
+        ): Builder {
+            this.description = description
+            return this
+        }
+
+        fun positive(
+            positiveAction: PositiveAction?,
+        ): Builder {
+            this.positiveAction = positiveAction
+            return this
+        }
+
+        fun negative(
+            negativeAction: NegativeAction,
+        ): Builder {
+            this.negativeAction = negativeAction
+            return this
+        }
+
+        fun build() = GenericDialogInfo(this)
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

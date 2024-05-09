@@ -1,7 +1,6 @@
 package com.me.recipe.ui.theme
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -17,7 +16,7 @@ val IranSans = FontFamily(
     Font(R.font.iran_sans_bold, FontWeight.Bold),
     Font(R.font.iran_sans_light, FontWeight.Light),
     Font(R.font.iran_sans_extra_light, FontWeight.ExtraLight),
-    Font(R.font.iran_sans_black, FontWeight.Black)
+    Font(R.font.iran_sans_black, FontWeight.Black),
 )
 
 // Set of Material typography styles to start with
@@ -29,7 +28,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = (-0.25).sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     displayMedium = TextStyle(
         fontSize = 45.sp,
@@ -37,7 +36,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     displaySmall = TextStyle(
         fontSize = 36.sp,
@@ -45,7 +44,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     headlineLarge = TextStyle(
         fontSize = 32.sp,
@@ -53,7 +52,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     headlineMedium = TextStyle(
         fontSize = 28.sp,
@@ -61,7 +60,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     headlineSmall = TextStyle(
         fontSize = 24.sp,
@@ -69,7 +68,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     titleLarge = TextStyle(
         fontSize = 22.sp,
@@ -77,7 +76,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     titleMedium = TextStyle(
         fontSize = 16.sp,
@@ -85,7 +84,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.15.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     titleSmall = TextStyle(
         fontSize = 14.sp,
@@ -93,7 +92,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.1.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     labelLarge = TextStyle(
         fontSize = 14.sp,
@@ -101,7 +100,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.1.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     labelMedium = TextStyle(
         fontSize = 12.sp,
@@ -109,7 +108,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.25.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     labelSmall = TextStyle(
         fontSize = 11.sp,
@@ -117,7 +116,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.1.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     bodyLarge = TextStyle(
         fontSize = 16.sp,
@@ -125,7 +124,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.5.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     bodyMedium = TextStyle(
         fontSize = 14.sp,
@@ -133,7 +132,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.25.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
+        textMotion = TextMotion.Animated,
     ),
     bodySmall = TextStyle(
         fontSize = 12.sp,
@@ -141,6 +140,6 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         letterSpacing = 0.2.sp,
         fontFamily = IranSans,
-        textMotion = TextMotion.Animated
-    )
+        textMotion = TextMotion.Animated,
+    ),
 )

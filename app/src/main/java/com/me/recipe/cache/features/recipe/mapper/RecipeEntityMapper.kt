@@ -6,7 +6,6 @@ import com.me.recipe.domain.util.DomainMapper
 import com.me.recipe.util.DateUtils
 import kotlinx.collections.immutable.toPersistentList
 
-
 class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
 
     override fun mapToDomainModel(model: RecipeEntity): Recipe {
@@ -23,7 +22,6 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
         )
     }
 
-
     override fun mapFromDomainModel(domainModel: Recipe): RecipeEntity {
         return RecipeEntity(
             id = domainModel.id,
@@ -35,7 +33,7 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
             ingredients = convertIngredientListToString(domainModel.ingredients),
             dateAdded = DateUtils.dateToLong(domainModel.dateAdded),
             dateUpdated = DateUtils.dateToLong(domainModel.dateUpdated),
-            dateCached = DateUtils.dateToLong(DateUtils.createTimestamp())
+            dateCached = DateUtils.dateToLong(DateUtils.createTimestamp()),
         )
     }
 
@@ -44,27 +42,27 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
      */
     private fun convertIngredientListToString(ingredients: List<String>): String {
         val ingredientsString = StringBuilder()
-        for(ingredient in ingredients){
+        for (ingredient in ingredients) {
             ingredientsString.append("$ingredient,")
         }
         return ingredientsString.toString()
     }
 
-    private fun convertIngredientsToList(ingredientsString: String?): List<String>{
+    private fun convertIngredientsToList(ingredientsString: String?): List<String> {
         val list: ArrayList<String> = ArrayList()
         ingredientsString?.let {
-            for(ingredient in it.split(",")){
+            for (ingredient in it.split(",")) {
                 list.add(ingredient)
             }
         }
         return list
     }
 
-    fun fromEntityList(initial: List<RecipeEntity>): List<Recipe>{
+    fun fromEntityList(initial: List<RecipeEntity>): List<Recipe> {
         return initial.map { mapToDomainModel(it) }
     }
 
-    fun toEntityList(initial: List<Recipe>): List<RecipeEntity>{
+    fun toEntityList(initial: List<Recipe>): List<RecipeEntity> {
         return initial.map { mapFromDomainModel(it) }
     }
 }

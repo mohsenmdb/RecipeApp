@@ -22,7 +22,7 @@ inline fun Fragment.observeFlows(crossinline observationFunction: suspend (Corou
 
 context(Fragment)
 inline fun <T> Flow<T>.collectInFragment(
-    crossinline onCollect: suspend (T) -> Unit
+    crossinline onCollect: suspend (T) -> Unit,
 ) = viewLifecycleOwner.lifecycleScope.launch {
     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         collectLatest {
@@ -34,7 +34,7 @@ inline fun <T> Flow<T>.collectInFragment(
 context (ViewModel)
 inline fun <T> Flow<T>.collectStateInViewModel(
     defaultValue: T,
-    crossinline onCollect: suspend (T) -> Unit
+    crossinline onCollect: suspend (T) -> Unit,
 ) {
     viewModelScope.launch {
         this@collectStateInViewModel

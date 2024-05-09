@@ -44,7 +44,7 @@ fun SearchAppBar(
     LaunchedEffect(key1 = scrollState) {
         scrollState.scrollToItem(
             categoryScrollPosition.first,
-            categoryScrollPosition.second
+            categoryScrollPosition.second,
         )
     }
 
@@ -68,18 +68,18 @@ fun SearchAppBar(
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Search
+                        imeAction = ImeAction.Search,
                     ),
                     keyboardActions = KeyboardActions(
                         onSearch = {
                             newSearch()
                             focusManager.clearFocus()
-                        }
+                        },
                     ),
                     leadingIcon = {
                         Icon(
                             Icons.Filled.Search,
-                            contentDescription = "search"
+                            contentDescription = "search",
                         )
                     },
                     textStyle = TextStyle(
@@ -88,7 +88,8 @@ fun SearchAppBar(
                 )
                 IconButton(
                     modifier = Modifier.align(Alignment.CenterVertically),
-                    onClick = { onToggleTheme() }) {
+                    onClick = { onToggleTheme() },
+                ) {
                     Icon(Icons.Filled.MoreVert, "")
                 }
             }
@@ -105,9 +106,9 @@ fun SearchAppBar(
                             onSelectedCategoryChanged(it)
                             onCategoryScrollPositionChanged(
                                 scrollState.firstVisibleItemIndex,
-                                scrollState.firstVisibleItemScrollOffset
+                                scrollState.firstVisibleItemScrollOffset,
                             )
-                        }
+                        },
                     )
                 }
             }
