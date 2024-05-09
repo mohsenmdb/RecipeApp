@@ -12,6 +12,7 @@ Unidirectional Data flow
 Worker (Hilt Worker)  
 Dependency Injection (HILT)  
 Retrieve Network Data from API (REST API)  
+Moshi JSON library  
 Database caching (Room)  
 Datastore (New Shared Preferences)  
 Unit Testing  
