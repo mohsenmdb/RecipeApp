@@ -1,6 +1,11 @@
 package com.me.recipe.presentation.component
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,16 +17,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 
-
 @Composable
 fun LoadingRecipeListShimmer(
     imageHeight: Dp,
-    padding: Dp = 16.dp
-){
+    padding: Dp = 16.dp,
+) {
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
-        val cardWidthPx = with(LocalDensity.current) { (maxWidth - (padding*2)).toPx() }
+        val cardWidthPx = with(LocalDensity.current) { (maxWidth - (padding * 2)).toPx() }
         val cardHeightPx = with(LocalDensity.current) { (imageHeight - padding).toPx() }
         val gradientWidth: Float = (0.2f * cardHeightPx)
 
@@ -33,10 +37,11 @@ fun LoadingRecipeListShimmer(
                 animation = tween(
                     durationMillis = 1300,
                     easing = LinearEasing,
-                    delayMillis = 300
+                    delayMillis = 300,
                 ),
-                repeatMode = RepeatMode.Restart
-            ), label = ""
+                repeatMode = RepeatMode.Restart,
+            ),
+            label = "",
         )
         val yCardShimmer = infiniteTransition.animateFloat(
             initialValue = 0f,
@@ -45,10 +50,11 @@ fun LoadingRecipeListShimmer(
                 animation = tween(
                     durationMillis = 1300,
                     easing = LinearEasing,
-                    delayMillis = 300
+                    delayMillis = 300,
                 ),
-                repeatMode = RepeatMode.Restart
-            ), label = ""
+                repeatMode = RepeatMode.Restart,
+            ),
+            label = "",
         )
 
         val colors = persistentListOf(
@@ -58,18 +64,16 @@ fun LoadingRecipeListShimmer(
         )
 
         LazyColumn {
-            items(5){
+            items(5) {
                 ShimmerRecipeCardItem(
                     colors = colors,
                     xShimmer = xCardShimmer.value,
                     yShimmer = yCardShimmer.value,
                     cardHeight = imageHeight,
                     gradientWidth = gradientWidth,
-                    padding = padding
+                    padding = padding,
                 )
             }
         }
     }
-
-
 }

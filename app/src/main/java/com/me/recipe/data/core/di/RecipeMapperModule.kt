@@ -13,7 +13,7 @@ object RecipeMapperModule {
 
     @Singleton
     @Provides
-    fun provideRecipeMapper() : RecipeMapper {
+    fun provideRecipeMapper(): RecipeMapper {
         return RecipeMapper()
     }
 }

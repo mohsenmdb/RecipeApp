@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeScreen(
-    viewModel: RecipeViewModel = hiltViewModel()
+    viewModel: RecipeViewModel = hiltViewModel(),
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
     val snackbarHostState = remember { SnackbarHostState() }
@@ -47,13 +47,13 @@ fun RecipeScreen(
             DefaultSnackbar(snackbarHostState = snackbarHostState) {
                 snackbarHostState.currentSnackbarData?.dismiss()
             }
-        }
+        },
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.background),
         ) {
             if (state.loading) {
                 LoadingRecipeShimmer(imageHeight = 250.dp)

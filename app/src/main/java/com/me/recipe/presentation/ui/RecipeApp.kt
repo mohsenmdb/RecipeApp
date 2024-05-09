@@ -28,7 +28,6 @@ import com.me.recipe.presentation.ui.navigation.RecipeNavHost
 import com.me.recipe.presentation.ui.navigation.bottomNavigationScreens
 import com.me.recipe.presentation.ui.navigation.navigateSingleTopTo
 
-
 @Composable
 fun RecipeApp(navController: NavHostController = rememberNavController()) {
     Scaffold(
@@ -38,10 +37,10 @@ fun RecipeApp(navController: NavHostController = rememberNavController()) {
             AnimatedVisibility(
                 visible = bottomNavigationScreens.any { it.route == currentDestination?.route },
                 enter = expandVertically(),
-                exit = shrinkVertically()
+                exit = shrinkVertically(),
             ) {
                 NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                 ) {
                     NavigationBarItem(
                         icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
@@ -52,11 +51,11 @@ fun RecipeApp(navController: NavHostController = rememberNavController()) {
                             selectedTextColor = MaterialTheme.colorScheme.onSurface,
                             indicatorColor = MaterialTheme.colorScheme.tertiary,
                             unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         ),
                         onClick = {
                             navController.navigateSingleTopTo(RecipeListDestination.route)
-                        }
+                        },
                     )
                     NavigationBarItem(
                         icon = { Icon(Icons.Filled.Face, contentDescription = null) },
@@ -67,15 +66,15 @@ fun RecipeApp(navController: NavHostController = rememberNavController()) {
                             selectedTextColor = MaterialTheme.colorScheme.onSurface,
                             indicatorColor = MaterialTheme.colorScheme.tertiary,
                             unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         ),
                         onClick = {
                             navController.navigateSingleTopTo(ComingSoonDestination.route)
-                        }
+                        },
                     )
                 }
             }
-        }
+        },
     ) { innerPadding ->
         RecipeNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
     }

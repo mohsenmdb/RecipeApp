@@ -28,23 +28,21 @@ import com.me.recipe.R
 import com.me.recipe.ui.theme.RecipeTheme
 import kotlinx.coroutines.delay
 
-
 @Composable
 fun SplashScreen(
-    navigateToRecipeList: () -> Unit
+    navigateToRecipeList: () -> Unit,
 ) {
-
     val animationState = remember { mutableStateOf(false) }
 
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
     ) {
         Rocket(
             isRocketEnabled = animationState.value,
             maxWidth = maxWidth,
-            maxHeight = maxHeight
+            maxHeight = maxHeight,
         )
     }
     LaunchedEffect(key1 = animationState) {
@@ -53,14 +51,13 @@ fun SplashScreen(
         delay(2000)
         navigateToRecipeList()
     }
-
 }
 
 @Composable
 fun Rocket(
     isRocketEnabled: Boolean,
     maxWidth: Dp,
-    maxHeight: Dp
+    maxHeight: Dp,
 ) {
     val resource: Painter
     val modifier: Modifier
@@ -69,9 +66,9 @@ fun Rocket(
         targetValue = if (!isRocketEnabled) 0f else 1f,
         animationSpec = tween(
             durationMillis = 2000,
-            easing = LinearEasing
+            easing = LinearEasing,
         ),
-        label = ""
+        label = "",
     )
     if (!isRocketEnabled) {
         resource = painterResource(id = R.drawable.rocket_intial)
@@ -87,9 +84,9 @@ fun Rocket(
             animationSpec = infiniteRepeatable(
                 animation = tween(
                     durationMillis = 500,
-                    easing = LinearEasing
-                )
-            )
+                    easing = LinearEasing,
+                ),
+            ),
         )
         resource = if (engineState.value <= .5f) {
             painterResource(id = R.drawable.rocket1)
@@ -106,7 +103,6 @@ fun Rocket(
         painter = resource,
         contentDescription = "A Rocket",
     )
-
 }
 
 @Preview(showBackground = true)

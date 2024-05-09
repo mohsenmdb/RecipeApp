@@ -6,10 +6,10 @@ import com.me.recipe.cache.features.recipe.RecipeDao
 import com.me.recipe.cache.features.recipe.model.RecipeEntity
 
 @Database(entities = [RecipeEntity::class ], version = 1)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao
 
-    companion object{
+    companion object {
         val DATABASE_NAME: String = "recipe_db"
     }
 }

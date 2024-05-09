@@ -13,12 +13,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object CacheModule {
 
-  @Singleton
-  @Provides
-  fun provideDb(app: BaseApplication): AppDatabase {
-    return Room
-      .databaseBuilder(app, AppDatabase::class.java, AppDatabase.DATABASE_NAME)
-      .fallbackToDestructiveMigration()
-      .build()
-  }
+    @Singleton
+    @Provides
+    fun provideDb(app: BaseApplication): AppDatabase {
+        return Room
+            .databaseBuilder(app, AppDatabase::class.java, AppDatabase.DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
+    }
 }

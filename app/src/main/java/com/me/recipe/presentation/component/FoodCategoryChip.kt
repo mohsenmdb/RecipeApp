@@ -15,7 +15,7 @@ fun FoodCategoryChip(
     category: String,
     isSelected: Boolean,
     onClick: () -> Unit,
-    onSelectedCategoryChanged: (String) -> Unit
+    onSelectedCategoryChanged: (String) -> Unit,
 ) {
     Surface(
         shadowElevation = 4.dp,
@@ -26,13 +26,13 @@ fun FoodCategoryChip(
             .toggleable(value = isSelected, onValueChange = {
                 onSelectedCategoryChanged(category)
                 onClick()
-            })
+            }),
     ) {
         Text(
             text = category,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(8.dp),
-            color = Color.White
+            color = Color.White,
         )
     }
 }

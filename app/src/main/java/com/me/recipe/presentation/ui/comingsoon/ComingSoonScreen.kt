@@ -1,4 +1,4 @@
-package com.me.recipe.presentation.ui.coming_soon
+package com.me.recipe.presentation.ui.comingsoon
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,16 +10,16 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ComingSoonScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         Text(
             text = "Coming Soon",
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }

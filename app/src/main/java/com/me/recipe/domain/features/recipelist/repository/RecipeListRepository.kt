@@ -1,4 +1,4 @@
-package com.me.recipe.domain.features.recipe_list.repository
+package com.me.recipe.domain.features.recipelist.repository
 
 import com.me.recipe.data.core.utils.DataState
 import com.me.recipe.domain.features.recipe.model.Recipe

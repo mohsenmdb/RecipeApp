@@ -1,21 +1,20 @@
-package com.me.recipe.presentation.ui.recipe_list
+package com.me.recipe.presentation.ui.recipelist
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.cache.datastore.SettingsDataStore
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.domain.features.recipe_list.usecases.RestoreRecipesUsecase
-import com.me.recipe.domain.features.recipe_list.usecases.SearchRecipesUsecase
+import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
+import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
 import com.me.recipe.presentation.component.FoodCategory
+import com.me.recipe.presentation.component.getFoodCategory
 import com.me.recipe.presentation.component.util.GenericDialogInfo
 import com.me.recipe.presentation.component.util.PositiveAction
-import com.me.recipe.presentation.component.getFoodCategory
 import com.me.recipe.util.TAG
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,18 +26,17 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
     private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
     private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
-    private val settingsDataStore: SettingsDataStore
+    private val settingsDataStore: SettingsDataStore,
 ) : ViewModel(), RecipeListContract {
 
-    private val _mutableState = MutableStateFlow(RecipeListContract.State(loading = true))
-    override val state: StateFlow<RecipeListContract.State> = _mutableState.asStateFlow()
+    private val _state = MutableStateFlow(RecipeListContract.State(loading = true))
+    override val state: StateFlow<RecipeListContract.State> = _state.asStateFlow()
 
     private val effectChannel = Channel<RecipeListContract.Effect>(Channel.UNLIMITED)
     override val effect: Flow<RecipeListContract.Effect> = effectChannel.receiveAsFlow()
@@ -65,7 +63,7 @@ class RecipeListViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Timber.tag(TAG).e("Exception: %s", e)
-                _mutableState.update { it.copy(loading = false) }
+                _state.update { it.copy(loading = false) }
                 if (e.message != null) {
                     effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(e.message!!))
                 }
@@ -94,16 +92,15 @@ class RecipeListViewModel @Inject constructor(
         } else {
             event(RecipeListContract.Event.NewSearchEvent)
         }
-
     }
 
     private suspend fun restoreState() {
         restoreRecipesUsecase.get().invoke(page = state.value.page, query = state.value.query)
             .onEach { dataState ->
-                _mutableState.update { it.copy(loading = dataState.loading) }
+                _state.update { it.copy(loading = dataState.loading) }
 
                 dataState.data?.let { list ->
-                    _mutableState.update { it.copy(recipes = list) }
+                    _state.update { it.copy(recipes = list) }
                 }
 
                 dataState.error?.let { error ->
@@ -119,10 +116,10 @@ class RecipeListViewModel @Inject constructor(
 
         searchRecipesUsecase.get().invoke(page = state.value.page, query = state.value.query)
             .onEach { dataState ->
-                _mutableState.update { it.copy(loading = dataState.loading) }
+                _state.update { it.copy(loading = dataState.loading) }
 
                 dataState.data?.let { list ->
-                    _mutableState.update { it.copy(recipes = list) }
+                    _state.update { it.copy(recipes = list) }
                 }
 
                 dataState.error?.let { error ->
@@ -134,13 +131,13 @@ class RecipeListViewModel @Inject constructor(
                             PositiveAction(
                                 positiveBtnTxt = "Ok",
                                 onPositiveAction = {
-                                    _mutableState.update { it.copy(errors = null) }
-                                }
-                            )
+                                    _state.update { it.copy(errors = null) }
+                                },
+                            ),
                         )
-                        .onDismiss { _mutableState.update { it.copy(errors = null) } }
+                        .onDismiss { _state.update { it.copy(errors = null) } }
                         .build()
-                    _mutableState.update { it.copy(errors = errors) }
+                    _state.update { it.copy(errors = errors) }
                 }
             }.launchIn(viewModelScope)
     }
@@ -154,7 +151,7 @@ class RecipeListViewModel @Inject constructor(
                 searchRecipesUsecase.get()
                     .invoke(page = state.value.page, query = state.value.query)
                     .onEach { dataState ->
-                        _mutableState.update { it.copy(loading = dataState.loading) }
+                        _state.update { it.copy(loading = dataState.loading) }
 
                         dataState.data?.let { list ->
                             appendRecipes(list)
@@ -175,7 +172,7 @@ class RecipeListViewModel @Inject constructor(
     private fun appendRecipes(recipes: List<Recipe>) {
         val current = ArrayList(state.value.recipes)
         current.addAll(recipes)
-        _mutableState.update { it.copy(recipes = current) }
+        _state.update { it.copy(recipes = current) }
     }
 
     private fun incrementPage() {
@@ -190,10 +187,10 @@ class RecipeListViewModel @Inject constructor(
      * Called when a new search is executed.
      */
     private fun resetSearchState() {
-        _mutableState.update {
+        _state.update {
             it.copy(
                 recipes = listOf(),
-                page = 1
+                page = 1,
             )
         }
         onChangeRecipeScrollPosition(0)
@@ -202,7 +199,7 @@ class RecipeListViewModel @Inject constructor(
 
     private fun clearSelectedCategory() {
         setSelectedCategory(null)
-        _mutableState.update { it.copy(selectedCategory = null) }
+        _state.update { it.copy(selectedCategory = null) }
     }
 
     fun onQueryChanged(query: String) {
@@ -216,27 +213,27 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private fun setListScrollPosition(position: Int) {
-        _mutableState.update { it.copy(recipeListScrollPosition = position) }
+        _state.update { it.copy(recipeListScrollPosition = position) }
         savedStateHandle.set(STATE_KEY_LIST_POSITION, position)
     }
 
     private fun setPage(page: Int) {
-        _mutableState.update { it.copy(page = page) }
+        _state.update { it.copy(page = page) }
         savedStateHandle.set(STATE_KEY_PAGE, page)
     }
 
     private fun setSelectedCategory(category: FoodCategory?) {
-        _mutableState.update { it.copy(selectedCategory = category) }
+        _state.update { it.copy(selectedCategory = category) }
         savedStateHandle.set(STATE_KEY_SELECTED_CATEGORY, category)
     }
 
     private fun setQuery(query: String) {
-        _mutableState.update { it.copy(query = query) }
+        _state.update { it.copy(query = query) }
         savedStateHandle[STATE_KEY_QUERY] = query
     }
 
     fun onCategoryScrollPositionChanged(position: Int, offset: Int) {
-        _mutableState.update { it.copy(categoryScrollPosition = position to offset) }
+        _state.update { it.copy(categoryScrollPosition = position to offset) }
     }
 
     fun toggleDarkTheme() {

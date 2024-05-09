@@ -1,6 +1,5 @@
 package com.me.recipe.presentation.component.util
 
-
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
@@ -17,7 +16,7 @@ import androidx.compose.ui.unit.dp
 fun DefaultSnackbar(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
-    onDismiss: () -> Unit?
+    onDismiss: () -> Unit?,
 ) {
     SnackbarHost(
         hostState = snackbarHostState,
@@ -28,7 +27,7 @@ fun DefaultSnackbar(
                     Text(
                         text = data.visuals.message,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White
+                        color = Color.White,
                     )
                 },
                 action = {
@@ -36,18 +35,18 @@ fun DefaultSnackbar(
                         TextButton(
                             onClick = {
                                 onDismiss()
-                            }
+                            },
                         ) {
                             Text(
                                 text = actionLabel,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Color.White
+                                color = Color.White,
                             )
                         }
                     }
-                }
+                },
             )
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }

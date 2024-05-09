@@ -1,9 +1,9 @@
 package com.me.recipe.domain.features.recipe.model
 
 import androidx.compose.runtime.Immutable
+import java.util.Date
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import java.util.Date
 
 @Immutable
 data class Recipe(

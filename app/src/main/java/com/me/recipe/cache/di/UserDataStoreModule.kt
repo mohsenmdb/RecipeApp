@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object InterceptorModule {
+object UserDataStoreModule {
     @Provides
     @Singleton
     internal fun provideUserDataStore(@ApplicationContext context: Context): UserDataStore =

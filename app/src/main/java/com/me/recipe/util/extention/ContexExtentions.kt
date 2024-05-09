@@ -14,7 +14,8 @@ fun Activity.getPushNotificationPermission() {
     ) {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+            101,
         )
     }
 }

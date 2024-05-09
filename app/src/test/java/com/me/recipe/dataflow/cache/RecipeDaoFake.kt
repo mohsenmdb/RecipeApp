@@ -1,12 +1,11 @@
-package com.me.recipe.data_flow.cache
+package com.me.recipe.dataflow.cache
 
 import com.me.recipe.cache.features.recipe.RecipeDao
 import com.me.recipe.cache.features.recipe.model.RecipeEntity
 
-
 class RecipeDaoFake(
-    private val appDatabaseFake: AppDatabaseFake
-): RecipeDao {
+    private val appDatabaseFake: AppDatabaseFake,
+) : RecipeDao {
 
     override suspend fun insertRecipe(recipe: RecipeEntity): Long {
         appDatabaseFake.recipes.add(recipe)
@@ -39,7 +38,7 @@ class RecipeDaoFake(
     override suspend fun searchRecipes(
         query: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<RecipeEntity> {
         return appDatabaseFake.recipes // return the entire list for simplicity
     }
@@ -51,7 +50,7 @@ class RecipeDaoFake(
     override suspend fun restoreRecipes(
         query: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<RecipeEntity> {
         return appDatabaseFake.recipes // return the entire list for simplicity
     }

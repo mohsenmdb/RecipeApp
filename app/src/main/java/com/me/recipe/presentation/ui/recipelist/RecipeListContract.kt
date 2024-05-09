@@ -1,4 +1,4 @@
-package com.me.recipe.presentation.ui.recipe_list
+package com.me.recipe.presentation.ui.recipelist
 
 import androidx.compose.runtime.Stable
 import com.me.recipe.domain.features.recipe.model.Recipe
@@ -31,6 +31,6 @@ interface RecipeListContract :
         // Pagination starts at '1' (-1 = exhausted)
         val page: Int = 1,
         var recipeListScrollPosition: Int = 0,
-        var categoryScrollPosition: Pair<Int, Int> = 0 to 0
+        var categoryScrollPosition: Pair<Int, Int> = 0 to 0,
     )
 }

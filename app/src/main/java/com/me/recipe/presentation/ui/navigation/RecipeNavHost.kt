@@ -6,9 +6,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.me.recipe.presentation.ui.coming_soon.ComingSoonScreen
+import com.me.recipe.presentation.ui.comingsoon.ComingSoonScreen
 import com.me.recipe.presentation.ui.recipe.RecipeScreen
-import com.me.recipe.presentation.ui.recipe_list.RecipeListScreen
+import com.me.recipe.presentation.ui.recipelist.RecipeListScreen
 import com.me.recipe.presentation.ui.splash.SplashScreen
 
 @Composable
@@ -19,26 +19,26 @@ fun RecipeNavHost(
     NavHost(
         navController = navController,
         startDestination = SplashDestination.route,
-        modifier = modifier
+        modifier = modifier,
     ) {
         composable(route = SplashDestination.route) {
             SplashScreen(
                 navigateToRecipeList = {
                     navController.navigateSingleTopFromSplash(RecipeListDestination.route)
-                }
+                },
             )
         }
         composable(route = RecipeListDestination.route) {
             RecipeListScreen(
                 navigateToRecipePage = {
-                    navController.navigateSingleTopTo("${RecipeDestination.route}/${it}")
-                }
+                    navController.navigateSingleTopTo("${RecipeDestination.route}/$it")
+                },
             )
         }
         composable(
             route = RecipeDestination.routeWithArgs,
             arguments = RecipeDestination.arguments,
-            deepLinks = RecipeDestination.deepLinks
+            deepLinks = RecipeDestination.deepLinks,
         ) {
             RecipeScreen()
         }

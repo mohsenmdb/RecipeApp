@@ -1,4 +1,4 @@
-package com.me.recipe.presentation.ui.recipe_list
+package com.me.recipe.presentation.ui.recipelist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,24 +22,23 @@ import com.me.recipe.presentation.component.RecipeCard
 import com.me.recipe.presentation.component.SearchAppBar
 import com.me.recipe.presentation.component.util.DefaultSnackbar
 import com.me.recipe.presentation.component.util.GenericDialog
-import com.me.recipe.presentation.ui.recipe_list.RecipeListViewModel.Companion.PAGE_SIZE
+import com.me.recipe.presentation.ui.recipelist.RecipeListViewModel.Companion.PAGE_SIZE
 import com.me.recipe.util.compose.collectInLaunchedEffect
 import com.me.recipe.util.compose.use
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
-
 @OptIn(InternalCoroutinesApi::class)
 @Composable
 fun RecipeListScreen(
     viewModel: RecipeListViewModel = hiltViewModel(),
-    navigateToRecipePage: (recipeId: Int) -> Unit
+    navigateToRecipePage: (recipeId: Int) -> Unit,
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
-    effect.collectInLaunchedEffect{effect ->
+    effect.collectInLaunchedEffect { effect ->
         when (effect) {
             is RecipeListContract.Effect.ShowSnackbar -> {
                 coroutineScope.launch {
@@ -66,7 +65,7 @@ fun RecipeListScreen(
                 onCategoryScrollPositionChanged = viewModel::onCategoryScrollPositionChanged,
                 onToggleTheme = {
                     viewModel.toggleDarkTheme()
-                }
+                },
             )
         },
 //            bottomBar = { MyBottomNav() },
@@ -77,7 +76,7 @@ fun RecipeListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.background),
         ) {
             if (state.loading && state.recipes.isEmpty()) {
                 LoadingRecipeListShimmer(250.dp)
@@ -102,7 +101,7 @@ fun RecipeListScreen(
                             },
                             onLongClick = {
                                 event.invoke(RecipeListContract.Event.LongClickOnRecipeEvent(recipe.title))
-                            }
+                            },
                         )
                     }
                 }
@@ -115,7 +114,7 @@ fun RecipeListScreen(
                         title = state.errors.title,
                         description = state.errors.description,
                         positiveAction = state.errors.positiveAction,
-                        negativeAction = state.errors.negativeAction
+                        negativeAction = state.errors.negativeAction,
                     )
                 }
             }

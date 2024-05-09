@@ -1,17 +1,17 @@
-package com.me.recipe.data.features.recipe_list.repository
+package com.me.recipe.data.features.recipelist.repository
 
 import com.me.recipe.cache.features.recipe.RecipeDao
 import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.core.utils.DataState
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.domain.features.recipe.model.Recipe
+import com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
 import com.me.recipe.network.features.recipe.RecipeApi
-import com.me.recipe.domain.features.recipe_list.repository.RecipeListRepository
 import com.me.recipe.util.RECIPE_PAGINATION_PAGE_SIZE
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
 class RecipeListRepositoryImpl @Inject constructor(
     private val recipeDao: RecipeDao,
@@ -21,7 +21,7 @@ class RecipeListRepositoryImpl @Inject constructor(
 ) : RecipeListRepository {
     override suspend fun search(
         page: Int,
-        query: String
+        query: String,
     ): Flow<DataState<List<Recipe>>> =
         flow {
             try {
@@ -36,13 +36,13 @@ class RecipeListRepositoryImpl @Inject constructor(
             val cacheResult = if (query.isBlank()) {
                 recipeDao.getAllRecipes(
                     pageSize = RECIPE_PAGINATION_PAGE_SIZE,
-                    page = page
+                    page = page,
                 )
             } else {
                 recipeDao.searchRecipes(
                     query = query,
                     pageSize = RECIPE_PAGINATION_PAGE_SIZE,
-                    page = page
+                    page = page,
                 )
             }
 
@@ -61,40 +61,38 @@ class RecipeListRepositoryImpl @Inject constructor(
             val cacheResult = if (query.isBlank()) {
                 recipeDao.restoreAllRecipes(
                     pageSize = RECIPE_PAGINATION_PAGE_SIZE,
-                    page = page
+                    page = page,
                 )
             } else {
                 recipeDao.restoreRecipes(
                     query = query,
                     pageSize = RECIPE_PAGINATION_PAGE_SIZE,
-                    page = page
+                    page = page,
                 )
             }
 
             // emit List<Recipe> from cache
             val list = entityMapper.fromEntityList(cacheResult)
             emit(DataState.success(list))
-
         } catch (e: Exception) {
             emit(DataState.error<List<Recipe>>(e.message ?: "Unknown Error"))
         }
     }
 
     override suspend fun getTopRecipe(): Recipe {
-        return getRecipesFromNetwork(1,"").firstOrNull() ?: Recipe.EMPTY
+        return getRecipesFromNetwork(1, "").firstOrNull() ?: Recipe.EMPTY
     }
-
 
     // WARNING: This will throw exception if there is no network connection
     private suspend fun getRecipesFromNetwork(
         page: Int,
-        query: String
+        query: String,
     ): List<Recipe> {
         return recipeMapper.toDomainList(
             recipeApi.search(
                 page = page,
-                query = query
-            ).results
+                query = query,
+            ).results,
         )
     }
 }

@@ -45,7 +45,7 @@ object NotificationBuilder {
 
         val intent = Intent(
             Intent.ACTION_VIEW,
-            Uri.parse("recipe://composables.com/$id")
+            Uri.parse("recipe://composables.com/$id"),
         )
         val activity = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         // Create the notification
@@ -60,7 +60,8 @@ object NotificationBuilder {
 
         // Show the notification
         if (ActivityCompat.checkSelfPermission(
-                context, Manifest.permission.POST_NOTIFICATIONS
+                context,
+                Manifest.permission.POST_NOTIFICATIONS,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             Timber.tag(TAG).e("NO PERMISSION TO SHOW NOTIFICATION")
@@ -75,7 +76,7 @@ object NotificationBuilder {
                     val bitmap = (result as BitmapDrawable).bitmap
 //                    builder.setLargeIcon(bitmap)
                     builder.setStyle(
-                        NotificationCompat.BigPictureStyle().bigPicture(bitmap)
+                        NotificationCompat.BigPictureStyle().bigPicture(bitmap),
                     )
                     NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
                 }

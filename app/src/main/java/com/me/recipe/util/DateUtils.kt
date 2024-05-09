@@ -2,7 +2,7 @@ package com.me.recipe.util
 
 import java.lang.NullPointerException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 object DateUtils {
 
@@ -17,15 +17,15 @@ object DateUtils {
     }
 
     // Ex: November 4, 2021
-    fun dateToString(date: Date): String{
+    fun dateToString(date: Date): String {
         return sdf.format(date)
     }
 
     fun stringToDate(string: String): Date {
-        return sdf.parse(string) ?:throw NullPointerException("Could not convert date string to Date object.")
+        return sdf.parse(string) ?: throw NullPointerException("Could not convert date string to Date object.")
     }
 
-    fun createTimestamp(): Date{
+    fun createTimestamp(): Date {
         return Date()
     }
 }
