@@ -30,6 +30,7 @@ mockWebserver = "4.11.0"
 navigationTesting = "2.7.7"
 kotlinxCollectionsImmutable = "0.3.6"
 ksp= "1.9.23-1.0.19"
+spotless = "6.25.0"
 
 
 [libraries]
@@ -84,8 +85,10 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitJupiter" }
 androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigationTesting" }
 
+spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 junit-plugin = { id = "de.mannodermaus.android-junit5", version.ref = "junit5Plugin" }
+spotless = "com.diffplug.spotless:6.25.0"
