@@ -5,9 +5,8 @@ import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.core.utils.DataState
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.network.features.recipe.RecipeService
+import com.me.recipe.network.features.recipe.RecipeApi
 import com.me.recipe.domain.features.recipe.repository.RecipeRepository
-import com.me.recipe.util.RECIPE_PAGINATION_PAGE_SIZE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,7 +14,7 @@ import javax.inject.Inject
 
 class RecipeRepositoryImpl @Inject constructor(
     private val recipeDao: RecipeDao,
-    private val recipeService: RecipeService,
+    private val recipeApi: RecipeApi,
     private val entityMapper: RecipeEntityMapper,
     private val recipeMapper: RecipeMapper,
 ) : RecipeRepository {
@@ -71,6 +70,6 @@ class RecipeRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getRecipeFromNetwork(recipeId: Int): Recipe {
-        return recipeMapper.mapToDomainModel(recipeService.get(recipeId))
+        return recipeMapper.mapToDomainModel(recipeApi.get(recipeId))
     }
 }

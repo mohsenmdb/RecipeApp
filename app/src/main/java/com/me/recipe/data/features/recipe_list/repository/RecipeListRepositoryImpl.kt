@@ -5,7 +5,7 @@ import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.core.utils.DataState
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.network.features.recipe.RecipeService
+import com.me.recipe.network.features.recipe.RecipeApi
 import com.me.recipe.domain.features.recipe_list.repository.RecipeListRepository
 import com.me.recipe.util.RECIPE_PAGINATION_PAGE_SIZE
 import kotlinx.coroutines.delay
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class RecipeListRepositoryImpl @Inject constructor(
     private val recipeDao: RecipeDao,
-    private val recipeService: RecipeService,
+    private val recipeApi: RecipeApi,
     private val entityMapper: RecipeEntityMapper,
     private val recipeMapper: RecipeMapper,
 ) : RecipeListRepository {
@@ -91,7 +91,7 @@ class RecipeListRepositoryImpl @Inject constructor(
         query: String
     ): List<Recipe> {
         return recipeMapper.toDomainList(
-            recipeService.search(
+            recipeApi.search(
                 page = page,
                 query = query
             ).results

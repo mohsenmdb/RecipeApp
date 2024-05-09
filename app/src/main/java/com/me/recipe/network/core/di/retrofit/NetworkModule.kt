@@ -1,7 +1,7 @@
-package com.me.recipe.network.core.di
+package com.me.recipe.network.core.di.retrofit
 
-import com.google.gson.GsonBuilder
-import com.me.recipe.network.features.recipe.RecipeService
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -40,13 +40,11 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl("https://food2fork.ca/api/recipe/")
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .addConverterFactory(
+                MoshiConverterFactory.create(
+                    Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                )
+            )
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun providesRecipeService(retrofit: Retrofit): RecipeService {
-        return retrofit.create(RecipeService::class.java)
     }
 }

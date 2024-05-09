@@ -3,14 +3,15 @@ package com.me.recipe.data_flow.usecases.recipe_list
 import com.me.recipe.data_flow.cache.AppDatabaseFake
 import com.me.recipe.data_flow.cache.RecipeDaoFake
 import com.me.recipe.data_flow.data.MockWebServerResponses.recipeListResponse
-import com.google.gson.GsonBuilder
 import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.data.features.recipe_list.repository.RecipeListRepositoryImpl
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipe_list.repository.RecipeListRepository
 import com.me.recipe.domain.features.recipe_list.usecases.SearchRecipesUsecase
-import com.me.recipe.network.features.recipe.RecipeService
+import com.me.recipe.network.features.recipe.RecipeApi
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.net.HttpURLConnection
 
 class SearchRecipesTest {
@@ -36,7 +37,7 @@ class SearchRecipesTest {
 
   // Dependencies
   private lateinit var recipeListRepository: RecipeListRepository
-  private lateinit var recipeService: RecipeService
+  private lateinit var recipeApi: RecipeApi
   private lateinit var recipeDao: RecipeDaoFake
   private val recipeMapper = RecipeMapper()
   private val entityMapper = RecipeEntityMapper()
@@ -46,16 +47,20 @@ class SearchRecipesTest {
     mockWebServer = MockWebServer()
     mockWebServer.start()
     baseUrl = mockWebServer.url("/api/recipe/")
-    recipeService = Retrofit.Builder()
+    recipeApi = Retrofit.Builder()
       .baseUrl(baseUrl)
-      .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+      .addConverterFactory(
+        MoshiConverterFactory.create(
+          Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        )
+      )
       .build()
-      .create(RecipeService::class.java)
+      .create(RecipeApi::class.java)
 
     recipeDao = RecipeDaoFake(appDatabaseFake = appDatabase)
     recipeListRepository = RecipeListRepositoryImpl(
       recipeDao = recipeDao,
-      recipeService = recipeService,
+      recipeApi = recipeApi,
       entityMapper = entityMapper,
       recipeMapper = recipeMapper
     )
