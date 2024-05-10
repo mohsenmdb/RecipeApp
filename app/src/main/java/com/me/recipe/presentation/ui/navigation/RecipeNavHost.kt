@@ -1,5 +1,9 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.me.recipe.presentation.ui.navigation
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -16,34 +20,41 @@ fun RecipeNavHost(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = SplashDestination.route,
-        modifier = modifier,
-    ) {
-        composable(route = SplashDestination.route) {
-            SplashScreen(
-                navigateToRecipeList = {
-                    navController.navigateSingleTopFromSplash(RecipeListDestination.route)
-                },
-            )
-        }
-        composable(route = RecipeListDestination.route) {
-            RecipeListScreen(
-                navigateToRecipePage = {
-                    navController.navigateSingleTopTo("${RecipeDestination.route}/$it")
-                },
-            )
-        }
-        composable(
-            route = RecipeDestination.routeWithArgs,
-            arguments = RecipeDestination.arguments,
-            deepLinks = RecipeDestination.deepLinks,
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = SplashDestination.route,
+            modifier = modifier,
         ) {
-            RecipeScreen()
-        }
-        composable(route = ComingSoonDestination.route) {
-            ComingSoonScreen()
+            composable(route = SplashDestination.route) {
+                SplashScreen(
+                    navigateToRecipeList = {
+                        navController.navigateSingleTopFromSplash(RecipeListDestination.route)
+                    },
+                )
+            }
+            composable(route = RecipeListDestination.route) {
+                RecipeListScreen(
+                    navigateToRecipePage = {id , title , image ->
+                        navController.navigateSingleTopTo("${RecipeDestination.route}/$id/$title/$image")
+                    },
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope= this@composable,
+                )
+            }
+            composable(
+                route = RecipeDestination.routeWithArgs,
+                arguments = RecipeDestination.arguments,
+                deepLinks = RecipeDestination.deepLinks,
+            ) {
+                RecipeScreen(
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope= this@composable,
+                )
+            }
+            composable(route = ComingSoonDestination.route) {
+                ComingSoonScreen()
+            }
         }
     }
 }

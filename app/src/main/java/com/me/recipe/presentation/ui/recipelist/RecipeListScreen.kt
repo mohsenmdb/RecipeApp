@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.me.recipe.presentation.ui.recipelist
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,7 +37,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun RecipeListScreen(
     viewModel: RecipeListViewModel = hiltViewModel(),
-    navigateToRecipePage: (recipeId: Int) -> Unit,
+    navigateToRecipePage: (id: Int, title: String, image: String) -> Unit,
+    sharedTransitionScope : SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
     val snackbarHostState = remember { SnackbarHostState() }
@@ -68,8 +75,6 @@ fun RecipeListScreen(
                 },
             )
         },
-//            bottomBar = { MyBottomNav() },
-//            drawerContent = { MyDrawer() },
     ) { padding ->
 
         Box(
@@ -92,7 +97,7 @@ fun RecipeListScreen(
                             recipe = recipe,
                             onClick = {
                                 if (recipe.id != Recipe.EMPTY.id) {
-                                    navigateToRecipePage(recipe.id)
+                                    navigateToRecipePage(recipe.id, recipe.title, recipe.featuredImage)
                                 } else {
                                     coroutineScope.launch {
                                         snackbarHostState.showSnackbar("there is no id", "Ok")
@@ -102,6 +107,8 @@ fun RecipeListScreen(
                             onLongClick = {
                                 event.invoke(RecipeListContract.Event.LongClickOnRecipeEvent(recipe.title))
                             },
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope,
                         )
                     }
                 }

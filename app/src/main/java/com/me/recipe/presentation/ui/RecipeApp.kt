@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.me.recipe.R
 import com.me.recipe.presentation.ui.navigation.ComingSoonDestination
+import com.me.recipe.presentation.ui.navigation.NavBottomBar
 import com.me.recipe.presentation.ui.navigation.RecipeListDestination
 import com.me.recipe.presentation.ui.navigation.RecipeNavHost
 import com.me.recipe.presentation.ui.navigation.bottomNavigationScreens
@@ -31,51 +32,9 @@ import com.me.recipe.presentation.ui.navigation.navigateSingleTopTo
 @Composable
 fun RecipeApp(navController: NavHostController = rememberNavController()) {
     Scaffold(
-        bottomBar = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentDestination = navBackStackEntry?.destination
-            AnimatedVisibility(
-                visible = bottomNavigationScreens.any { it.route == currentDestination?.route },
-                enter = expandVertically(),
-                exit = shrinkVertically(),
-            ) {
-                NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                ) {
-                    NavigationBarItem(
-                        icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
-                        label = { Text(stringResource(R.string.recipes)) },
-                        selected = currentDestination?.route == RecipeListDestination.route,
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.onSurface,
-                            selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                            indicatorColor = MaterialTheme.colorScheme.tertiary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        ),
-                        onClick = {
-                            navController.navigateSingleTopTo(RecipeListDestination.route)
-                        },
-                    )
-                    NavigationBarItem(
-                        icon = { Icon(Icons.Filled.Face, contentDescription = null) },
-                        label = { Text(stringResource(R.string.coming)) },
-                        selected = currentDestination?.route == ComingSoonDestination.route,
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.onSurface,
-                            selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                            indicatorColor = MaterialTheme.colorScheme.tertiary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        ),
-                        onClick = {
-                            navController.navigateSingleTopTo(ComingSoonDestination.route)
-                        },
-                    )
-                }
-            }
-        },
+        bottomBar = { NavBottomBar(navController) },
     ) { innerPadding ->
         RecipeNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
     }
 }
+

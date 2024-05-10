@@ -1,10 +1,10 @@
 [versions]
-toolsBuildGradle = "8.2.2"
+toolsBuildGradle = "8.4.0"
 junit5Plugin = "1.9.3.0"
 
 kotlinCompilerExtensionVersion = "1.5.12"
 kotlinVersion = "1.9.23"
-composeVersion = "1.6.7"
+composeVersion = "1.7.0-alpha08"
 retrofitVersion = "2.11.0"
 converterMoshi = "2.11.0"
 moshi = "1.15.1"
@@ -41,6 +41,7 @@ hilt-pluginGradle = { module = "com.google.dagger:hilt-android-gradle-plugin", v
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "composeVersion" }
+compose-animation = { module = "androidx.compose.animation:animation", version.ref = "composeVersion" }
 compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-viewmodel-lifecycle = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "composeViewmodelLifecycle" }

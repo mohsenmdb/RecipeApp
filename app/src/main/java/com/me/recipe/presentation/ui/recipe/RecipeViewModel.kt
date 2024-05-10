@@ -37,9 +37,13 @@ class RecipeViewModel @Inject constructor(
 
     // sent by navigation args
     private val itemId: Int = checkNotNull(savedStateHandle[RecipeDestination.ITEM_ID_ARG])
+    private val itemTitle: Int = checkNotNull(savedStateHandle[RecipeDestination.ITEM_TITLE_ARG])
+    private val itemImage: Int = checkNotNull(savedStateHandle[RecipeDestination.ITEM_IMAGE_ARG])
 
     init {
         viewModelScope.launch {
+            Timber.d("id[%s], itemTitle[%s], itemImage[%s]", itemId, itemTitle, itemImage)
+
             try {
                 getRecipe(itemId)
             } catch (e: Exception) {

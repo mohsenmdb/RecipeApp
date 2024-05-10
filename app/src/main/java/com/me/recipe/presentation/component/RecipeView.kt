@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.me.recipe.presentation.component
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,13 +23,21 @@ import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.presentation.component.image.CoilImage
 
 @Composable
-fun RecipeView(recipe: Recipe) {
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        item {
+fun RecipeView(
+    recipe: Recipe,
+    sharedTransitionScope : SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        with(sharedTransitionScope) {
             CoilImage(
                 data = recipe.featuredImage,
                 contentDescription = "Recipe Featured Image",
                 modifier = Modifier
+                    .sharedElement(
+                        rememberSharedContentState(key = "image-${recipe.id}"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
                     .fillMaxWidth()
                     .height(250.dp),
                 contentScale = ContentScale.Crop,

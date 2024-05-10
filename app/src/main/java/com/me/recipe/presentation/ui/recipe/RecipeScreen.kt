@@ -1,7 +1,10 @@
-@file:OptIn(InternalCoroutinesApi::class)
+@file:OptIn(InternalCoroutinesApi::class, ExperimentalSharedTransitionApi::class)
 
 package com.me.recipe.presentation.ui.recipe
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +30,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun RecipeScreen(
     viewModel: RecipeViewModel = hiltViewModel(),
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
     val snackbarHostState = remember { SnackbarHostState() }
@@ -58,7 +63,11 @@ fun RecipeScreen(
             if (state.loading) {
                 LoadingRecipeShimmer(imageHeight = 250.dp)
             } else if (state.recipe.id != Recipe.EMPTY.id) {
-                RecipeView(recipe = state.recipe)
+                RecipeView(
+                    recipe = state.recipe,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope,
+                )
             }
         }
     }
