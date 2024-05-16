@@ -16,6 +16,7 @@ import androidx.core.app.NotificationManagerCompat
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.me.recipe.R
+import com.me.recipe.util.extention.encodeToUtf8
 import timber.log.Timber
 
 object NotificationBuilder {
@@ -42,10 +43,9 @@ object NotificationBuilder {
 
             notificationManager?.createNotificationChannel(channel)
         }
-
         val intent = Intent(
             Intent.ACTION_VIEW,
-            Uri.parse("recipe://composables.com/$id"),
+            Uri.parse("recipe://composables.com/$id/$title/${banner.encodeToUtf8()}"),
         )
         val activity = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         // Create the notification

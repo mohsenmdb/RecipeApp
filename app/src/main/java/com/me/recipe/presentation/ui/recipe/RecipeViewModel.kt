@@ -37,9 +37,12 @@ class RecipeViewModel @Inject constructor(
 
     // sent by navigation args
     private val itemId: Int = checkNotNull(savedStateHandle[RecipeDestination.ITEM_ID_ARG])
+    private val itemTitle: String = checkNotNull(savedStateHandle[RecipeDestination.ITEM_TITLE_ARG])
+    private val itemImage: String = checkNotNull(savedStateHandle[RecipeDestination.ITEM_IMAGE_ARG])
 
     init {
         viewModelScope.launch {
+            setOfflineData()
             try {
                 getRecipe(itemId)
             } catch (e: Exception) {
@@ -50,6 +53,15 @@ class RecipeViewModel @Inject constructor(
             } finally {
                 Timber.tag(TAG).d("launchJob: finally called.")
             }
+        }
+    }
+
+    private fun setOfflineData() {
+        if (itemTitle.isEmpty() && itemImage.isEmpty()) return
+        _state.update {
+            it.copy(
+                recipe = it.recipe.copy(id = itemId, title = itemTitle, featuredImage = itemImage),
+            )
         }
     }
 

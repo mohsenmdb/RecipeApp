@@ -25,12 +25,16 @@ object RecipeDestination : NavigationDestination {
     override val route = "Recipe"
     override val titleRes = R.string.navigate_recipe_title
     const val ITEM_ID_ARG = "itemId"
-    val routeWithArgs = "$route/{$ITEM_ID_ARG}"
+    const val ITEM_TITLE_ARG = "itemTitle"
+    const val ITEM_IMAGE_ARG = "itemImage"
+    val routeWithArgs = "$route/{$ITEM_ID_ARG}/{$ITEM_TITLE_ARG}/{$ITEM_IMAGE_ARG}"
     val arguments = listOf(
         navArgument(ITEM_ID_ARG) { type = NavType.IntType },
+        navArgument(ITEM_TITLE_ARG) { type = NavType.StringType },
+        navArgument(ITEM_IMAGE_ARG) { type = NavType.StringType },
     )
     val deepLinks = listOf(
-        navDeepLink { uriPattern = "recipe://composables.com/{$ITEM_ID_ARG}" },
+        navDeepLink { uriPattern = "recipe://composables.com/{$ITEM_ID_ARG}/{$ITEM_TITLE_ARG}/{$ITEM_IMAGE_ARG}" },
     )
 }
 
