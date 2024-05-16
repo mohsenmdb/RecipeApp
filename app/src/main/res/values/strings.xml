@@ -9,4 +9,5 @@
     <string name="navigate_recipe_list_title">Recipe list</string>
     <string name="navigate_recipe_title">Recipe</string>
     <string name="navigate_coming_soon_title">Coming Soon</string>
+    <string name="recipe_date_and_publisher">Updated %1$s by %2$s</string>
 </resources>

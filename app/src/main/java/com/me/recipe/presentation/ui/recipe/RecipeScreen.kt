@@ -16,10 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.presentation.component.LoadingRecipeShimmer
 import com.me.recipe.presentation.component.RecipeView
 import com.me.recipe.presentation.component.util.DefaultSnackbar
 import com.me.recipe.util.compose.collectInLaunchedEffect
@@ -60,15 +57,12 @@ fun RecipeScreen(
                 .padding(padding)
                 .background(MaterialTheme.colorScheme.background),
         ) {
-            if (state.loading) {
-                LoadingRecipeShimmer(imageHeight = 250.dp)
-            } else if (state.recipe.id != Recipe.EMPTY.id) {
-                RecipeView(
-                    recipe = state.recipe,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedVisibilityScope = animatedVisibilityScope,
-                )
-            }
+            RecipeView(
+                recipe = state.recipe,
+                isLoading = state.loading,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
         }
     }
 }

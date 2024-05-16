@@ -35,11 +35,11 @@ fun RecipeNavHost(
             }
             composable(route = RecipeListDestination.route) {
                 RecipeListScreen(
-                    navigateToRecipePage = {id , title , image ->
+                    navigateToRecipePage = { id, title, image ->
                         navController.navigateSingleTopTo("${RecipeDestination.route}/$id/$title/$image")
                     },
                     sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedVisibilityScope= this@composable,
+                    animatedVisibilityScope = this@composable,
                 )
             }
             composable(
@@ -49,7 +49,7 @@ fun RecipeNavHost(
             ) {
                 RecipeScreen(
                     sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedVisibilityScope= this@composable,
+                    animatedVisibilityScope = this@composable,
                 )
             }
             composable(route = ComingSoonDestination.route) {

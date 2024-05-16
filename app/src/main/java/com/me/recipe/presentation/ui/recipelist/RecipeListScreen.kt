@@ -30,6 +30,7 @@ import com.me.recipe.presentation.component.util.GenericDialog
 import com.me.recipe.presentation.ui.recipelist.RecipeListViewModel.Companion.PAGE_SIZE
 import com.me.recipe.util.compose.collectInLaunchedEffect
 import com.me.recipe.util.compose.use
+import com.me.recipe.util.extention.encodeToUtf8
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -38,7 +39,7 @@ import kotlinx.coroutines.launch
 fun RecipeListScreen(
     viewModel: RecipeListViewModel = hiltViewModel(),
     navigateToRecipePage: (id: Int, title: String, image: String) -> Unit,
-    sharedTransitionScope : SharedTransitionScope,
+    sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
@@ -97,7 +98,7 @@ fun RecipeListScreen(
                             recipe = recipe,
                             onClick = {
                                 if (recipe.id != Recipe.EMPTY.id) {
-                                    navigateToRecipePage(recipe.id, recipe.title, recipe.featuredImage)
+                                    navigateToRecipePage(recipe.id, recipe.title, recipe.featuredImage.encodeToUtf8())
                                 } else {
                                     coroutineScope.launch {
                                         snackbarHostState.showSnackbar("there is no id", "Ok")

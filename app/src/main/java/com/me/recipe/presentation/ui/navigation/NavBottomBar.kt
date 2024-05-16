@@ -19,7 +19,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.me.recipe.R
 
-
 @Composable
 internal fun NavBottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()

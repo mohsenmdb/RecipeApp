@@ -1,10 +1,11 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class,
-    ExperimentalFoundationApi::class
+@file:OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalSharedTransitionApi::class,
+    ExperimentalFoundationApi::class,
 )
 
 package com.me.recipe.presentation.component
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -24,17 +25,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.presentation.component.image.CoilImage
-import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
 fun RecipeCard(
-    recipe: Recipe, onClick: () -> Unit,
+    recipe: Recipe,
+    onClick: () -> Unit,
     onLongClick: () -> Unit,
-    sharedTransitionScope : SharedTransitionScope,
+    sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     Card(
@@ -51,10 +51,9 @@ fun RecipeCard(
                     data = recipe.featuredImage,
                     contentDescription = "recipe image",
                     modifier = Modifier
-                        .sharedElement(
+                        .sharedBounds(
                             rememberSharedContentState(key = "image-${recipe.id}"),
                             animatedVisibilityScope = animatedVisibilityScope,
-//                            boundsTransform = boundsTransform
                         )
                         .fillMaxWidth()
                         .requiredHeight(225.dp),
@@ -70,6 +69,10 @@ fun RecipeCard(
                         Text(
                             text = title,
                             modifier = Modifier
+                                .sharedBounds(
+                                    rememberSharedContentState(key = "title-${recipe.id}"),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                )
                                 .fillMaxWidth(0.8f)
                                 .wrapContentWidth(Alignment.Start),
                             style = MaterialTheme.typography.titleMedium,
@@ -91,14 +94,14 @@ fun RecipeCard(
     }
 }
 
-//@Preview(
+// @Preview(
 //    group = "firstGroup",
 //    showBackground = true,
 //    backgroundColor = 0xFF292C3C,
 //    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-//)
-//@Composable
-//fun RecipeCardPreview() {
+// )
+// @Composable
+// fun RecipeCardPreview() {
 //    RecipeTheme {
 //        RecipeCard(
 //            recipe = Recipe.EMPTY.copy(title = "RecipeCard", rating = 44),
@@ -106,4 +109,4 @@ fun RecipeCard(
 //            onLongClick = {},
 //        )
 //    }
-//}
+// }

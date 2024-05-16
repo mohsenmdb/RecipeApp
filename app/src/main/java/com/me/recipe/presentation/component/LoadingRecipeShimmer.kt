@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -27,7 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
+fun LoadingRecipeShimmer(imageHeight: Dp = 250.dp, padding: Dp = 16.dp) {
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -73,58 +72,32 @@ fun LoadingRecipeShimmer(imageHeight: Dp, padding: Dp = 16.dp) {
             start = Offset(xCardShimmer.value - gradientWidth, yCardShimmer.value - gradientWidth),
             end = Offset(xCardShimmer.value, yCardShimmer.value),
         )
-        Column(modifier = Modifier.padding(padding)) {
-            Surface(
-                shape = MaterialTheme.shapes.small,
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(imageHeight)
-                        .background(brush = brush),
-                )
-            }
+        Column(modifier = Modifier.padding(vertical = padding)) {
+//            Surface(
+//                shape = MaterialTheme.shapes.small,
+//            ) {
+//                Spacer(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .size(imageHeight)
+//                        .background(brush = brush),
+//                )
+//            }
 
-            Spacer(modifier = Modifier.height(16.dp))
-            Surface(
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier
-                    .padding(vertical = 8.dp),
-            ) {
-                Spacer(
+            (1..5).forEach { index ->
+                Spacer(modifier = Modifier.height(16.dp))
+                Surface(
+                    shape = MaterialTheme.shapes.small,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(imageHeight / 10)
-                        .background(brush = brush),
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Surface(
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier
-                    .padding(vertical = 8.dp),
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(imageHeight / 10)
-                        .background(brush = brush),
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Surface(
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier
-                    .padding(vertical = 8.dp),
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(imageHeight / 10)
-                        .background(brush = brush),
-                )
+                        .padding(vertical = 8.dp),
+                ) {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(imageHeight / (7 + index))
+                            .background(brush = brush),
+                    )
+                }
             }
         }
     }
