@@ -1,4 +1,4 @@
-package com.me.recipe.presentation.component
+package com.me.recipe.presentation.ui.recipe.components.shimmer
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -26,9 +26,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingRecipeShimmer(imageHeight: Dp = 250.dp, padding: Dp = 16.dp) {
+internal fun LoadingRecipeShimmer(
+    modifier: Modifier = Modifier,
+    imageHeight: Dp = 250.dp,
+    padding: Dp = 16.dp,
+) {
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
     ) {
         val cardWidthPx = with(LocalDensity.current) { (maxWidth - (padding * 2)).toPx() }
         val cardHeightPx = with(LocalDensity.current) { (imageHeight - padding).toPx() }

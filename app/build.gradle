@@ -81,6 +81,7 @@ dependencies {
     implementation libs.compose.activity
     implementation libs.compose.constraintlayout
     implementation libs.compose.coil
+    lintChecks libs.compose.lint.checks
 
     implementation libs.retrofit
     implementation libs.okhttp.logging.interceptor
