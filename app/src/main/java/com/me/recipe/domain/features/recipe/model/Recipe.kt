@@ -29,5 +29,17 @@ data class Recipe(
             dateAdded = Date(),
             dateUpdated = Date(),
         )
+
+        fun testData() = Recipe(
+            id = 1,
+            title = "Thai Soup",
+            publisher = "Thai Kitchen",
+            featuredImage = "Url",
+            rating = 15,
+            sourceUrl = "Url",
+            ingredients = persistentListOf("Soup", "Meat", "Rice"),
+            dateAdded = Date(),
+            dateUpdated = Date(),
+        )
     }
 }
