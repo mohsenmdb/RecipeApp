@@ -10,4 +10,8 @@
     <string name="navigate_recipe_title">Recipe</string>
     <string name="navigate_coming_soon_title">Coming Soon</string>
     <string name="recipe_date_and_publisher">Updated %1$s by %2$s</string>
+    <string name="something_went_wrong">something went wrong</string>
+    <string name="ok">OK</string>
+    <string name="error">Error</string>
+    <string name="loading">Loading...</string>
 </resources>

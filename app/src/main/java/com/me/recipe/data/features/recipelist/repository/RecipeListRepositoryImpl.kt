@@ -9,6 +9,8 @@ import com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
 import com.me.recipe.network.features.recipe.RecipeApi
 import com.me.recipe.util.RECIPE_PAGINATION_PAGE_SIZE
 import javax.inject.Inject
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,7 +24,7 @@ class RecipeListRepositoryImpl @Inject constructor(
     override suspend fun search(
         page: Int,
         query: String,
-    ): Flow<DataState<List<Recipe>>> =
+    ): Flow<DataState<ImmutableList<Recipe>>> =
         flow {
             try {
                 emit(DataState.loading())
@@ -46,11 +48,11 @@ class RecipeListRepositoryImpl @Inject constructor(
                 )
             }
 
-            val list = entityMapper.fromEntityList(cacheResult)
+            val list = entityMapper.fromEntityList(cacheResult).toPersistentList()
             emit(DataState.success(list))
         }
 
-    override suspend fun restore(page: Int, query: String): Flow<DataState<List<Recipe>>> = flow {
+    override suspend fun restore(page: Int, query: String): Flow<DataState<ImmutableList<Recipe>>> = flow {
         try {
             emit(DataState.loading())
 
@@ -72,10 +74,10 @@ class RecipeListRepositoryImpl @Inject constructor(
             }
 
             // emit List<Recipe> from cache
-            val list = entityMapper.fromEntityList(cacheResult)
+            val list = entityMapper.fromEntityList(cacheResult).toPersistentList()
             emit(DataState.success(list))
         } catch (e: Exception) {
-            emit(DataState.error<List<Recipe>>(e.message ?: "Unknown Error"))
+            emit(DataState.error(e.message ?: "Unknown Error"))
         }
     }
 

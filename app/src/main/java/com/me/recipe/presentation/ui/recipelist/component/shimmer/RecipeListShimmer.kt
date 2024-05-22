@@ -1,4 +1,4 @@
-package com.me.recipe.presentation.component
+package com.me.recipe.presentation.ui.recipelist.component.shimmer
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -13,17 +13,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.me.recipe.ui.theme.RecipeTheme
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun LoadingRecipeListShimmer(
+internal fun RecipeListShimmer(
     imageHeight: Dp,
+    modifier: Modifier = Modifier,
     padding: Dp = 16.dp,
 ) {
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
     ) {
         val cardWidthPx = with(LocalDensity.current) { (maxWidth - (padding * 2)).toPx() }
         val cardHeightPx = with(LocalDensity.current) { (imageHeight - padding).toPx() }
@@ -75,5 +78,13 @@ fun LoadingRecipeListShimmer(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun RecipeListShimmerPreview() {
+    RecipeTheme(true) {
+        RecipeListShimmer(imageHeight = 250.dp)
     }
 }

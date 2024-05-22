@@ -4,6 +4,7 @@ import com.me.recipe.data.core.utils.DataState
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
 import javax.inject.Inject
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 
 class SearchRecipesUsecase @Inject constructor(
@@ -12,7 +13,7 @@ class SearchRecipesUsecase @Inject constructor(
     suspend operator fun invoke(
         page: Int,
         query: String,
-    ): Flow<DataState<List<Recipe>>> {
+    ): Flow<DataState<ImmutableList<Recipe>>> {
         return recipeListRepository.search(page, query)
     }
 }

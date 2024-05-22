@@ -17,8 +17,8 @@ import com.me.recipe.presentation.ui.splash.SplashScreen
 
 @Composable
 fun RecipeNavHost(
-    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
     SharedTransitionLayout {
         NavHost(
