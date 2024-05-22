@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-internal fun SharedTransitionLayoutTest(
+internal fun SharedTransitionLayoutPreview(
     content: @Composable SharedTransitionScope.(animatedContentScope: AnimatedContentScope) -> Unit,
 ) {
     SharedTransitionLayout(Modifier.fillMaxSize()) {

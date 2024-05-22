@@ -1,11 +1,8 @@
-@file:OptIn(
-    ExperimentalFoundationApi::class,
-    ExperimentalSharedTransitionApi::class,
-    ExperimentalFoundationApi::class,
-)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 
-package com.me.recipe.presentation.component
+package com.me.recipe.presentation.ui.recipelist.component
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -25,12 +22,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.presentation.component.image.CoilImage
+import com.me.recipe.presentation.component.util.SharedTransitionLayoutPreview
+import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
-fun RecipeCard(
+internal fun RecipeCard(
     recipe: Recipe,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -59,54 +59,63 @@ fun RecipeCard(
                         .requiredHeight(225.dp),
                     contentScale = ContentScale.Crop,
                 )
-
-                recipe.title.let { title ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 12.dp, bottom = 12.dp, start = 8.dp, end = 8.dp),
-                    ) {
-                        Text(
-                            text = title,
-                            modifier = Modifier
-                                .sharedBounds(
-                                    rememberSharedContentState(key = "title-${recipe.id}"),
-                                    animatedVisibilityScope = animatedVisibilityScope,
-                                )
-                                .fillMaxWidth(0.8f)
-                                .wrapContentWidth(Alignment.Start),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Text(
-                            text = recipe.rating.toString(),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentWidth(Alignment.End)
-                                .align(Alignment.CenterVertically),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                }
+                RecipeInfoRow(recipe, animatedVisibilityScope)
             }
         }
     }
 }
 
-// @Preview(
-//    group = "firstGroup",
-//    showBackground = true,
-//    backgroundColor = 0xFF292C3C,
-//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-// )
-// @Composable
-// fun RecipeCardPreview() {
-//    RecipeTheme {
-//        RecipeCard(
-//            recipe = Recipe.EMPTY.copy(title = "RecipeCard", rating = 44),
-//            onClick = {},
-//            onLongClick = {},
-//        )
-//    }
-// }
+@Composable
+private fun SharedTransitionScope.RecipeInfoRow(
+    recipe: Recipe,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, bottom = 12.dp, start = 8.dp, end = 8.dp),
+    ) {
+        Text(
+            text = recipe.title,
+            modifier = Modifier
+                .sharedBounds(
+                    rememberSharedContentState(key = "title-${recipe.id}"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                )
+                .fillMaxWidth(0.8f)
+                .wrapContentWidth(Alignment.Start),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Text(
+            text = recipe.rating.toString(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.End)
+                .align(Alignment.CenterVertically),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
+}
+
+@Preview(
+    group = "firstGroup",
+    showBackground = true,
+    backgroundColor = 0xFF292C3C,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Composable
+private fun RecipeCardPreview() {
+    RecipeTheme {
+        SharedTransitionLayoutPreview {
+            RecipeCard(
+                recipe = Recipe.testData(),
+                onClick = {},
+                onLongClick = {},
+                sharedTransitionScope = this,
+                animatedVisibilityScope = it,
+            )
+        }
+    }
+}

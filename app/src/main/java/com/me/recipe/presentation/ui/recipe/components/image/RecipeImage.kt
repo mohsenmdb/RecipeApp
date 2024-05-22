@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.presentation.component.image.CoilImage
-import com.me.recipe.presentation.component.util.SharedTransitionLayoutTest
+import com.me.recipe.presentation.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
@@ -42,7 +42,7 @@ internal fun SharedTransitionScope.RecipeImage(
 @Composable
 private fun RecipeImagePreview() {
     RecipeTheme(true) {
-        SharedTransitionLayoutTest {
+        SharedTransitionLayoutPreview {
             RecipeImage(
                 id = Recipe.testData().id,
                 image = Recipe.testData().featuredImage,

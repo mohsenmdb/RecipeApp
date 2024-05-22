@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.R
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.presentation.component.util.SharedTransitionLayoutTest
+import com.me.recipe.presentation.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.presentation.ui.recipe.components.chip.LoadingRankChip
 import com.me.recipe.presentation.ui.recipe.components.chip.RankChip
 import com.me.recipe.presentation.ui.recipe.components.shimmer.LoadingRecipeShimmer
@@ -126,7 +126,7 @@ private fun RecipeInfoView(
 @Composable
 private fun RecipeContentPreview() {
     RecipeTheme(true) {
-        SharedTransitionLayoutTest {
+        SharedTransitionLayoutPreview {
             RecipeContent(
                 recipe = Recipe.testData(),
                 animatedVisibilityScope = it,

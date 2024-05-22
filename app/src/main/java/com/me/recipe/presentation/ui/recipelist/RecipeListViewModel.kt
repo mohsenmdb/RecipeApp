@@ -3,18 +3,29 @@ package com.me.recipe.presentation.ui.recipelist
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.me.recipe.R
 import com.me.recipe.cache.datastore.SettingsDataStore
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
-import com.me.recipe.presentation.component.FoodCategory
-import com.me.recipe.presentation.component.getFoodCategory
+import com.me.recipe.presentation.component.util.FoodCategory
 import com.me.recipe.presentation.component.util.GenericDialogInfo
 import com.me.recipe.presentation.component.util.PositiveAction
+import com.me.recipe.presentation.component.util.getFoodCategory
+import com.me.recipe.presentation.ui.recipelist.RecipeListContract.Event.LongClickOnRecipeEvent
+import com.me.recipe.presentation.ui.recipelist.RecipeListContract.Event.NewSearchEvent
+import com.me.recipe.presentation.ui.recipelist.RecipeListContract.Event.NextPageEvent
+import com.me.recipe.presentation.ui.recipelist.RecipeListContract.Event.OnCategoryScrollPositionChanged
+import com.me.recipe.presentation.ui.recipelist.RecipeListContract.Event.OnQueryChanged
+import com.me.recipe.presentation.ui.recipelist.RecipeListContract.Event.OnSelectedCategoryChanged
+import com.me.recipe.presentation.ui.recipelist.RecipeListContract.Event.RestoreStateEvent
+import com.me.recipe.presentation.ui.recipelist.RecipeListContract.Event.ToggleDarkTheme
 import com.me.recipe.util.TAG
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,21 +56,15 @@ class RecipeListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 when (event) {
-                    is RecipeListContract.Event.NewSearchEvent -> {
-                        newSearch()
-                    }
-
-                    is RecipeListContract.Event.NextPageEvent -> {
-                        nextPage()
-                    }
-
-                    is RecipeListContract.Event.RestoreStateEvent -> {
-                        restoreState()
-                    }
-
-                    is RecipeListContract.Event.LongClickOnRecipeEvent -> {
-                        effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(event.title))
-                    }
+                    is NewSearchEvent -> newSearch()
+                    is OnQueryChanged -> onQueryChanged(event.query)
+                    is OnSelectedCategoryChanged -> onSelectedCategoryChanged(event.category)
+                    is OnCategoryScrollPositionChanged -> onCategoryScrollPositionChanged(event.position, event.offset)
+                    is ToggleDarkTheme -> toggleDarkTheme()
+                    is NextPageEvent -> nextPage(event.index)
+                    is RestoreStateEvent -> restoreState()
+                    is LongClickOnRecipeEvent -> effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(event.title))
+                    is RecipeListContract.Event.OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
                 }
             } catch (e: Exception) {
                 Timber.tag(TAG).e("Exception: %s", e)
@@ -88,9 +93,9 @@ class RecipeListViewModel @Inject constructor(
         }
 
         if (state.value.recipeListScrollPosition != 0) {
-            event(RecipeListContract.Event.RestoreStateEvent)
+            event(RestoreStateEvent)
         } else {
-            event(RecipeListContract.Event.NewSearchEvent)
+            event(NewSearchEvent)
         }
     }
 
@@ -110,7 +115,6 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private suspend fun newSearch() {
-        Timber.tag(TAG).d("newSearch:%S query:%s ", state.value.query, state.value.page)
         // New search. Reset the state
         resetSearchState()
 
@@ -123,47 +127,53 @@ class RecipeListViewModel @Inject constructor(
                 }
 
                 dataState.error?.let { error ->
-                    Timber.tag(TAG).e("newSearch: %s", error)
-                    val errors = GenericDialogInfo.Builder()
-                        .title("Error")
-                        .description(error)
-                        .positive(
-                            PositiveAction(
-                                positiveBtnTxt = "Ok",
-                                onPositiveAction = {
-                                    _state.update { it.copy(errors = null) }
-                                },
-                            ),
-                        )
-                        .onDismiss { _state.update { it.copy(errors = null) } }
-                        .build()
-                    _state.update { it.copy(errors = errors) }
+                    showErrorDialog(error)
                 }
             }.launchIn(viewModelScope)
     }
 
-    private suspend fun nextPage() {
-        if ((state.value.recipeListScrollPosition + 1) >= (state.value.page * PAGE_SIZE)) {
-            incrementPage()
-            Timber.tag(TAG).d("nextPage: triggered: %s", state.value.page)
+    private fun showErrorDialog(error: String) {
+        val errors = GenericDialogInfo.Builder()
+            .title(R.string.error)
+            .description(error)
+            .positive(
+                PositiveAction(
+                    positiveBtnTxt = R.string.ok,
+                    onPositiveAction = {
+                        _state.update { it.copy(errors = null) }
+                    },
+                ),
+            )
+            .onDismiss { _state.update { it.copy(errors = null) } }
+            .build()
+        _state.update { it.copy(errors = errors) }
+    }
 
-            if (state.value.page > 1) {
-                searchRecipesUsecase.get()
-                    .invoke(page = state.value.page, query = state.value.query)
-                    .onEach { dataState ->
-                        _state.update { it.copy(loading = dataState.loading) }
+    private suspend fun nextPage(index: Int) {
+        if ((index + 1) < (state.value.page * PAGE_SIZE) || state.value.loading) return
+        if ((state.value.recipeListScrollPosition + 1) < (state.value.page * PAGE_SIZE)) return
 
-                        dataState.data?.let { list ->
-                            appendRecipes(list)
-                        }
+        incrementPage()
+        if (state.value.page <= 1) return
 
-                        dataState.error?.let { error ->
-                            Timber.tag(TAG).e("nextPage: %s", error)
-//                        dialogQueue.appendErrorMessage("An Error Occurred", error)
-                        }
-                    }.launchIn(viewModelScope)
-            }
-        }
+        fetchRecipes()
+    }
+
+    private suspend fun fetchRecipes() {
+        searchRecipesUsecase.get()
+            .invoke(page = state.value.page, query = state.value.query)
+            .onEach { dataState ->
+                _state.update { it.copy(loading = dataState.loading) }
+
+                dataState.data?.let { list ->
+                    appendRecipes(list)
+                }
+
+                dataState.error?.let { error ->
+                    Timber.tag(TAG).e("nextPage: %s", error)
+                    //                        dialogQueue.appendErrorMessage("An Error Occurred", error)
+                }
+            }.launchIn(viewModelScope)
     }
 
     /**
@@ -172,14 +182,14 @@ class RecipeListViewModel @Inject constructor(
     private fun appendRecipes(recipes: List<Recipe>) {
         val current = ArrayList(state.value.recipes)
         current.addAll(recipes)
-        _state.update { it.copy(recipes = current) }
+        _state.update { it.copy(recipes = current.toPersistentList()) }
     }
 
     private fun incrementPage() {
         setPage(state.value.page + 1)
     }
 
-    fun onChangeRecipeScrollPosition(position: Int) {
+    private fun onChangeRecipeScrollPosition(position: Int) {
         setListScrollPosition(position = position)
     }
 
@@ -189,7 +199,7 @@ class RecipeListViewModel @Inject constructor(
     private fun resetSearchState() {
         _state.update {
             it.copy(
-                recipes = listOf(),
+                recipes = persistentListOf(),
                 page = 1,
             )
         }
@@ -202,11 +212,11 @@ class RecipeListViewModel @Inject constructor(
         _state.update { it.copy(selectedCategory = null) }
     }
 
-    fun onQueryChanged(query: String) {
+    private fun onQueryChanged(query: String) {
         setQuery(query)
     }
 
-    fun onSelectedCategoryChanged(category: String) {
+    private fun onSelectedCategoryChanged(category: String) {
         val newCategory = getFoodCategory(category)
         setSelectedCategory(newCategory)
         onQueryChanged(category)

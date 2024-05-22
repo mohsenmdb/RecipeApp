@@ -1,5 +1,6 @@
 package com.me.recipe.presentation.component.util
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -8,21 +9,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun GenericDialog(
-    modifier: Modifier = Modifier,
+internal fun GenericDialog(errors: GenericDialogInfo) {
+    GenericDialog(
+        onDismiss = errors.onDismiss,
+        title = errors.title,
+        description = errors.description,
+        positiveAction = errors.positiveAction,
+        negativeAction = errors.negativeAction,
+    )
+}
+
+@Composable
+internal fun GenericDialog(
     onDismiss: () -> Unit,
-    title: String,
-    description: String? = null,
+    @StringRes title: Int,
     positiveAction: PositiveAction?,
     negativeAction: NegativeAction?,
+    modifier: Modifier = Modifier,
+    description: String? = null,
 ) {
     AlertDialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        title = { Text(title) },
+        title = { Text(stringResource(id = title)) },
         text = {
             if (description != null) {
                 Text(text = description)
@@ -34,7 +47,7 @@ fun GenericDialog(
                     modifier = Modifier.padding(end = 8.dp),
                     onClick = positiveAction.onPositiveAction,
                 ) {
-                    Text(text = positiveAction.positiveBtnTxt)
+                    Text(text = stringResource(id = positiveAction.positiveBtnTxt))
                 }
             }
         },
@@ -53,7 +66,7 @@ fun GenericDialog(
 }
 
 data class PositiveAction(
-    val positiveBtnTxt: String,
+    @StringRes val positiveBtnTxt: Int,
     val onPositiveAction: () -> Unit,
 )
 
@@ -64,7 +77,7 @@ data class NegativeAction(
 
 class GenericDialogInfo private constructor(builder: Builder) {
 
-    val title: String
+    @StringRes val title: Int
     val onDismiss: () -> Unit
     val description: String?
     val positiveAction: PositiveAction?
@@ -86,7 +99,7 @@ class GenericDialogInfo private constructor(builder: Builder) {
 
     class Builder {
 
-        var title: String? = null
+        @StringRes var title: Int? = null
             private set
 
         var onDismiss: (() -> Unit)? = null
@@ -101,7 +114,7 @@ class GenericDialogInfo private constructor(builder: Builder) {
         var negativeAction: NegativeAction? = null
             private set
 
-        fun title(title: String): Builder {
+        fun title(@StringRes title: Int): Builder {
             this.title = title
             return this
         }

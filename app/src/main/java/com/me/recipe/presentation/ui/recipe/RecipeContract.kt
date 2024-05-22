@@ -19,5 +19,11 @@ interface RecipeContract :
     data class State(
         val recipe: Recipe = Recipe.EMPTY,
         val loading: Boolean = false,
-    )
+    ) {
+        companion object {
+            fun testData() = State(
+                recipe = Recipe.testData(),
+            )
+        }
+    }
 }

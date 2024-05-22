@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.presentation.component.util.SharedTransitionLayoutTest
+import com.me.recipe.presentation.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.presentation.ui.recipe.components.image.RecipeImage
 import com.me.recipe.ui.theme.RecipeTheme
 
@@ -49,7 +49,7 @@ fun RecipeDetail(
 @Composable
 private fun RecipeDetailPreview() {
     RecipeTheme(true) {
-        SharedTransitionLayoutTest {
+        SharedTransitionLayoutPreview {
             RecipeDetail(
                 recipe = Recipe.testData(),
                 sharedTransitionScope = this,

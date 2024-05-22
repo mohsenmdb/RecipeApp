@@ -5,52 +5,68 @@ package com.me.recipe.presentation.ui.recipelist
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.presentation.component.CircularIndeterminateProgressBar
-import com.me.recipe.presentation.component.LoadingRecipeListShimmer
-import com.me.recipe.presentation.component.RecipeCard
-import com.me.recipe.presentation.component.SearchAppBar
+import com.me.recipe.R
 import com.me.recipe.presentation.component.util.DefaultSnackbar
-import com.me.recipe.presentation.component.util.GenericDialog
-import com.me.recipe.presentation.ui.recipelist.RecipeListViewModel.Companion.PAGE_SIZE
+import com.me.recipe.presentation.component.util.SharedTransitionLayoutPreview
+import com.me.recipe.presentation.ui.recipelist.component.RecipeListContent
+import com.me.recipe.presentation.ui.recipelist.component.SearchAppBar
+import com.me.recipe.ui.theme.RecipeTheme
 import com.me.recipe.util.compose.collectInLaunchedEffect
 import com.me.recipe.util.compose.use
-import com.me.recipe.util.extention.encodeToUtf8
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
-@OptIn(InternalCoroutinesApi::class)
 @Composable
-fun RecipeListScreen(
-    viewModel: RecipeListViewModel = hiltViewModel(),
+internal fun RecipeListScreen(
     navigateToRecipePage: (id: Int, title: String, image: String) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier,
+    viewModel: RecipeListViewModel = hiltViewModel(),
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
+    RecipeListScreen(
+        effect = effect,
+        state = state,
+        event = event,
+        modifier = modifier,
+        navigateToRecipePage = navigateToRecipePage,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
+    )
+}
+
+@Composable
+@OptIn(InternalCoroutinesApi::class)
+private fun RecipeListScreen(
+    effect: Flow<RecipeListContract.Effect>,
+    state: RecipeListContract.State,
+    event: (RecipeListContract.Event) -> Unit,
+    navigateToRecipePage: (id: Int, title: String, image: String) -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier,
+) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val actionOk = stringResource(id = R.string.ok)
 
     effect.collectInLaunchedEffect { effect ->
         when (effect) {
             is RecipeListContract.Effect.ShowSnackbar -> {
                 coroutineScope.launch {
-                    snackbarHostState.showSnackbar(effect.message, "Ok")
+                    snackbarHostState.showSnackbar(effect.message, actionOk)
                 }
             }
         }
@@ -67,65 +83,47 @@ fun RecipeListScreen(
                 query = state.query,
                 selectedCategory = state.selectedCategory,
                 categoryScrollPosition = state.categoryScrollPosition,
-                onQueryChanged = viewModel::onQueryChanged,
+                onQueryChanged = { event.invoke(RecipeListContract.Event.OnQueryChanged(it)) },
                 newSearch = { event.invoke(RecipeListContract.Event.NewSearchEvent) },
-                onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                onCategoryScrollPositionChanged = viewModel::onCategoryScrollPositionChanged,
-                onToggleTheme = {
-                    viewModel.toggleDarkTheme()
+                onSelectedCategoryChanged = {
+                    event.invoke(RecipeListContract.Event.OnSelectedCategoryChanged(it))
                 },
+                onCategoryScrollPositionChanged = { position, offset ->
+                    event.invoke(
+                        RecipeListContract.Event.OnCategoryScrollPositionChanged(position, offset),
+                    )
+                },
+                onToggleTheme = { event.invoke(RecipeListContract.Event.ToggleDarkTheme) },
             )
         },
+        modifier = modifier,
     ) { padding ->
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .background(MaterialTheme.colorScheme.background),
-        ) {
-            if (state.loading && state.recipes.isEmpty()) {
-                LoadingRecipeListShimmer(250.dp)
-            } else {
-                LazyColumn {
-                    itemsIndexed(state.recipes) { index, recipe ->
-                        viewModel.onChangeRecipeScrollPosition(index)
-                        if ((index + 1) >= (state.page * PAGE_SIZE) && !state.loading) {
-                            event.invoke(RecipeListContract.Event.NextPageEvent)
-                        }
+        RecipeListContent(
+            padding = padding,
+            state = state,
+            event = event,
+            navigateToRecipePage = navigateToRecipePage,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = animatedVisibilityScope,
+            snackbarHostState = snackbarHostState,
+        )
+    }
+}
 
-                        RecipeCard(
-                            recipe = recipe,
-                            onClick = {
-                                if (recipe.id != Recipe.EMPTY.id) {
-                                    navigateToRecipePage(recipe.id, recipe.title, recipe.featuredImage.encodeToUtf8())
-                                } else {
-                                    coroutineScope.launch {
-                                        snackbarHostState.showSnackbar("there is no id", "Ok")
-                                    }
-                                }
-                            },
-                            onLongClick = {
-                                event.invoke(RecipeListContract.Event.LongClickOnRecipeEvent(recipe.title))
-                            },
-                            sharedTransitionScope = sharedTransitionScope,
-                            animatedVisibilityScope = animatedVisibilityScope,
-                        )
-                    }
-                }
-
-                CircularIndeterminateProgressBar(isVisible = (state.loading && state.recipes.isNotEmpty()))
-
-                if (state.errors != null) {
-                    GenericDialog(
-                        onDismiss = state.errors.onDismiss,
-                        title = state.errors.title,
-                        description = state.errors.description,
-                        positiveAction = state.errors.positiveAction,
-                        negativeAction = state.errors.negativeAction,
-                    )
-                }
-            }
+@Preview
+@Composable
+private fun RecipeListScreenPreview() {
+    RecipeTheme(true) {
+        SharedTransitionLayoutPreview {
+            RecipeListScreen(
+                event = {},
+                effect = flowOf(),
+                state = RecipeListContract.State.testData(),
+                navigateToRecipePage = { _, _, _ -> },
+                sharedTransitionScope = this,
+                animatedVisibilityScope = it,
+            )
         }
     }
 }
