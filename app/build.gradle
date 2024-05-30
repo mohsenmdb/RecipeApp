@@ -4,7 +4,6 @@ plugins {
     id 'kotlin-parcelize'
     id 'com.google.devtools.ksp'
     id 'dagger.hilt.android.plugin'
-    id "de.mannodermaus.android-junit5" version "1.9.3.0"
     alias(libs.plugins.spotless)
 }
 
@@ -18,7 +17,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -49,7 +48,12 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+    }
     kotlinOptions {
         freeCompilerArgs = ["-Xcontext-receivers"]
     }
@@ -105,17 +109,17 @@ dependencies {
     implementation libs.work
     implementation libs.kotlinx.collections.immutable
 
-
-    testImplementation libs.junit
-    androidTestImplementation libs.androidx.test.ext
-    androidTestImplementation libs.androidx.test.espresso
-    androidTestImplementation libs.androidx.compose.ui.test.junit4
-    androidTestImplementation libs.androidx.navigation.testing
     debugImplementation libs.androidx.compose.ui.tooling
     debugImplementation libs.androidx.compose.ui.test.manifest
 
+    testImplementation libs.hilt.testing
+    testImplementation libs.junit
+    testImplementation libs.androidx.compose.ui.test.junit4
+    testImplementation libs.robolectric
     testImplementation libs.mock.webserver
-    testRuntimeOnly libs.junit.jupiter.api
-    testImplementation libs.junit.jupiter.engine
+
+    androidTestImplementation libs.androidx.test.ext
+    androidTestImplementation libs.androidx.test.espresso
+    androidTestImplementation libs.androidx.navigation.testing
     compileOnly(libs.spotless.gradlePlugin)
 }
