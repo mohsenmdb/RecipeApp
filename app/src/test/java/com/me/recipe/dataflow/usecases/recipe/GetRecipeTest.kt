@@ -21,9 +21,9 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -48,7 +48,7 @@ class GetRecipeTest {
     private val recipeMapper = RecipeMapper()
     private val entityMapper = RecipeEntityMapper()
 
-    @BeforeEach
+    @Before
     fun setup() {
         mockWebServer = MockWebServer()
         mockWebServer.start()
@@ -160,7 +160,7 @@ class GetRecipeTest {
         assert(!recipeAsFlow[1].loading)
     }
 
-    @AfterEach
+    @After
     fun tearDown() {
         mockWebServer.shutdown()
     }
