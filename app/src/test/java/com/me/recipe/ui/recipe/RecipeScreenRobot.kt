@@ -21,7 +21,9 @@ import kotlinx.coroutines.flow.flowOf
 class RecipeScreenRobot @Inject constructor() {
 
     context (RobotTestRule)
-    fun setRecipeScreen(state: RecipeContract.State) {
+    fun setRecipeScreen(
+        state: RecipeContract.State,
+    ) {
         composeTestRule.setContent {
             SharedTransitionLayoutPreview {
                 RecipeScreen(
@@ -36,7 +38,9 @@ class RecipeScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    fun setRecipeScreenLoadingThenLoaded(data: RecipeContract.State) {
+    fun setRecipeScreenLoadingThenLoaded(
+        data: RecipeContract.State,
+    ) {
         composeTestRule.setContent {
             var state by remember {
                 mutableStateOf(data)
@@ -58,7 +62,9 @@ class RecipeScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    fun checkScreenWhenStateIsLoaded(ingredients: ImmutableList<String>) {
+    fun checkScreenWhenStateIsLoaded(
+        ingredients: ImmutableList<String>,
+    ) {
         assertRecipeImageIsDisplayed()
         assertTitleRowTextIsDisplayed()
         assertTitleRowIsDisplayed()
@@ -185,25 +191,32 @@ class RecipeScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    fun assertIngredientIsDisplayed(text: String) {
+    fun assertIngredientIsDisplayed(
+        text: String,
+    ) {
         composeTestRule.onNodeWithText(text, useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    fun mainClockAutoAdvance(autoAdvance: Boolean) {
+    fun mainClockAutoAdvance(
+        autoAdvance: Boolean,
+    ) {
         composeTestRule.mainClock.autoAdvance = autoAdvance
     }
 
     context (RobotTestRule)
-    fun mainClockAdvanceTimeBy(milliseconds: Long, ignoreFrameDuration: Boolean = false) {
+    fun mainClockAdvanceTimeBy(
+        milliseconds: Long,
+        ignoreFrameDuration: Boolean = false,
+    ) {
         composeTestRule.mainClock.advanceTimeBy(milliseconds, ignoreFrameDuration)
     }
 
     operator fun invoke(
         robotTestRule: RobotTestRule,
         function: context(RobotTestRule)
-        RecipeScreenRobot.() -> Unit
+        RecipeScreenRobot.() -> Unit,
     ) {
         function(robotTestRule, this@RecipeScreenRobot)
     }

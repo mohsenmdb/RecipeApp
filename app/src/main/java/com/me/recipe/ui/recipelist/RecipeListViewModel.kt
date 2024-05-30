@@ -65,8 +65,8 @@ class RecipeListViewModel @Inject constructor(
                     is RestoreStateEvent -> restoreState()
                     is LongClickOnRecipeEvent -> effectChannel.trySend(
                         RecipeListContract.Effect.ShowSnackbar(
-                            event.title
-                        )
+                            event.title,
+                        ),
                     )
                     is RecipeListContract.Event.OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
                 }

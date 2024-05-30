@@ -6,7 +6,7 @@ import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 class RobotTestRule(
-    private val testInstance: Any
+    private val testInstance: Any,
 ) : TestRule {
 
     val composeTestRule = createComposeRule()

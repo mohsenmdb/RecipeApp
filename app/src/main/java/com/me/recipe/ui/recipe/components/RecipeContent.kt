@@ -100,10 +100,10 @@ internal fun RecipeInfoView(
     dateUpdated: Date,
     publisher: String,
     ingredients: ImmutableList<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.testTag("testTag_RecipeInfoView")
+        modifier = modifier.testTag("testTag_RecipeInfoView"),
     ) {
         Text(
             text = stringResource(R.string.recipe_date_and_publisher, dateUpdated, publisher),
