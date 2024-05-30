@@ -70,7 +70,9 @@ private fun SharedTransitionScope.TitleRow(
     isLoading: Boolean,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("testTag_TitleRow"),
     ) {
         Text(
             text = title,
@@ -82,7 +84,8 @@ private fun SharedTransitionScope.TitleRow(
                     animatedVisibilityScope = animatedVisibilityScope,
                 )
                 .wrapContentWidth(Alignment.Start)
-                .weight(1f),
+                .weight(1f)
+                .testTag("testTag_TitleRow_Text"),
         )
         if (isLoading) {
             LoadingRankChip()
@@ -97,26 +100,31 @@ internal fun RecipeInfoView(
     dateUpdated: Date,
     publisher: String,
     ingredients: ImmutableList<String>,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(
+        modifier = modifier.testTag("testTag_RecipeInfoView")
+    ) {
         Text(
             text = stringResource(R.string.recipe_date_and_publisher, dateUpdated, publisher),
             modifier = Modifier
                 .fillMaxWidth()
-                .testTag("testTag_date_and_publisher_Text"),
+                .testTag("testTag_RecipeInfoView_Text"),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface,
         )
         HorizontalDivider(
             modifier = Modifier
-                .padding(vertical = 8.dp),
+                .padding(vertical = 8.dp)
+                .testTag("testTag_RecipeInfoView_HorizontalDivider"),
         )
         for (ingredient in ingredients) {
             Text(
                 text = ingredient,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 4.dp),
+                    .padding(bottom = 4.dp)
+                    .testTag("testTag_ingredient_Text"),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
             )

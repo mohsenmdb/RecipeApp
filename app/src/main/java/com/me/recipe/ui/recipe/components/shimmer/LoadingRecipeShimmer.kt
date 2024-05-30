@@ -22,6 +22,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -32,7 +33,9 @@ internal fun LoadingRecipeShimmer(
     padding: Dp = 16.dp,
 ) {
     BoxWithConstraints(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .testTag("testTag_LoadingRecipeShimmer"),
     ) {
         val cardWidthPx = with(LocalDensity.current) { (maxWidth - (padding * 2)).toPx() }
         val cardHeightPx = with(LocalDensity.current) { (imageHeight - padding).toPx() }

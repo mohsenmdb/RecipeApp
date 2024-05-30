@@ -31,9 +31,32 @@ class RecipeScreenTest {
 
     @Test
     fun `when all data is available then show recipe correctly`() {
+        val data = RecipeContract.State.testData()
         robot(robotTestRule) {
-            setRecipeScreen(RecipeContract.State.testData())
-            assertRecipeImageIsDisplayed()
+            setRecipeScreen(data)
+            checkScreenWhenStateIsLoaded(data.recipe.ingredients)
+        }
+    }
+
+    @Test
+    fun `while loading just show shimmer and not show recipe view`() {
+        val data = RecipeContract.State.testData().copy(loading = true)
+        robot(robotTestRule) {
+            setRecipeScreen(data)
+            checkScreenWhenStateIsLoading()
+        }
+    }
+
+    @Test
+    fun `when state change from loading to loaded show correctly loading and loaded screens`() {
+        val data = RecipeContract.State.testData().copy(loading = true)
+        robot(robotTestRule) {
+            setRecipeScreenLoadingThenLoaded(data)
+
+            checkScreenWhenStateIsLoading()
+            mainClockAutoAdvance(false)
+            mainClockAdvanceTimeBy(1100)
+            checkScreenWhenStateIsLoaded(data.recipe.ingredients)
         }
     }
 }

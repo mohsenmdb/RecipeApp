@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.me.recipe.ui.theme.RecipeTheme
 
@@ -41,7 +42,9 @@ internal fun LoadingRankChip(
     )
     AssistChip(
         shape = CircleShape,
-        modifier = modifier.alpha(alpha),
+        modifier = modifier
+            .alpha(alpha)
+            .testTag("testTag_LoadingRankChip"),
         onClick = { },
         label = {
             Text(
