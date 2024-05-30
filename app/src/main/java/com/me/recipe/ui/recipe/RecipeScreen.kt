@@ -40,7 +40,7 @@ internal fun RecipeScreen(
 }
 
 @Composable
-private fun RecipeScreen(
+internal fun RecipeScreen(
     effect: Flow<RecipeContract.Effect>,
     state: RecipeContract.State,
     event: (RecipeContract.Event) -> Unit,

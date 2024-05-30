@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.me.recipe.ui.theme.RecipeTheme
 
@@ -34,7 +35,9 @@ internal fun RankChip(
             Icon(
                 Icons.Filled.ThumbUp,
                 contentDescription = "ThumbUp Icon",
-                modifier.size(AssistChipDefaults.IconSize),
+                modifier
+                    .size(AssistChipDefaults.IconSize)
+                    .testTag("testTag_RankChip"),
                 tint = Color.Red,
             )
         },

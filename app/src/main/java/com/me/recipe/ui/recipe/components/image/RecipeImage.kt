@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
@@ -33,7 +34,8 @@ internal fun SharedTransitionScope.RecipeImage(
                 animatedVisibilityScope = animatedVisibilityScope,
             )
             .fillMaxWidth()
-            .height(250.dp),
+            .height(250.dp)
+            .testTag("testTag_RecipeImage"),
         contentScale = ContentScale.Crop,
     )
 }
