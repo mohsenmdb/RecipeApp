@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -95,7 +96,8 @@ private fun RowScope.SearchTextField(
         modifier = modifier
             .weight(1f)
             .padding(8.dp)
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.surface)
+            .testTag("testTag_SearchTextField"),
         label = {
             Text(text = "Search")
         },
@@ -128,11 +130,13 @@ private fun FoodChipsRow(
     newSearch: () -> Unit,
     onSelectedCategoryChanged: (String) -> Unit,
     onCategoryScrollPositionChanged: (Int, Int) -> Unit,
+    modifier: Modifier= Modifier
 ) {
     LazyRow(
         state = scrollState,
         contentPadding = PaddingValues(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.testTag("testTag_FoodChipsRow")
     ) {
         items(getAllFoodCategories()) { category ->
             FoodCategoryChip(
