@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -30,13 +31,18 @@ internal fun ShimmerRecipeCardItem(
     gradientWidth: Float,
     padding: Dp,
     modifier: Modifier = Modifier,
+    cardNumber: Int = 0,
 ) {
     val brush = linearGradient(
         colors,
         start = Offset(xShimmer - gradientWidth, yShimmer - gradientWidth),
         end = Offset(xShimmer, yShimmer),
     )
-    Column(modifier = modifier.padding(padding)) {
+    Column(
+        modifier = modifier
+            .padding(padding)
+            .testTag("testTag_ShimmerRecipeCardItem_$cardNumber"),
+    ) {
         Surface(
             shape = MaterialTheme.shapes.small,
         ) {
@@ -68,16 +74,17 @@ internal fun ShimmerRecipeCardItem(
 private fun ShimmerRecipeCardItemPreview() {
     RecipeTheme(true) {
         ShimmerRecipeCardItem(
-            cardHeight = 250.dp,
-            xShimmer = 250f,
-            yShimmer = 250f,
-            gradientWidth = 30f,
-            padding = 5.dp,
             colors = persistentListOf(
                 Color.LightGray.copy(alpha = .9f),
                 Color.LightGray.copy(alpha = .3f),
                 Color.LightGray.copy(alpha = .9f),
             ),
+            xShimmer = 250f,
+            yShimmer = 250f,
+            cardHeight = 250.dp,
+            gradientWidth = 30f,
+            padding = 5.dp,
+            cardNumber = 0,
         )
     }
 }

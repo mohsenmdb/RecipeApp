@@ -49,7 +49,7 @@ internal fun RecipeListScreen(
 
 @Composable
 @OptIn(InternalCoroutinesApi::class)
-private fun RecipeListScreen(
+internal fun RecipeListScreen(
     effect: Flow<RecipeListContract.Effect>,
     state: RecipeListContract.State,
     event: (RecipeListContract.Event) -> Unit,

@@ -17,6 +17,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,11 +76,14 @@ private fun RecipeList(
     snackbarHostState: SnackbarHostState,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val errorMessage = stringResource(id = R.string.something_went_wrong)
     val actionOk = stringResource(id = R.string.ok)
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier.testTag("testTag_RecipeList"),
+    ) {
         itemsIndexed(state.recipes) { index, recipe ->
             event.invoke(RecipeListContract.Event.OnChangeRecipeScrollPosition(index))
             event.invoke(RecipeListContract.Event.NextPageEvent(index))

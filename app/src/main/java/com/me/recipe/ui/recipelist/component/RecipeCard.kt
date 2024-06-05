@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
@@ -56,7 +57,8 @@ internal fun RecipeCard(
                             animatedVisibilityScope = animatedVisibilityScope,
                         )
                         .fillMaxWidth()
-                        .requiredHeight(225.dp),
+                        .requiredHeight(225.dp)
+                        .testTag("testTag_RecipeCard_Image_${recipe.id}"),
                     contentScale = ContentScale.Crop,
                 )
                 RecipeInfoRow(recipe, animatedVisibilityScope)

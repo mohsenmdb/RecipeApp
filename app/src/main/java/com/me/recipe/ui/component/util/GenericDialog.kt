@@ -9,8 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.me.recipe.R
 
 @Composable
 internal fun GenericDialog(errors: GenericDialogInfo) {
@@ -33,7 +35,7 @@ internal fun GenericDialog(
     description: String? = null,
 ) {
     AlertDialog(
-        modifier = modifier,
+        modifier = modifier.testTag("testTag_GenericDialog"),
         onDismissRequest = onDismiss,
         title = { Text(stringResource(id = title)) },
         text = {
@@ -146,5 +148,25 @@ class GenericDialogInfo private constructor(builder: Builder) {
         }
 
         fun build() = GenericDialogInfo(this)
+    }
+
+    companion object {
+        fun testDate() = Builder()
+            .title(R.string.error)
+            .description("description")
+            .positive(
+                PositiveAction(
+                    positiveBtnTxt = R.string.ok,
+                    onPositiveAction = {},
+                ),
+            )
+            .negative(
+                NegativeAction(
+                    negativeBtnTxt = "Cancel",
+                    onNegativeAction = {},
+                ),
+            )
+            .onDismiss {}
+            .build()
     }
 }
