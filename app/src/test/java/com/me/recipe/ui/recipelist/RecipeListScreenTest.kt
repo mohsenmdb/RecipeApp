@@ -4,6 +4,7 @@ import com.me.recipe.ui.utils.RobotTestRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,10 +32,28 @@ class RecipeListScreenTest {
 
     @Test
     fun `when all data is available then show recipe correctly`() {
-        val data = RecipeListContract.State.testData()
+        val state = RecipeListContract.State.testData()
         robot(robotTestRule) {
-            setRecipeListScreen(data)
-            checkScreenWhenStateIsLoaded(data)
+            setRecipeListScreen(state)
+            checkScreenWhenStateIsLoaded(state)
+        }
+    }
+
+
+    @Test
+    fun `when state change from loading to loaded show correctly loading and loaded screens`() {
+        val loadedState = RecipeListContract.State.testData()
+        val loadingState = RecipeListContract.State.testData().copy(
+            recipes = persistentListOf(),
+            loading = true,
+        )
+        robot(robotTestRule) {
+            setRecipeListScreenLoadingThenLoaded(loadingState, loadedState)
+
+            checkScreenWhenStateIsLoading(loadingState)
+            mainClockAutoAdvance(false)
+            mainClockAdvanceTimeBy(1100)
+            checkScreenWhenStateIsLoaded(loadedState)
         }
     }
 }

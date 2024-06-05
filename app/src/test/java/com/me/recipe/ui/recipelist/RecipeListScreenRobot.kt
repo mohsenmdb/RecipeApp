@@ -39,10 +39,13 @@ class RecipeListScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    fun setRecipeListScreenLoadingThenLoaded(data: RecipeListContract.State) {
+    fun setRecipeListScreenLoadingThenLoaded(
+        loadingState: RecipeListContract.State,
+        loadedState: RecipeListContract.State,
+    ) {
         composeTestRule.setContent {
             var state by remember {
-                mutableStateOf(data)
+                mutableStateOf(loadingState)
             }
             SharedTransitionLayoutPreview {
                 RecipeListScreen(
@@ -56,9 +59,23 @@ class RecipeListScreenRobot @Inject constructor() {
             }
             LaunchedEffect(Unit) {
                 delay(1000)
-                state = RecipeListContract.State.testData()
+                state = loadedState
             }
         }
+    }
+
+    context (RobotTestRule)
+    fun checkScreenWhenStateIsLoading(state: RecipeListContract.State) {
+        assertRecipeListShimmerIsDisplayed()
+        assertShimmerRecipeCardItemIsDisplayed(0)
+        recipeListShimmerScrollToIndex(1)
+        assertShimmerRecipeCardItemIsDisplayed(1)
+        recipeListShimmerScrollToIndex(2)
+        assertShimmerRecipeCardItemIsDisplayed(2)
+        recipeListShimmerScrollToIndex(3)
+        assertShimmerRecipeCardItemIsDisplayed(3)
+        recipeListShimmerScrollToIndex(4)
+        assertShimmerRecipeCardItemIsDisplayed(4)
     }
 
     context (RobotTestRule)
@@ -156,6 +173,24 @@ class RecipeListScreenRobot @Inject constructor() {
     context (RobotTestRule)
     private fun assertLastRecipeRatingIsDisplayed(recipe: Recipe) {
         composeTestRule.onNodeWithText(recipe.rating.toString(), useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    context (RobotTestRule)
+    private fun assertRecipeListShimmerIsDisplayed() {
+        composeTestRule.onNodeWithTag("testTag_RecipeListShimmer", useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    context (RobotTestRule)
+    private fun recipeListShimmerScrollToIndex(index: Int) {
+        composeTestRule.onNodeWithTag("testTag_RecipeListShimmer", useUnmergedTree = true)
+            .performScrollToIndex(index)
+    }
+
+    context (RobotTestRule)
+    private fun assertShimmerRecipeCardItemIsDisplayed(cardNumber: Int) {
+        composeTestRule.onNodeWithTag("testTag_ShimmerRecipeCardItem_$cardNumber", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
