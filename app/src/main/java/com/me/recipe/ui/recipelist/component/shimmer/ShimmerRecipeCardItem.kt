@@ -41,7 +41,7 @@ internal fun ShimmerRecipeCardItem(
     Column(
         modifier = modifier
             .padding(padding)
-            .testTag("testTag_ShimmerRecipeCardItem_$cardNumber")
+            .testTag("testTag_ShimmerRecipeCardItem_$cardNumber"),
     ) {
         Surface(
             shape = MaterialTheme.shapes.small,

@@ -25,7 +25,9 @@ import kotlinx.coroutines.flow.flowOf
 class RecipeListScreenRobot @Inject constructor() {
 
     context (RobotTestRule)
-    fun setRecipeListScreen(state: RecipeListContract.State) {
+    fun setRecipeListScreen(
+        state: RecipeListContract.State,
+    ) {
         composeTestRule.setContent {
             SharedTransitionLayoutPreview {
                 RecipeListScreen(
@@ -81,7 +83,9 @@ class RecipeListScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    fun checkScreenWhenStateIsLoaded(state: RecipeListContract.State) {
+    fun checkScreenWhenStateIsLoaded(
+        state: RecipeListContract.State,
+    ) {
         assertSearchTextFieldIsDisplayed()
         assertMoreButtonIsDisplayed()
         assertFoodChipsRowIsDisplayed()
@@ -107,7 +111,9 @@ class RecipeListScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    fun checkScreenWhenStateIsError(errors: GenericDialogInfo) {
+    fun checkScreenWhenStateIsError(
+        errors: GenericDialogInfo,
+    ) {
         val context = InstrumentationRegistry.getInstrumentation().context
         val positiveText = context.getString(errors.positiveAction?.positiveBtnTxt!!)
         assertGenericDialogIsDisplayed()

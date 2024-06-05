@@ -130,13 +130,13 @@ private fun FoodChipsRow(
     newSearch: () -> Unit,
     onSelectedCategoryChanged: (String) -> Unit,
     onCategoryScrollPositionChanged: (Int, Int) -> Unit,
-    modifier: Modifier= Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyRow(
         state = scrollState,
         contentPadding = PaddingValues(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier.testTag("testTag_FoodChipsRow")
+        modifier = modifier.testTag("testTag_FoodChipsRow"),
     ) {
         items(getAllFoodCategories()) { category ->
             FoodCategoryChip(

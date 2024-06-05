@@ -68,8 +68,8 @@ internal fun RecipeListShimmer(
         )
 
         LazyColumn(
-            modifier= Modifier
-                .testTag("testTag_RecipeListShimmer")
+            modifier = Modifier
+                .testTag("testTag_RecipeListShimmer"),
         ) {
             items(5) {
                 ShimmerRecipeCardItem(

@@ -40,7 +40,6 @@ class RecipeListScreenTest {
         }
     }
 
-
     @Test
     fun `when state change from loading to loaded show correctly loading and loaded screens`() {
         val loadedState = RecipeListContract.State.testData()
@@ -58,7 +57,6 @@ class RecipeListScreenTest {
         }
     }
 
-
     @Test
     fun `while load more data show loading progress bar correctly`() {
         val state = RecipeListContract.State.testData().copy(loading = true)
@@ -68,11 +66,10 @@ class RecipeListScreenTest {
         }
     }
 
-
     @Test
     fun `when has error check error dialog show correctly`() {
         val state = RecipeListContract.State.testData().copy(
-            errors = GenericDialogInfo.testDate()
+            errors = GenericDialogInfo.testDate(),
         )
         robot(robotTestRule) {
             setRecipeListScreen(state)

@@ -76,13 +76,13 @@ private fun RecipeList(
     snackbarHostState: SnackbarHostState,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val errorMessage = stringResource(id = R.string.something_went_wrong)
     val actionOk = stringResource(id = R.string.ok)
     LazyColumn(
-        modifier = modifier.testTag("testTag_RecipeList")
+        modifier = modifier.testTag("testTag_RecipeList"),
     ) {
         itemsIndexed(state.recipes) { index, recipe ->
             event.invoke(RecipeListContract.Event.OnChangeRecipeScrollPosition(index))
