@@ -1,5 +1,6 @@
 package com.me.recipe.ui.recipelist
 
+import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.utils.RobotTestRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -50,7 +51,7 @@ class RecipeListScreenTest {
         robot(robotTestRule) {
             setRecipeListScreenLoadingThenLoaded(loadingState, loadedState)
 
-            checkScreenWhenStateIsLoading(loadingState)
+            checkScreenWhenStateIsLoading()
             mainClockAutoAdvance(false)
             mainClockAdvanceTimeBy(1100)
             checkScreenWhenStateIsLoaded(loadedState)
@@ -63,7 +64,19 @@ class RecipeListScreenTest {
         val state = RecipeListContract.State.testData().copy(loading = true)
         robot(robotTestRule) {
             setRecipeListScreen(state)
-            checkScreenWhenStateIsLoadedMore(state)
+            checkScreenWhenStateIsLoadedMore()
+        }
+    }
+
+
+    @Test
+    fun `when has error check error dialog show correctly`() {
+        val state = RecipeListContract.State.testData().copy(
+            errors = GenericDialogInfo.testDate()
+        )
+        robot(robotTestRule) {
+            setRecipeListScreen(state)
+            checkScreenWhenStateIsError(state.errors!!)
         }
     }
 }

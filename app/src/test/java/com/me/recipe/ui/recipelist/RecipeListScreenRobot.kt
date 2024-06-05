@@ -10,8 +10,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.test.platform.app.InstrumentationRegistry
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.ui.component.util.FoodCategory
+import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.ui.component.util.getAllFoodCategories
 import com.me.recipe.ui.utils.RobotTestRule
@@ -65,7 +67,7 @@ class RecipeListScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    fun checkScreenWhenStateIsLoading(state: RecipeListContract.State) {
+    fun checkScreenWhenStateIsLoading() {
         assertRecipeListShimmerIsDisplayed()
         assertShimmerRecipeCardItemIsDisplayed(0)
         recipeListShimmerScrollToIndex(1)
@@ -99,9 +101,19 @@ class RecipeListScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    fun checkScreenWhenStateIsLoadedMore(state: RecipeListContract.State) {
+    fun checkScreenWhenStateIsLoadedMore() {
         assertLoadMoreProgressBarIsDisplay()
         assertLoadMoreTextIsDisplay()
+    }
+
+    context (RobotTestRule)
+    fun checkScreenWhenStateIsError(errors: GenericDialogInfo) {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        val positiveText = context.getString(errors.positiveAction?.positiveBtnTxt!!)
+        assertGenericDialogIsDisplayed()
+        assertGenericDialogDescriptionIsDisplayed(errors.description!!)
+        assertGenericDialogPositiveButtonIsDisplayed(positiveText)
+        assertGenericDialogNegativeButtonIsDisplayed(errors.negativeAction?.negativeBtnTxt!!)
     }
 
     context (RobotTestRule)
@@ -208,6 +220,30 @@ class RecipeListScreenRobot @Inject constructor() {
     context (RobotTestRule)
     private fun assertLoadMoreTextIsDisplay() {
         composeTestRule.onNodeWithTag("testTag_LoadingView_Text", useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    context (RobotTestRule)
+    private fun assertGenericDialogIsDisplayed() {
+        composeTestRule.onNodeWithTag("testTag_GenericDialog", useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    context (RobotTestRule)
+    private fun assertGenericDialogDescriptionIsDisplayed(description: String) {
+        composeTestRule.onNodeWithText(description, useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    context (RobotTestRule)
+    private fun assertGenericDialogPositiveButtonIsDisplayed(buttonText: String) {
+        composeTestRule.onNodeWithText(buttonText, useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    context (RobotTestRule)
+    private fun assertGenericDialogNegativeButtonIsDisplayed(buttonText: String) {
+        composeTestRule.onNodeWithText(buttonText, useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
