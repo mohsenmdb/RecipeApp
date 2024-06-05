@@ -56,4 +56,14 @@ class RecipeListScreenTest {
             checkScreenWhenStateIsLoaded(loadedState)
         }
     }
+
+
+    @Test
+    fun `while load more data show loading progress bar correctly`() {
+        val state = RecipeListContract.State.testData().copy(loading = true)
+        robot(robotTestRule) {
+            setRecipeListScreen(state)
+            checkScreenWhenStateIsLoadedMore(state)
+        }
+    }
 }

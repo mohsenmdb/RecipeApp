@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,12 +25,14 @@ internal fun LoadingView(
             val (progressBar, text) = createRefs()
             val guideline = createGuidelineFromTop(0.02f)
             CircularProgressIndicator(
-                modifier = Modifier.constrainAs(progressBar) {
-                    top.linkTo(guideline)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
+                modifier = Modifier
+                    .constrainAs(progressBar) {
+                        top.linkTo(guideline)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .testTag("testTag_LoadingView_CircularProgressIndicator"),
                 color = MaterialTheme.colorScheme.primary,
             )
 
@@ -42,7 +45,8 @@ internal fun LoadingView(
                         top.linkTo(progressBar.bottom)
                         start.linkTo(progressBar.start)
                         end.linkTo(progressBar.end)
-                    },
+                    }
+                    .testTag("testTag_LoadingView_Text"),
             )
         }
     }

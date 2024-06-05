@@ -99,6 +99,12 @@ class RecipeListScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
+    fun checkScreenWhenStateIsLoadedMore(state: RecipeListContract.State) {
+        assertLoadMoreProgressBarIsDisplay()
+        assertLoadMoreTextIsDisplay()
+    }
+
+    context (RobotTestRule)
     private fun assertSearchTextFieldIsDisplayed() {
         composeTestRule.onNodeWithTag("testTag_SearchTextField", useUnmergedTree = true)
             .assertIsDisplayed()
@@ -191,6 +197,17 @@ class RecipeListScreenRobot @Inject constructor() {
     context (RobotTestRule)
     private fun assertShimmerRecipeCardItemIsDisplayed(cardNumber: Int) {
         composeTestRule.onNodeWithTag("testTag_ShimmerRecipeCardItem_$cardNumber", useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    context (RobotTestRule)
+    private fun assertLoadMoreProgressBarIsDisplay() {
+        composeTestRule.onNodeWithTag("testTag_LoadingView_CircularProgressIndicator", useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+    context (RobotTestRule)
+    private fun assertLoadMoreTextIsDisplay() {
+        composeTestRule.onNodeWithTag("testTag_LoadingView_Text", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
