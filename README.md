@@ -6,6 +6,7 @@ I try to use all kinds of Jetpack Compose Features.
 Features:  
 Jetpack Compose UI (M3)  
 Compose navigation (one activity, zero fragments)  
+Multi Module  
 MVVM  
 Use cases  
 Unidirectional Data flow  
