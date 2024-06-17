@@ -14,6 +14,6 @@ import javax.inject.Singleton
 object UserDataStoreModule {
     @Provides
     @Singleton
-    internal fun provideUserDataStore(@ApplicationContext context: Context): com.me.recipe.core.datastore.UserDataStore =
+    internal fun provideUserDataStore(@ApplicationContext context: Context): UserDataStore =
         com.me.recipe.core.datastore.UserDataStore(context)
 }

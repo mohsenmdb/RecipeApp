@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.me.recipe.domain"
+    namespace = "com.me.recipe.cache"
     compileSdk = 34
 
     defaultConfig {
@@ -47,10 +47,14 @@ spotless {
 
 dependencies {
     implementation(project(":app:core"))
+    implementation(project(":app:domain"))
 
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
-    implementation(libs.compose.runtime)
+
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
     implementation(libs.kotlinx.collections.immutable)
 
     compileOnly(libs.spotless.gradlePlugin)

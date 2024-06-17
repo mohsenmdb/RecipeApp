@@ -1,9 +1,7 @@
 package com.me.recipe.data.features.recipe.mapper
 
-import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.domain.util.DomainMapper
+import com.me.recipe.core.utils.DateUtils
 import com.me.recipe.network.features.recipe.model.RecipeNetwork
-import com.me.recipe.util.DateUtils
 import kotlinx.collections.immutable.toPersistentList
 
 class RecipeMapper :

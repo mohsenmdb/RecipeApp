@@ -2,8 +2,8 @@ package com.me.recipe.cache.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.me.recipe.cache.features.recipe.RecipeDao
-import com.me.recipe.cache.features.recipe.model.RecipeEntity
+import com.me.recipe.cache.recipe.RecipeDao
+import com.me.recipe.cache.recipe.model.RecipeEntity
 
 @Database(entities = [RecipeEntity::class ], version = 1)
 abstract class AppDatabase : RoomDatabase() {

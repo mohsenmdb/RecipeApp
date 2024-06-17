@@ -1,7 +1,7 @@
 package com.me.recipe.data.features.recipe.repository
 
-import com.me.recipe.cache.features.recipe.RecipeDao
-import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
+import com.me.recipe.cache.recipe.RecipeDao
+import com.me.recipe.cache.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.core.data.DataState
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.domain.features.recipe.model.Recipe
@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class RecipeRepositoryImpl @Inject constructor(
-    private val recipeDao: RecipeDao,
+    private val recipeDao: com.me.recipe.cache.recipe.RecipeDao,
     private val recipeApi: RecipeApi,
-    private val entityMapper: RecipeEntityMapper,
+    private val entityMapper: com.me.recipe.cache.recipe.mapper.RecipeEntityMapper,
     private val recipeMapper: RecipeMapper,
 ) : com.me.recipe.domain.features.recipe.repository.RecipeRepository {
     override suspend fun getRecipe(

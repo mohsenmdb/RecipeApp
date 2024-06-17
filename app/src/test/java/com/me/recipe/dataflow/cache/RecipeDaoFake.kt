@@ -1,23 +1,23 @@
 package com.me.recipe.dataflow.cache
 
-import com.me.recipe.cache.features.recipe.RecipeDao
-import com.me.recipe.cache.features.recipe.model.RecipeEntity
+import com.me.recipe.cache.recipe.RecipeDao
+import com.me.recipe.cache.recipe.model.RecipeEntity
 
 class RecipeDaoFake(
     private val appDatabaseFake: AppDatabaseFake,
-) : RecipeDao {
+) : com.me.recipe.cache.recipe.RecipeDao {
 
-    override suspend fun insertRecipe(recipe: RecipeEntity): Long {
+    override suspend fun insertRecipe(recipe: com.me.recipe.cache.recipe.model.RecipeEntity): Long {
         appDatabaseFake.recipes.add(recipe)
         return 1 // return success
     }
 
-    override suspend fun insertRecipes(recipes: List<RecipeEntity>): LongArray {
+    override suspend fun insertRecipes(recipes: List<com.me.recipe.cache.recipe.model.RecipeEntity>): LongArray {
         appDatabaseFake.recipes.addAll(recipes)
         return longArrayOf(1) // return success
     }
 
-    override suspend fun getRecipeById(id: Int): RecipeEntity? {
+    override suspend fun getRecipeById(id: Int): com.me.recipe.cache.recipe.model.RecipeEntity? {
         return appDatabaseFake.recipes.find { it.id == id }
     }
 
@@ -39,11 +39,11 @@ class RecipeDaoFake(
         query: String,
         page: Int,
         pageSize: Int,
-    ): List<RecipeEntity> {
+    ): List<com.me.recipe.cache.recipe.model.RecipeEntity> {
         return appDatabaseFake.recipes // return the entire list for simplicity
     }
 
-    override suspend fun getAllRecipes(page: Int, pageSize: Int): List<RecipeEntity> {
+    override suspend fun getAllRecipes(page: Int, pageSize: Int): List<com.me.recipe.cache.recipe.model.RecipeEntity> {
         return appDatabaseFake.recipes // return the entire list for simplicity
     }
 
@@ -51,11 +51,11 @@ class RecipeDaoFake(
         query: String,
         page: Int,
         pageSize: Int,
-    ): List<RecipeEntity> {
+    ): List<com.me.recipe.cache.recipe.model.RecipeEntity> {
         return appDatabaseFake.recipes // return the entire list for simplicity
     }
 
-    override suspend fun restoreAllRecipes(page: Int, pageSize: Int): List<RecipeEntity> {
+    override suspend fun restoreAllRecipes(page: Int, pageSize: Int): List<com.me.recipe.cache.recipe.model.RecipeEntity> {
         return appDatabaseFake.recipes // return the entire list for simplicity
     }
 }

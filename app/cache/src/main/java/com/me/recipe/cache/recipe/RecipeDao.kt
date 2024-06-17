@@ -1,11 +1,11 @@
-package com.me.recipe.cache.features.recipe
+package com.me.recipe.cache.recipe
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.me.recipe.cache.features.recipe.model.RecipeEntity
-import com.me.recipe.util.RECIPE_PAGINATION_PAGE_SIZE
+import com.me.recipe.cache.recipe.model.RecipeEntity
+import com.me.recipe.core.utils.RECIPE_PAGINATION_PAGE_SIZE
 
 @Dao
 interface RecipeDao {
@@ -35,9 +35,9 @@ interface RecipeDao {
      */
     @Query(
         """
-        SELECT * FROM recipes 
+        SELECT * FROM recipes
         WHERE title LIKE '%' || :query || '%'
-        OR ingredients LIKE '%' || :query || '%'  
+        OR ingredients LIKE '%' || :query || '%'
         ORDER BY date_updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """,
     )
@@ -52,7 +52,7 @@ interface RecipeDao {
      */
     @Query(
         """
-        SELECT * FROM recipes 
+        SELECT * FROM recipes
         ORDER BY date_updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
     """,
     )
@@ -66,9 +66,9 @@ interface RecipeDao {
      */
     @Query(
         """
-        SELECT * FROM recipes 
+        SELECT * FROM recipes
         WHERE title LIKE '%' || :query || '%'
-        OR ingredients LIKE '%' || :query || '%' 
+        OR ingredients LIKE '%' || :query || '%'
         ORDER BY date_updated DESC LIMIT (:page * :pageSize)
         """,
     )
@@ -83,7 +83,7 @@ interface RecipeDao {
      */
     @Query(
         """
-        SELECT * FROM recipes 
+        SELECT * FROM recipes
         ORDER BY date_updated DESC LIMIT (:page * :pageSize)
     """,
     )

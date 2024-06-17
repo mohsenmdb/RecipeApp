@@ -1,4 +1,4 @@
-package com.me.recipe.cache.features.recipe.model
+package com.me.recipe.cache.recipe.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

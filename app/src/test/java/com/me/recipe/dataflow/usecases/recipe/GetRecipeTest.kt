@@ -1,6 +1,6 @@
 package com.me.recipe.dataflow.usecases.recipe
 
-import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
+import com.me.recipe.cache.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.data.features.recipe.repository.RecipeRepositoryImpl
 import com.me.recipe.data.features.recipelist.repository.RecipeListRepositoryImpl
@@ -46,7 +46,7 @@ class GetRecipeTest {
     private lateinit var recipeApi: RecipeApi
     private lateinit var recipeDao: RecipeDaoFake
     private val recipeMapper = RecipeMapper()
-    private val entityMapper = RecipeEntityMapper()
+    private val entityMapper = com.me.recipe.cache.recipe.mapper.RecipeEntityMapper()
 
     @Before
     fun setup() {
@@ -79,7 +79,7 @@ class GetRecipeTest {
         )
         searchRecipesUsecase =
             com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase(
-                recipeListRepository
+                recipeListRepository,
             )
 
         // instantiate the system in test
