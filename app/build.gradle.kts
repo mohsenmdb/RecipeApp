@@ -76,9 +76,9 @@ spotless {
 }
 
 dependencies {
-    implementation(project(":app:core"))
-    implementation(project(":app:data"))
-    implementation(project(":app:domain"))
+    implementation(project(":core"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
     api(platform(libs.compose.bom))
     androidTestImplementation(platform(libs.compose.bom))

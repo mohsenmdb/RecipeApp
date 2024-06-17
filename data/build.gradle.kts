@@ -45,10 +45,10 @@ spotless {
 }
 
 dependencies {
-    implementation(project(":app:core"))
-    implementation(project(":app:network"))
-    implementation(project(":app:domain"))
-    implementation(project(":app:cache"))
+    implementation(project(":core"))
+    implementation(project(":network"))
+    implementation(project(":domain"))
+    implementation(project(":cache"))
 
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
