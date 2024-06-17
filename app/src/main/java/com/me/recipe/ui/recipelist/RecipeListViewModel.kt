@@ -4,10 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.R
-import com.me.recipe.core.datastore.SettingsDataStore
-import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
-import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
+import com.me.recipe.core.utils.TAG
 import com.me.recipe.ui.component.util.FoodCategory
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
@@ -20,7 +17,6 @@ import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnQueryChanged
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnSelectedCategoryChanged
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.RestoreStateEvent
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.ToggleDarkTheme
-import com.me.recipe.util.TAG
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -40,8 +36,8 @@ import timber.log.Timber
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
-    private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
-    private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
+    private val searchRecipesUsecase: Lazy<com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase>,
+    private val restoreRecipesUsecase: Lazy<com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
     private val settingsDataStore: com.me.recipe.core.datastore.SettingsDataStore,
 ) : ViewModel(), RecipeListContract {
@@ -183,7 +179,7 @@ class RecipeListViewModel @Inject constructor(
     /**
      * Append new recipes to the current list of recipes
      */
-    private fun appendRecipes(recipes: List<Recipe>) {
+    private fun appendRecipes(recipes: List<com.me.recipe.domain.features.recipe.model.Recipe>) {
         val current = ArrayList(state.value.recipes)
         current.addAll(recipes)
         _state.update { it.copy(recipes = current.toPersistentList()) }

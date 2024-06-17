@@ -3,9 +3,8 @@ package com.me.recipe.ui.recipe
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase
+import com.me.recipe.core.utils.TAG
 import com.me.recipe.ui.navigation.RecipeDestination
-import com.me.recipe.util.TAG
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -23,7 +22,7 @@ import timber.log.Timber
 
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
-    private val getRecipeUsecase: Lazy<GetRecipeUsecase>,
+    private val getRecipeUsecase: Lazy<com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase>,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel(), RecipeContract {
 

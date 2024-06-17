@@ -32,7 +32,7 @@ import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
 internal fun RecipeCard(
-    recipe: Recipe,
+    recipe: com.me.recipe.domain.features.recipe.model.Recipe,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     sharedTransitionScope: SharedTransitionScope,
@@ -69,7 +69,7 @@ internal fun RecipeCard(
 
 @Composable
 private fun SharedTransitionScope.RecipeInfoRow(
-    recipe: Recipe,
+    recipe: com.me.recipe.domain.features.recipe.model.Recipe,
     animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     Row(
@@ -112,7 +112,7 @@ private fun RecipeCardPreview() {
     RecipeTheme {
         SharedTransitionLayoutPreview {
             RecipeCard(
-                recipe = Recipe.testData(),
+                recipe = com.me.recipe.domain.features.recipe.model.Recipe.testData(),
                 onClick = {},
                 onLongClick = {},
                 sharedTransitionScope = this,
