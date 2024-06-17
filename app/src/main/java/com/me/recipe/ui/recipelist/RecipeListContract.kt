@@ -30,7 +30,7 @@ interface RecipeListContract :
 
     @Stable
     data class State(
-        val recipes: ImmutableList<Recipe> = persistentListOf(),
+        val recipes: ImmutableList<com.me.recipe.domain.features.recipe.model.Recipe> = persistentListOf(),
         val errors: GenericDialogInfo? = null,
         val query: String = "",
         val selectedCategory: FoodCategory? = null,
@@ -42,7 +42,7 @@ interface RecipeListContract :
     ) {
         companion object {
             fun testData() = State(
-                recipes = persistentListOf(Recipe.testData()),
+                recipes = persistentListOf(com.me.recipe.domain.features.recipe.model.Recipe.testData()),
                 query = FoodCategory.CHICKEN.name,
                 selectedCategory = FoodCategory.CHICKEN,
             )

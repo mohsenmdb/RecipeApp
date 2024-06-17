@@ -46,8 +46,8 @@ private fun RecipeImagePreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
             RecipeImage(
-                id = Recipe.testData().id,
-                image = Recipe.testData().featuredImage,
+                id = com.me.recipe.domain.features.recipe.model.Recipe.testData().id,
+                image = com.me.recipe.domain.features.recipe.model.Recipe.testData().featuredImage,
                 animatedVisibilityScope = it,
             )
         }

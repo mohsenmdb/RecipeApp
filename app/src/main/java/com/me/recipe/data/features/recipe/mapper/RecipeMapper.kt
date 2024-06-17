@@ -6,10 +6,11 @@ import com.me.recipe.network.features.recipe.model.RecipeNetwork
 import com.me.recipe.util.DateUtils
 import kotlinx.collections.immutable.toPersistentList
 
-class RecipeMapper : DomainMapper<RecipeNetwork, Recipe> {
+class RecipeMapper :
+    com.me.recipe.domain.util.DomainMapper<RecipeNetwork, com.me.recipe.domain.features.recipe.model.Recipe> {
 
-    override fun mapToDomainModel(model: RecipeNetwork): Recipe {
-        return Recipe(
+    override fun mapToDomainModel(model: RecipeNetwork): com.me.recipe.domain.features.recipe.model.Recipe {
+        return com.me.recipe.domain.features.recipe.model.Recipe(
             id = model.pk ?: -1,
             title = model.title.orEmpty(),
             featuredImage = model.featuredImage.orEmpty(),
@@ -22,7 +23,7 @@ class RecipeMapper : DomainMapper<RecipeNetwork, Recipe> {
         )
     }
 
-    override fun mapFromDomainModel(domainModel: Recipe): RecipeNetwork {
+    override fun mapFromDomainModel(domainModel: com.me.recipe.domain.features.recipe.model.Recipe): RecipeNetwork {
         return RecipeNetwork(
             pk = domainModel.id,
             title = domainModel.title,
@@ -36,11 +37,11 @@ class RecipeMapper : DomainMapper<RecipeNetwork, Recipe> {
         )
     }
 
-    fun toDomainList(initial: List<RecipeNetwork>): List<Recipe> {
+    fun toDomainList(initial: List<RecipeNetwork>): List<com.me.recipe.domain.features.recipe.model.Recipe> {
         return initial.map { mapToDomainModel(it) }
     }
 
-    fun fromDomainList(initial: List<Recipe>): List<RecipeNetwork> {
+    fun fromDomainList(initial: List<com.me.recipe.domain.features.recipe.model.Recipe>): List<RecipeNetwork> {
         return initial.map { mapFromDomainModel(it) }
     }
 }

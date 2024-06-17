@@ -40,8 +40,8 @@ import timber.log.Timber
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
-    private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
-    private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
+    private val searchRecipesUsecase: Lazy<com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase>,
+    private val restoreRecipesUsecase: Lazy<com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
     private val settingsDataStore: com.me.recipe.core.datastore.SettingsDataStore,
 ) : ViewModel(), RecipeListContract {
@@ -183,7 +183,7 @@ class RecipeListViewModel @Inject constructor(
     /**
      * Append new recipes to the current list of recipes
      */
-    private fun appendRecipes(recipes: List<Recipe>) {
+    private fun appendRecipes(recipes: List<com.me.recipe.domain.features.recipe.model.Recipe>) {
         val current = ArrayList(state.value.recipes)
         current.addAll(recipes)
         _state.update { it.copy(recipes = current.toPersistentList()) }

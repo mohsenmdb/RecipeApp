@@ -34,11 +34,11 @@ class RestoreRecipesTest {
     private val dummyQuery = "This doesn't matter" // can be anything
 
     // system in test
-    private lateinit var restoreRecipesUsecase: RestoreRecipesUsecase
+    private lateinit var restoreRecipesUsecase: com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
 
     // Dependencies
-    private lateinit var recipeListRepository: RecipeListRepository
-    private lateinit var searchRecipesUsecase: SearchRecipesUsecase
+    private lateinit var recipeListRepository: com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
+    private lateinit var searchRecipesUsecase: com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
     private lateinit var recipeApi: RecipeApi
     private lateinit var recipeDao: RecipeDaoFake
     private val entityMapper = RecipeEntityMapper()
@@ -66,10 +66,16 @@ class RestoreRecipesTest {
             entityMapper = entityMapper,
             recipeMapper = recipeMapper,
         )
-        searchRecipesUsecase = SearchRecipesUsecase(recipeListRepository)
+        searchRecipesUsecase =
+            com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase(
+                recipeListRepository
+            )
 
         // instantiate system in test
-        restoreRecipesUsecase = RestoreRecipesUsecase(recipeListRepository)
+        restoreRecipesUsecase =
+            com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase(
+                recipeListRepository
+            )
     }
 
     /**
@@ -105,7 +111,7 @@ class RestoreRecipesTest {
         assert(recipes?.size ?: 0 > 0)
 
         // confirm they are actually Recipe objects
-        assert(value = recipes?.get(index = 0) is Recipe)
+        assert(value = recipes?.get(index = 0) is com.me.recipe.domain.features.recipe.model.Recipe)
 
         assert(!flowItems[1].loading) // loading should be false now
     }

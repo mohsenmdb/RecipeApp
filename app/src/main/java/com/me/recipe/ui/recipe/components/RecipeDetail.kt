@@ -19,7 +19,7 @@ import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
 internal fun RecipeDetail(
-    recipe: Recipe,
+    recipe: com.me.recipe.domain.features.recipe.model.Recipe,
     isLoading: Boolean,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -51,7 +51,7 @@ private fun RecipeDetailPreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
             RecipeDetail(
-                recipe = Recipe.testData(),
+                recipe = com.me.recipe.domain.features.recipe.model.Recipe.testData(),
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
                 isLoading = false,

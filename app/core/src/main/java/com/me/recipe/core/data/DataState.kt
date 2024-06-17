@@ -1,4 +1,4 @@
-package com.me.recipe.data.core.utils
+package com.me.recipe.core.data
 
 data class DataState<out T>(
     val data: T? = null,

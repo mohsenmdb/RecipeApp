@@ -17,14 +17,14 @@ import timber.log.Timber
 class RecommendationWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
-    private val topRecipeUsecase: TopRecipeUsecase,
+    private val topRecipeUsecase: com.me.recipe.domain.features.recipelist.usecases.TopRecipeUsecase,
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         return withContext(Dispatchers.IO) {
             return@withContext try {
                 val recipe = topRecipeUsecase.invoke()
                 Timber.d("RecommendationWorker doWork recipe[%s]", recipe)
-                if (recipe == Recipe.EMPTY) {
+                if (recipe == com.me.recipe.domain.features.recipe.model.Recipe.EMPTY) {
                     return@withContext Result.failure()
                 }
                 NotificationBuilder.showNotification(

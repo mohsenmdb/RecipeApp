@@ -1,6 +1,6 @@
 package com.me.recipe.domain.features.recipe.usecases
 
-import com.me.recipe.data.core.utils.DataState
+import com.me.recipe.core.data.DataState
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipe.repository.RecipeRepository
 import javax.inject.Inject

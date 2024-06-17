@@ -33,10 +33,10 @@ class SearchRecipesTest {
     private val dummyQuery = "This doesn't matter" // can be anything
 
     // system in test
-    private lateinit var searchRecipesUsecase: SearchRecipesUsecase
+    private lateinit var searchRecipesUsecase: com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
 
     // Dependencies
-    private lateinit var recipeListRepository: RecipeListRepository
+    private lateinit var recipeListRepository: com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
     private lateinit var recipeApi: RecipeApi
     private lateinit var recipeDao: RecipeDaoFake
     private val recipeMapper = RecipeMapper()
@@ -65,7 +65,10 @@ class SearchRecipesTest {
             recipeMapper = recipeMapper,
         )
         // instantiate the system in test
-        searchRecipesUsecase = SearchRecipesUsecase(recipeListRepository)
+        searchRecipesUsecase =
+            com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase(
+                recipeListRepository
+            )
     }
 
     /**
@@ -98,7 +101,7 @@ class SearchRecipesTest {
         assert((recipes?.size ?: 0) > 0)
 
         // confirm they are actually Recipe objects
-        assert(recipes?.get(index = 0) is Recipe)
+        assert(recipes?.get(index = 0) is com.me.recipe.domain.features.recipe.model.Recipe)
 
         assert(!flowItems[1].loading) // loading should be false now
     }

@@ -91,7 +91,7 @@ private fun RecipeList(
             RecipeCard(
                 recipe = recipe,
                 onClick = {
-                    if (recipe.id != Recipe.EMPTY.id) {
+                    if (recipe.id != com.me.recipe.domain.features.recipe.model.Recipe.EMPTY.id) {
                         navigateToRecipePage(
                             recipe.id,
                             recipe.title,

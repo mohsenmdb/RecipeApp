@@ -2,7 +2,7 @@ package com.me.recipe.data.features.recipe.repository
 
 import com.me.recipe.cache.features.recipe.RecipeDao
 import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
-import com.me.recipe.data.core.utils.DataState
+import com.me.recipe.core.data.DataState
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipe.repository.RecipeRepository
@@ -17,11 +17,11 @@ class RecipeRepositoryImpl @Inject constructor(
     private val recipeApi: RecipeApi,
     private val entityMapper: RecipeEntityMapper,
     private val recipeMapper: RecipeMapper,
-) : RecipeRepository {
+) : com.me.recipe.domain.features.recipe.repository.RecipeRepository {
     override suspend fun getRecipe(
         recipeId: Int,
         isNetworkAvailable: Boolean,
-    ): Flow<DataState<Recipe>> = flow {
+    ): Flow<DataState<com.me.recipe.domain.features.recipe.model.Recipe>> = flow {
         try {
             emit(DataState.loading())
 
@@ -60,13 +60,13 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getRecipeFromCache(recipeId: Int): Recipe? {
+    private suspend fun getRecipeFromCache(recipeId: Int): com.me.recipe.domain.features.recipe.model.Recipe? {
         return recipeDao.getRecipeById(recipeId)?.let { recipeEntity ->
             entityMapper.mapToDomainModel(recipeEntity)
         }
     }
 
-    private suspend fun getRecipeFromNetwork(recipeId: Int): Recipe {
+    private suspend fun getRecipeFromNetwork(recipeId: Int): com.me.recipe.domain.features.recipe.model.Recipe {
         return recipeMapper.mapToDomainModel(recipeApi.get(recipeId))
     }
 }

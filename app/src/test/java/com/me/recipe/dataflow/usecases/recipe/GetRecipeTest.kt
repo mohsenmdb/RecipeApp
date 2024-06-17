@@ -36,13 +36,13 @@ class GetRecipeTest {
     private val dummyQuery = "This doesn't matter" // can be anything
 
     // system in test
-    private lateinit var getRecipeUsecase: GetRecipeUsecase
+    private lateinit var getRecipeUsecase: com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase
     private val recipeId = 1551
-    private lateinit var recipeListRepository: RecipeListRepository
-    private lateinit var recipeRepository: RecipeRepository
+    private lateinit var recipeListRepository: com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
+    private lateinit var recipeRepository: com.me.recipe.domain.features.recipe.repository.RecipeRepository
 
     // Dependencies
-    private lateinit var searchRecipesUsecase: SearchRecipesUsecase
+    private lateinit var searchRecipesUsecase: com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
     private lateinit var recipeApi: RecipeApi
     private lateinit var recipeDao: RecipeDaoFake
     private val recipeMapper = RecipeMapper()
@@ -77,10 +77,14 @@ class GetRecipeTest {
             entityMapper = entityMapper,
             recipeMapper = recipeMapper,
         )
-        searchRecipesUsecase = SearchRecipesUsecase(recipeListRepository)
+        searchRecipesUsecase =
+            com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase(
+                recipeListRepository
+            )
 
         // instantiate the system in test
-        getRecipeUsecase = GetRecipeUsecase(recipeRepository)
+        getRecipeUsecase =
+            com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase(recipeRepository)
     }
 
     /**
@@ -116,7 +120,7 @@ class GetRecipeTest {
         assert(recipe?.id == recipeId)
 
         // confirm it is actually a Recipe object
-        assert(recipe is Recipe)
+        assert(recipe is com.me.recipe.domain.features.recipe.model.Recipe)
 
         // 'loading' should be false now
         assert(!recipeAsFlow[1].loading)
@@ -154,7 +158,7 @@ class GetRecipeTest {
         assert(recipeDao.getRecipeById(recipeId)?.id == recipeId)
 
         // confirm it is actually a Recipe object
-        assert(recipe is Recipe)
+        assert(recipe is com.me.recipe.domain.features.recipe.model.Recipe)
 
         // 'loading' should be false now
         assert(!recipeAsFlow[1].loading)

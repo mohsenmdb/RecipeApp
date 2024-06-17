@@ -23,7 +23,7 @@ import timber.log.Timber
 
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
-    private val getRecipeUsecase: Lazy<GetRecipeUsecase>,
+    private val getRecipeUsecase: Lazy<com.me.recipe.domain.features.recipe.usecases.GetRecipeUsecase>,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel(), RecipeContract {
 

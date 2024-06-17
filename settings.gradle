@@ -19,3 +19,4 @@ rootProject.name = "Recipe"
 include ':app'
 include ':app:network'
 include ':app:core'
+include ':app:domain'

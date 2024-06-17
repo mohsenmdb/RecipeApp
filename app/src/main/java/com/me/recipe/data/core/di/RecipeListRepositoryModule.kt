@@ -18,7 +18,7 @@ object RecipeListRepositoryModule {
 
     @Singleton
     @Provides
-    fun provideRecipeListRepository(recipeDao: RecipeDao, recipeApi: RecipeApi, recipeMapper: RecipeMapper, entityMapper: RecipeEntityMapper): RecipeListRepository {
+    fun provideRecipeListRepository(recipeDao: RecipeDao, recipeApi: RecipeApi, recipeMapper: RecipeMapper, entityMapper: RecipeEntityMapper): com.me.recipe.domain.features.recipelist.repository.RecipeListRepository {
         return RecipeListRepositoryImpl(recipeDao, recipeApi, entityMapper, recipeMapper)
     }
 }

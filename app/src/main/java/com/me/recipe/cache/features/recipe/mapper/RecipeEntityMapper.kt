@@ -6,10 +6,11 @@ import com.me.recipe.domain.util.DomainMapper
 import com.me.recipe.util.DateUtils
 import kotlinx.collections.immutable.toPersistentList
 
-class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
+class RecipeEntityMapper :
+    com.me.recipe.domain.util.DomainMapper<RecipeEntity, com.me.recipe.domain.features.recipe.model.Recipe> {
 
-    override fun mapToDomainModel(model: RecipeEntity): Recipe {
-        return Recipe(
+    override fun mapToDomainModel(model: RecipeEntity): com.me.recipe.domain.features.recipe.model.Recipe {
+        return com.me.recipe.domain.features.recipe.model.Recipe(
             id = model.id,
             title = model.title,
             featuredImage = model.featuredImage,
@@ -22,7 +23,7 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
         )
     }
 
-    override fun mapFromDomainModel(domainModel: Recipe): RecipeEntity {
+    override fun mapFromDomainModel(domainModel: com.me.recipe.domain.features.recipe.model.Recipe): RecipeEntity {
         return RecipeEntity(
             id = domainModel.id,
             title = domainModel.title,
@@ -58,11 +59,11 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
         return list
     }
 
-    fun fromEntityList(initial: List<RecipeEntity>): List<Recipe> {
+    fun fromEntityList(initial: List<RecipeEntity>): List<com.me.recipe.domain.features.recipe.model.Recipe> {
         return initial.map { mapToDomainModel(it) }
     }
 
-    fun toEntityList(initial: List<Recipe>): List<RecipeEntity> {
+    fun toEntityList(initial: List<com.me.recipe.domain.features.recipe.model.Recipe>): List<RecipeEntity> {
         return initial.map { mapFromDomainModel(it) }
     }
 }

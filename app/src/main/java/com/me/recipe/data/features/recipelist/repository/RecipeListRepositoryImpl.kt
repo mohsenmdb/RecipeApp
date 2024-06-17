@@ -2,7 +2,7 @@ package com.me.recipe.data.features.recipelist.repository
 
 import com.me.recipe.cache.features.recipe.RecipeDao
 import com.me.recipe.cache.features.recipe.mapper.RecipeEntityMapper
-import com.me.recipe.data.core.utils.DataState
+import com.me.recipe.core.data.DataState
 import com.me.recipe.data.features.recipe.mapper.RecipeMapper
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
@@ -20,11 +20,11 @@ class RecipeListRepositoryImpl @Inject constructor(
     private val recipeApi: RecipeApi,
     private val entityMapper: RecipeEntityMapper,
     private val recipeMapper: RecipeMapper,
-) : RecipeListRepository {
+) : com.me.recipe.domain.features.recipelist.repository.RecipeListRepository {
     override suspend fun search(
         page: Int,
         query: String,
-    ): Flow<DataState<ImmutableList<Recipe>>> =
+    ): Flow<DataState<ImmutableList<com.me.recipe.domain.features.recipe.model.Recipe>>> =
         flow {
             try {
                 emit(DataState.loading())
@@ -52,7 +52,7 @@ class RecipeListRepositoryImpl @Inject constructor(
             emit(DataState.success(list))
         }
 
-    override suspend fun restore(page: Int, query: String): Flow<DataState<ImmutableList<Recipe>>> = flow {
+    override suspend fun restore(page: Int, query: String): Flow<DataState<ImmutableList<com.me.recipe.domain.features.recipe.model.Recipe>>> = flow {
         try {
             emit(DataState.loading())
 
@@ -81,15 +81,15 @@ class RecipeListRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTopRecipe(): Recipe {
-        return getRecipesFromNetwork(1, "").firstOrNull() ?: Recipe.EMPTY
+    override suspend fun getTopRecipe(): com.me.recipe.domain.features.recipe.model.Recipe {
+        return getRecipesFromNetwork(1, "").firstOrNull() ?: com.me.recipe.domain.features.recipe.model.Recipe.EMPTY
     }
 
     // WARNING: This will throw exception if there is no network connection
     private suspend fun getRecipesFromNetwork(
         page: Int,
         query: String,
-    ): List<Recipe> {
+    ): List<com.me.recipe.domain.features.recipe.model.Recipe> {
         return recipeMapper.toDomainList(
             recipeApi.search(
                 page = page,

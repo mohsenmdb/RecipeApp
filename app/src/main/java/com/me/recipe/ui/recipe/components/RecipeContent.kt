@@ -32,7 +32,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun SharedTransitionScope.RecipeContent(
-    recipe: Recipe,
+    recipe: com.me.recipe.domain.features.recipe.model.Recipe,
     animatedVisibilityScope: AnimatedVisibilityScope,
     isLoading: Boolean,
     modifier: Modifier = Modifier,
@@ -138,7 +138,7 @@ private fun RecipeContentPreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
             RecipeContent(
-                recipe = Recipe.testData(),
+                recipe = com.me.recipe.domain.features.recipe.model.Recipe.testData(),
                 animatedVisibilityScope = it,
                 isLoading = false,
             )
