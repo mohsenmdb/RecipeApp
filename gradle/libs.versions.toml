@@ -1,9 +1,9 @@
 [versions]
-toolsBuildGradle = "8.4.0"
+toolsBuildGradle = "8.4.2"
 
 kotlinCompilerExtensionVersion = "1.5.12"
 kotlinVersion = "1.9.23"
-composeVersion = "1.7.0-alpha08"
+composeVersion = "1.7.0-beta03"
 retrofitVersion = "2.11.0"
 converterMoshi = "2.11.0"
 moshi = "1.15.1"
@@ -12,8 +12,8 @@ roomVersion = "2.6.1"
 timberVersion = "5.0.1"
 junitVersion = "4.13.2"
 
-compose-bom = "2024.05.00"
-composeViewmodelLifecycle = "2.7.0"
+compose-bom = "2024.06.00"
+composeViewmodelLifecycle = "2.8.2"
 composeNavigation = "2.7.7"
 composeActivity = "1.9.0"
 composeConstraintlayout = "1.1.0-alpha13"
@@ -31,6 +31,9 @@ kotlinxCollectionsImmutable = "0.3.6"
 ksp= "1.9.23-1.0.19"
 spotless = "6.25.0"
 composeLintChecks = "1.3.1"
+coreKtx = "1.13.1"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 
 [libraries]
@@ -42,6 +45,7 @@ hilt-pluginGradle = { module = "com.google.dagger:hilt-android-gradle-plugin", v
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "composeVersion" }
 compose-animation = { module = "androidx.compose.animation:animation", version.ref = "composeVersion" }
+compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "composeVersion" }
 compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-viewmodel-lifecycle = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "composeViewmodelLifecycle" }
@@ -87,8 +91,13 @@ androidx-navigation-testing = { module = "androidx.navigation:navigation-testing
 hilt-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltVersion" }
 robolectric = "org.robolectric:robolectric:4.12.1"
 spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 spotless = "com.diffplug.spotless:6.25.0"
+android-library = { id = "com.android.library", version.ref = "toolsBuildGradle" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }

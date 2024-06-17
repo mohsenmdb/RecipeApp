@@ -15,15 +15,11 @@ buildscript {
 
 plugins {
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.jetbrains.kotlin.android) apply false
 }
 
 allprojects {
-    repositories {
-        maven { url "https://jitpack.io" }
-        google()
-        mavenCentral()
-    }
-
     tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
             // to create compose metric files run this

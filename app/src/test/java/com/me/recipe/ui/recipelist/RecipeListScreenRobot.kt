@@ -165,37 +165,37 @@ class RecipeListScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    private fun assertFirstRecipeImageIsDisplayed(recipe: Recipe) {
+    private fun assertFirstRecipeImageIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
         composeTestRule.onNodeWithTag("testTag_RecipeCard_Image_${recipe.id}", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertFirstRecipeTitleIsDisplayed(recipe: Recipe) {
+    private fun assertFirstRecipeTitleIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
         composeTestRule.onNodeWithText(recipe.title, useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertFirstRecipeRatingIsDisplayed(recipe: Recipe) {
+    private fun assertFirstRecipeRatingIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
         composeTestRule.onNodeWithText(recipe.rating.toString(), useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertLastRecipeImageIsDisplayed(recipe: Recipe) {
+    private fun assertLastRecipeImageIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
         composeTestRule.onNodeWithTag("testTag_RecipeCard_Image_${recipe.id}", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertLastRecipeTitleIsDisplayed(recipe: Recipe) {
+    private fun assertLastRecipeTitleIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
         composeTestRule.onNodeWithText(recipe.title, useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertLastRecipeRatingIsDisplayed(recipe: Recipe) {
+    private fun assertLastRecipeRatingIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
         composeTestRule.onNodeWithText(recipe.rating.toString(), useUnmergedTree = true)
             .assertIsDisplayed()
     }
