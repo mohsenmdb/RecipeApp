@@ -46,7 +46,7 @@ spotless {
 }
 
 dependencies {
-    implementation(project(":app:core"))
+    implementation(project(":core"))
 
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)

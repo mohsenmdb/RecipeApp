@@ -13,15 +13,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class RecipeRepositoryImpl @Inject constructor(
-    private val recipeDao: com.me.recipe.cache.recipe.RecipeDao,
+    private val recipeDao: RecipeDao,
     private val recipeApi: RecipeApi,
-    private val entityMapper: com.me.recipe.cache.recipe.mapper.RecipeEntityMapper,
+    private val entityMapper: RecipeEntityMapper,
     private val recipeMapper: RecipeMapper,
-) : com.me.recipe.domain.features.recipe.repository.RecipeRepository {
+) : RecipeRepository {
     override suspend fun getRecipe(
         recipeId: Int,
         isNetworkAvailable: Boolean,
-    ): Flow<DataState<com.me.recipe.domain.features.recipe.model.Recipe>> = flow {
+    ): Flow<DataState<Recipe>> = flow {
         try {
             emit(DataState.loading())
 
@@ -60,13 +60,13 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getRecipeFromCache(recipeId: Int): com.me.recipe.domain.features.recipe.model.Recipe? {
+    private suspend fun getRecipeFromCache(recipeId: Int): Recipe? {
         return recipeDao.getRecipeById(recipeId)?.let { recipeEntity ->
             entityMapper.mapToDomainModel(recipeEntity)
         }
     }
 
-    private suspend fun getRecipeFromNetwork(recipeId: Int): com.me.recipe.domain.features.recipe.model.Recipe {
+    private suspend fun getRecipeFromNetwork(recipeId: Int): Recipe {
         return recipeMapper.mapToDomainModel(recipeApi.get(recipeId))
     }
 }
