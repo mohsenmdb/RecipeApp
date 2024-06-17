@@ -17,8 +17,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Recipe"
 include ':app'
-include ':app:network'
-include ':app:core'
-include ':app:domain'
-include ':app:cache'
-include ':app:data'
+include ':network'
+include ':core'
+include ':domain'
+include ':cache'
+include ':data'

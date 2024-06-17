@@ -6,12 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.me.recipe.domain"
+    namespace = "com.me.recipe.core"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -46,12 +45,12 @@ spotless {
 }
 
 dependencies {
-    implementation(project(":app:core"))
+    api(platform(libs.compose.bom))
+    implementation(libs.compose.runtime)
+
+    implementation(libs.datastore.preferences)
 
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
-    implementation(libs.compose.runtime)
-    implementation(libs.kotlinx.collections.immutable)
-
     compileOnly(libs.spotless.gradlePlugin)
 }
