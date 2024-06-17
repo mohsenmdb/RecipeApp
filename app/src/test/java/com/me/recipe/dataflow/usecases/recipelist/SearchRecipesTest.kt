@@ -39,7 +39,7 @@ class SearchRecipesTest {
     private lateinit var recipeListRepository: com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
     private lateinit var recipeApi: RecipeApi
     private lateinit var recipeDao: RecipeDaoFake
-    private val recipeMapper = RecipeMapper()
+    private val recipeMapper = com.me.recipe.data.features.recipe.mapper.RecipeMapper()
     private val entityMapper = com.me.recipe.cache.recipe.mapper.RecipeEntityMapper()
 
     @Before
@@ -58,12 +58,13 @@ class SearchRecipesTest {
             .create(RecipeApi::class.java)
 
         recipeDao = RecipeDaoFake(appDatabaseFake = appDatabase)
-        recipeListRepository = RecipeListRepositoryImpl(
-            recipeDao = recipeDao,
-            recipeApi = recipeApi,
-            entityMapper = entityMapper,
-            recipeMapper = recipeMapper,
-        )
+        recipeListRepository =
+            com.me.recipe.data.features.recipelist.repository.RecipeListRepositoryImpl(
+                recipeDao = recipeDao,
+                recipeApi = recipeApi,
+                entityMapper = entityMapper,
+                recipeMapper = recipeMapper,
+            )
         // instantiate the system in test
         searchRecipesUsecase =
             com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase(
