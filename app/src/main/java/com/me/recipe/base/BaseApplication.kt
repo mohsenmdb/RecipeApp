@@ -1,10 +1,10 @@
-package com.me.recipe.ui
+package com.me.recipe.base
 
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.me.recipe.BuildConfig
-import com.me.recipe.util.worker.WorkerUtil
+import com.me.recipe.base.worker.WorkerUtil
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import timber.log.Timber

@@ -1,7 +1,7 @@
 package com.me.recipe.util.di
 
 import android.content.Context
-import com.me.recipe.ui.BaseApplication
+import com.me.recipe.base.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

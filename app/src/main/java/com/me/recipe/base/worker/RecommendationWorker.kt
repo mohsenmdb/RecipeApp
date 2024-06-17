@@ -1,12 +1,12 @@
-package com.me.recipe.util.worker
+package com.me.recipe.base.worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.me.recipe.base.NotificationBuilder
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.usecases.TopRecipeUsecase
-import com.me.recipe.util.NotificationBuilder
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers

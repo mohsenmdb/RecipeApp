@@ -1,4 +1,4 @@
-package com.me.recipe.util.worker
+package com.me.recipe.base.worker
 
 import android.content.Context
 import androidx.work.BackoffPolicy

@@ -1,4 +1,4 @@
-package com.me.recipe.util
+package com.me.recipe.base
 
 import android.Manifest
 import android.app.NotificationChannel
