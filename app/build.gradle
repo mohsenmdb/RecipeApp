@@ -72,6 +72,9 @@ spotless {
 }
 
 dependencies {
+    implementation project(":app:core")
+    implementation project(":app:network")
+
     api(platform(libs.compose.bom))
     androidTestImplementation(platform(libs.compose.bom))
     debugImplementation(platform(libs.compose.bom))
@@ -86,13 +89,6 @@ dependencies {
     implementation libs.compose.constraintlayout
     implementation libs.compose.coil
     lintChecks libs.compose.lint.checks
-
-    implementation libs.retrofit
-    implementation libs.okhttp.logging.interceptor
-    implementation libs.moshi
-    implementation libs.moshi.kotlin
-    ksp libs.moshi.kotlin.codegen
-    implementation libs.converter.moshi
 
     implementation libs.hilt
     ksp libs.hilt.compiler

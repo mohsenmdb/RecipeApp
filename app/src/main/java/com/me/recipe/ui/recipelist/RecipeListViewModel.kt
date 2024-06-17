@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.R
-import com.me.recipe.cache.datastore.SettingsDataStore
+import com.me.recipe.core.datastore.SettingsDataStore
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
@@ -43,7 +43,7 @@ class RecipeListViewModel @Inject constructor(
     private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
     private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
-    private val settingsDataStore: SettingsDataStore,
+    private val settingsDataStore: com.me.recipe.core.datastore.SettingsDataStore,
 ) : ViewModel(), RecipeListContract {
 
     private val _state = MutableStateFlow(RecipeListContract.State(loading = true))
