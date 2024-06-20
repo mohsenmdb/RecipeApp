@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.R
-import com.me.recipe.core.datastore.SettingsDataStore
-import com.me.recipe.core.utils.TAG
+import com.me.recipe.shared.datastore.SettingsDataStore
+import com.me.recipe.shared.utils.TAG
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase

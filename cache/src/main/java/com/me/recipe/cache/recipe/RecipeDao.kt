@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.me.recipe.cache.recipe.model.RecipeEntity
-import com.me.recipe.core.utils.RECIPE_PAGINATION_PAGE_SIZE
+import com.me.recipe.shared.utils.RECIPE_PAGINATION_PAGE_SIZE
 
 @Dao
 interface RecipeDao {

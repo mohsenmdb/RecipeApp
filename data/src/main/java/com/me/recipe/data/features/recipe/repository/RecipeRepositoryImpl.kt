@@ -1,7 +1,7 @@
 package com.me.recipe.data.features.recipe.repository
 
 import com.me.recipe.cache.recipe.RecipeDao
-import com.me.recipe.core.data.DataState
+import com.me.recipe.shared.data.DataState
 import com.me.recipe.data.features.recipe.mapper.RecipeDtoMapper
 import com.me.recipe.data.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.domain.features.recipe.model.Recipe

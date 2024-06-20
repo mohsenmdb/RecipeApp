@@ -1,4 +1,4 @@
-package com.me.recipe.core.utils
+package com.me.recipe.shared.utils
 
 import java.lang.NullPointerException
 import java.text.SimpleDateFormat

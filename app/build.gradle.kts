@@ -76,7 +76,7 @@ spotless {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":shared"))
     implementation(project(":data"))
     implementation(project(":domain"))
 

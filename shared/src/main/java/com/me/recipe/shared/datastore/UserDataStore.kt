@@ -1,13 +1,12 @@
-package com.me.recipe.core.datastore
+package com.me.recipe.shared.datastore
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
@@ -17,9 +16,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Singleton
-class SettingsDataStore
-@Inject
-constructor(@ApplicationContext val context: Context) {
+class UserDataStore @Inject constructor(val context: Context) {
 
     private val scope = CoroutineScope(Main)
 
@@ -27,29 +24,28 @@ constructor(@ApplicationContext val context: Context) {
         observeDataStore()
     }
 
-    val isDark = mutableStateOf(false)
+    val accessToken = mutableStateOf("")
 
-    fun toggleTheme() {
+    fun setAccessToken(accessToken: String) {
         scope.launch {
             context.dataStore.edit { preferences ->
-                val current = preferences[DARK_THEME_KEY] ?: false
-                preferences[DARK_THEME_KEY] = !current
+                preferences[ACCESS_TOKEN_KEY] = accessToken
             }
         }
     }
 
     private fun observeDataStore() {
         context.dataStore.data.onEach { preferences ->
-            preferences[DARK_THEME_KEY]?.let { isDarkTheme ->
-                isDark.value = isDarkTheme
+            preferences[ACCESS_TOKEN_KEY]?.let { token ->
+                accessToken.value = token
             }
         }.launchIn(scope)
     }
 
     companion object {
-        private val DARK_THEME_KEY = booleanPreferencesKey("dark_theme_key")
+        private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token_key")
 
-        private const val APP_PREFERENCE_NAME = "settings"
+        private const val APP_PREFERENCE_NAME = "user_info"
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
             name = APP_PREFERENCE_NAME,
         )
