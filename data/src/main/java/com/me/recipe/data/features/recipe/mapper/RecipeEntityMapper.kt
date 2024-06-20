@@ -1,4 +1,4 @@
-package com.me.recipe.cache.recipe.mapper
+package com.me.recipe.data.features.recipe.mapper
 
 import com.me.recipe.cache.recipe.model.RecipeEntity
 import com.me.recipe.core.utils.DateUtils

@@ -15,5 +15,5 @@ object UserDataStoreModule {
     @Provides
     @Singleton
     internal fun provideUserDataStore(@ApplicationContext context: Context): UserDataStore =
-        com.me.recipe.core.datastore.UserDataStore(context)
+        UserDataStore(context)
 }

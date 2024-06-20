@@ -7,28 +7,22 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "recipes")
 data class RecipeEntity(
 
-    // Value from API
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     var id: Int,
 
-    // Value from API
     @ColumnInfo(name = "title")
     var title: String,
 
-    // Value from API
     @ColumnInfo(name = "publisher")
     var publisher: String,
 
-    // Value from API
     @ColumnInfo(name = "featured_image")
     var featuredImage: String,
 
-    // Value from API
     @ColumnInfo(name = "rating")
     var rating: Int,
 
-    // Value from API
     @ColumnInfo(name = "source_url")
     var sourceUrl: String,
 

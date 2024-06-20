@@ -114,9 +114,9 @@ class RecipeListViewModel @Inject constructor(
         }
     }
 
-    private fun handleRecipeListPositionChanged(page: Int) {
-        setRecipeScrollPosition(page)
-        if (checkReachEndOfTheList(page)) {
+    private fun handleRecipeListPositionChanged(position: Int) {
+        setRecipeScrollPosition(position)
+        if (checkReachEndOfTheList(position)) {
             increaseRecipePage()
         }
     }
@@ -147,6 +147,7 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private suspend fun fetchRecipes() {
+        Timber.d("fetchRecipes page[%s] query[%s]", state.value.page, state.value.query)
         searchRecipesUsecase.get().invoke(page = state.value.page, query = state.value.query)
             .onEach { dataState ->
                 _state.update { it.copy(loading = dataState.loading) }
@@ -199,15 +200,21 @@ class RecipeListViewModel @Inject constructor(
      * Called when a new search is executed.
      */
     private fun resetSearchState() {
-        _state.update {
-            it.copy(
-                recipes = persistentListOf(),
-                page = 1,
-            )
-        }
-        onChangeRecipeScrollPosition(0)
-        if (state.value.selectedCategory?.value != state.value.query) {
+        clearRecipeList()
+        changeRecipeListPage(INITIAL_RECIPE_LIST_PAGE)
+        onChangeRecipeScrollPosition(INITIAL_RECIPE_LIST_POSITION)
+        if (isNewSearchSetBySelectingFromCategoryList().not()) {
             changeSelectedCategory(null)
+        }
+    }
+
+    private fun isNewSearchSetBySelectingFromCategoryList(): Boolean {
+        return state.value.selectedCategory?.value == state.value.query
+    }
+
+    private fun clearRecipeList() {
+        _state.update {
+            it.copy(recipes = persistentListOf())
         }
     }
 
@@ -231,7 +238,11 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private fun increaseRecipePage() {
-        savedStateHandle[STATE_KEY_PAGE] = state.value.page + 1
+        changeRecipeListPage(state.value.page + 1)
+    }
+
+    private fun changeRecipeListPage(page : Int) {
+        savedStateHandle[STATE_KEY_PAGE] = page
     }
 
     private fun setRecipeListPage(page: Int) {
@@ -265,6 +276,8 @@ class RecipeListViewModel @Inject constructor(
 
     companion object {
         const val PAGE_SIZE = 30
+        const val INITIAL_RECIPE_LIST_POSITION = 0
+        const val INITIAL_RECIPE_LIST_PAGE = 1
 
         const val STATE_KEY_PAGE = "recipe.state.page.key"
         const val STATE_KEY_QUERY = "recipe.state.query.key"

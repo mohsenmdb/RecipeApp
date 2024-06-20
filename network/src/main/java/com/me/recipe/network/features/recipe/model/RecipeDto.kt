@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class RecipeNetwork(
+data class RecipeDto(
     @Json(name = "pk") var pk: Int?,
     @Json(name = "title") var title: String?,
     @Json(name = "publisher") var publisher: String?,
