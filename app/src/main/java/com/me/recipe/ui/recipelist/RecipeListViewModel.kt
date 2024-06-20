@@ -4,15 +4,20 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.R
-import com.me.recipe.core.utils.TAG
+import com.me.recipe.shared.datastore.SettingsDataStore
+import com.me.recipe.shared.utils.TAG
+import com.me.recipe.domain.features.recipe.model.Recipe
+import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
+import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
 import com.me.recipe.ui.component.util.FoodCategory
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
 import com.me.recipe.ui.component.util.getFoodCategory
+import com.me.recipe.ui.recipelist.RecipeListContract.Event
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.LongClickOnRecipeEvent
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.NewSearchEvent
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.NextPageEvent
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnCategoryScrollPositionChanged
+import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnChangeRecipeScrollPosition
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnQueryChanged
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnSelectedCategoryChanged
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.RestoreStateEvent
@@ -27,6 +32,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -36,10 +42,10 @@ import timber.log.Timber
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
-    private val searchRecipesUsecase: Lazy<com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase>,
-    private val restoreRecipesUsecase: Lazy<com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase>,
+    private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
+    private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
-    private val settingsDataStore: com.me.recipe.core.datastore.SettingsDataStore,
+    private val settingsDataStore: SettingsDataStore,
 ) : ViewModel(), RecipeListContract {
 
     private val _state = MutableStateFlow(RecipeListContract.State(loading = true))
@@ -48,23 +54,20 @@ class RecipeListViewModel @Inject constructor(
     private val effectChannel = Channel<RecipeListContract.Effect>(Channel.UNLIMITED)
     override val effect: Flow<RecipeListContract.Effect> = effectChannel.receiveAsFlow()
 
-    override fun event(event: RecipeListContract.Event) {
+    override fun event(event: Event) {
         viewModelScope.launch {
             try {
                 when (event) {
-                    is NewSearchEvent -> newSearch()
+                    is NewSearchEvent -> fetchNewSearchRecipes()
+                    is ToggleDarkTheme -> toggleDarkTheme()
+                    is RestoreStateEvent -> restoreState()
                     is OnQueryChanged -> onQueryChanged(event.query)
                     is OnSelectedCategoryChanged -> onSelectedCategoryChanged(event.category)
-                    is OnCategoryScrollPositionChanged -> onCategoryScrollPositionChanged(event.position, event.offset)
-                    is ToggleDarkTheme -> toggleDarkTheme()
-                    is NextPageEvent -> nextPage(event.index)
-                    is RestoreStateEvent -> restoreState()
-                    is LongClickOnRecipeEvent -> effectChannel.trySend(
-                        RecipeListContract.Effect.ShowSnackbar(
-                            event.title,
-                        ),
-                    )
-                    is RecipeListContract.Event.OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
+                    is OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
+                    is OnCategoryScrollPositionChanged ->
+                        onCategoryScrollPositionChanged(event.position, event.offset)
+                    is LongClickOnRecipeEvent ->
+                        effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(event.title))
                 }
             } catch (e: Exception) {
                 Timber.tag(TAG).e("Exception: %s", e)
@@ -79,17 +82,29 @@ class RecipeListViewModel @Inject constructor(
     }
 
     init {
-        savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
-            setPage(p)
+        viewModelScope.launch {
+            savedStateHandle.getStateFlow(STATE_KEY_PAGE, 1)
+                .collectLatest { page ->
+                    handleNewPage(page)
+                }
         }
-        savedStateHandle.get<String>(STATE_KEY_QUERY)?.let { q ->
-            setQuery(q)
+        viewModelScope.launch {
+            savedStateHandle.getStateFlow(STATE_KEY_LIST_POSITION, 0)
+                .collectLatest { page ->
+                    handleRecipeListPositionChanged(page)
+                }
         }
-        savedStateHandle.get<Int>(STATE_KEY_LIST_POSITION)?.let { p ->
-            setListScrollPosition(p)
+        viewModelScope.launch {
+            savedStateHandle.getStateFlow(STATE_KEY_QUERY, "")
+                .collectLatest { query ->
+                    setNewSearchQuery(query)
+                }
         }
-        savedStateHandle.get<FoodCategory>(STATE_KEY_SELECTED_CATEGORY)?.let { c ->
-            setSelectedCategory(c)
+        viewModelScope.launch {
+            savedStateHandle.getStateFlow<FoodCategory?>(STATE_KEY_SELECTED_CATEGORY, null)
+                .collectLatest { category ->
+                    setSelectedCategory(category)
+                }
         }
 
         if (state.value.recipeListScrollPosition != 0) {
@@ -97,6 +112,18 @@ class RecipeListViewModel @Inject constructor(
         } else {
             event(NewSearchEvent)
         }
+    }
+
+    private fun handleRecipeListPositionChanged(position: Int) {
+        setRecipeScrollPosition(position)
+        if (checkReachEndOfTheList(position)) {
+            increaseRecipePage()
+        }
+    }
+
+    private suspend fun handleNewPage(page: Int) {
+        setRecipeListPage(page)
+        fetchNextRecipePage(page)
     }
 
     private suspend fun restoreState() {
@@ -114,16 +141,19 @@ class RecipeListViewModel @Inject constructor(
             }.launchIn(viewModelScope)
     }
 
-    private suspend fun newSearch() {
-        // New search. Reset the state
+    private suspend fun fetchNewSearchRecipes() {
         resetSearchState()
+        fetchRecipes()
+    }
 
+    private suspend fun fetchRecipes() {
+        Timber.d("fetchRecipes page[%s] query[%s]", state.value.page, state.value.query)
         searchRecipesUsecase.get().invoke(page = state.value.page, query = state.value.query)
             .onEach { dataState ->
                 _state.update { it.copy(loading = dataState.loading) }
 
                 dataState.data?.let { list ->
-                    _state.update { it.copy(recipes = list) }
+                    appendRecipes(list)
                 }
 
                 dataState.error?.let { error ->
@@ -149,109 +179,105 @@ class RecipeListViewModel @Inject constructor(
         _state.update { it.copy(errors = errors) }
     }
 
-    private suspend fun nextPage(index: Int) {
-        if ((index + 1) < (state.value.page * PAGE_SIZE) || state.value.loading) return
-        if ((state.value.recipeListScrollPosition + 1) < (state.value.page * PAGE_SIZE)) return
-
-        incrementPage()
-        if (state.value.page <= 1) return
-
-        fetchRecipes()
-    }
-
-    private suspend fun fetchRecipes() {
-        searchRecipesUsecase.get()
-            .invoke(page = state.value.page, query = state.value.query)
-            .onEach { dataState ->
-                _state.update { it.copy(loading = dataState.loading) }
-
-                dataState.data?.let { list ->
-                    appendRecipes(list)
-                }
-
-                dataState.error?.let { error ->
-                    Timber.tag(TAG).e("nextPage: %s", error)
-                    //                        dialogQueue.appendErrorMessage("An Error Occurred", error)
-                }
-            }.launchIn(viewModelScope)
-    }
-
     /**
      * Append new recipes to the current list of recipes
      */
-    private fun appendRecipes(recipes: List<com.me.recipe.domain.features.recipe.model.Recipe>) {
+    private fun appendRecipes(recipes: List<Recipe>) {
         val current = ArrayList(state.value.recipes)
         current.addAll(recipes)
         _state.update { it.copy(recipes = current.toPersistentList()) }
     }
 
-    private fun incrementPage() {
-        setPage(state.value.page + 1)
+    private fun onChangeRecipeScrollPosition(position: Int) {
+        changeRecipeScrollPosition(position)
     }
 
-    private fun onChangeRecipeScrollPosition(position: Int) {
-        setListScrollPosition(position = position)
+    private fun changeRecipeScrollPosition(position: Int) {
+        savedStateHandle[STATE_KEY_LIST_POSITION] = position
     }
 
     /**
      * Called when a new search is executed.
      */
     private fun resetSearchState() {
-        _state.update {
-            it.copy(
-                recipes = persistentListOf(),
-                page = 1,
-            )
+        clearRecipeList()
+        changeRecipeListPage(INITIAL_RECIPE_LIST_PAGE)
+        onChangeRecipeScrollPosition(INITIAL_RECIPE_LIST_POSITION)
+        if (isNewSearchSetBySelectingFromCategoryList().not()) {
+            changeSelectedCategory(null)
         }
-        onChangeRecipeScrollPosition(0)
-        if (state.value.selectedCategory?.value != state.value.query) clearSelectedCategory()
     }
 
-    private fun clearSelectedCategory() {
-        setSelectedCategory(null)
-        _state.update { it.copy(selectedCategory = null) }
+    private fun isNewSearchSetBySelectingFromCategoryList(): Boolean {
+        return state.value.selectedCategory?.value == state.value.query
+    }
+
+    private fun clearRecipeList() {
+        _state.update {
+            it.copy(recipes = persistentListOf())
+        }
     }
 
     private fun onQueryChanged(query: String) {
-        setQuery(query)
+        savedStateHandle[STATE_KEY_QUERY] = query
     }
 
     private fun onSelectedCategoryChanged(category: String) {
-        val newCategory = getFoodCategory(category)
-        setSelectedCategory(newCategory)
+        changeSelectedCategory(getFoodCategory(category))
         onQueryChanged(category)
     }
 
-    private fun setListScrollPosition(position: Int) {
+    private fun setRecipeScrollPosition(position: Int) {
         _state.update { it.copy(recipeListScrollPosition = position) }
-        savedStateHandle.set(STATE_KEY_LIST_POSITION, position)
     }
 
-    private fun setPage(page: Int) {
+    private fun checkReachEndOfTheList(position: Int): Boolean {
+        if ((position + 1) < (state.value.page * PAGE_SIZE) || state.value.loading) return false
+        if ((state.value.recipeListScrollPosition + 1) < (state.value.page * PAGE_SIZE)) return false
+        return true
+    }
+
+    private fun increaseRecipePage() {
+        changeRecipeListPage(state.value.page + 1)
+    }
+
+    private fun changeRecipeListPage(page: Int) {
+        savedStateHandle[STATE_KEY_PAGE] = page
+    }
+
+    private fun setRecipeListPage(page: Int) {
         _state.update { it.copy(page = page) }
-        savedStateHandle.set(STATE_KEY_PAGE, page)
+    }
+
+    private suspend fun fetchNextRecipePage(page: Int) {
+        if (page <= 1) return
+        fetchRecipes()
+    }
+
+    private fun changeSelectedCategory(category: FoodCategory?) {
+        savedStateHandle[STATE_KEY_SELECTED_CATEGORY] = category
     }
 
     private fun setSelectedCategory(category: FoodCategory?) {
         _state.update { it.copy(selectedCategory = category) }
-        savedStateHandle.set(STATE_KEY_SELECTED_CATEGORY, category)
     }
 
-    private fun setQuery(query: String) {
+    private fun setNewSearchQuery(query: String) {
         _state.update { it.copy(query = query) }
-        savedStateHandle[STATE_KEY_QUERY] = query
     }
 
-    fun onCategoryScrollPositionChanged(position: Int, offset: Int) {
+    private fun onCategoryScrollPositionChanged(position: Int, offset: Int) {
         _state.update { it.copy(categoryScrollPosition = position to offset) }
     }
 
-    fun toggleDarkTheme() {
+    private fun toggleDarkTheme() {
         settingsDataStore.toggleTheme()
     }
 
     companion object {
         const val PAGE_SIZE = 30
+        const val INITIAL_RECIPE_LIST_POSITION = 0
+        const val INITIAL_RECIPE_LIST_PAGE = 1
 
         const val STATE_KEY_PAGE = "recipe.state.page.key"
         const val STATE_KEY_QUERY = "recipe.state.query.key"

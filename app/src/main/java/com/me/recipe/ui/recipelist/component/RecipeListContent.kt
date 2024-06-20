@@ -86,12 +86,11 @@ private fun RecipeList(
     ) {
         itemsIndexed(state.recipes) { index, recipe ->
             event.invoke(RecipeListContract.Event.OnChangeRecipeScrollPosition(index))
-            event.invoke(RecipeListContract.Event.NextPageEvent(index))
 
             RecipeCard(
                 recipe = recipe,
                 onClick = {
-                    if (recipe.id != com.me.recipe.domain.features.recipe.model.Recipe.EMPTY.id) {
+                    if (recipe.id != Recipe.EMPTY.id) {
                         navigateToRecipePage(
                             recipe.id,
                             recipe.title,

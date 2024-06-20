@@ -1,7 +1,7 @@
-package com.me.recipe.cache.recipe.mapper
+package com.me.recipe.data.features.recipe.mapper
 
 import com.me.recipe.cache.recipe.model.RecipeEntity
-import com.me.recipe.core.utils.DateUtils
+import com.me.recipe.shared.utils.DateUtils
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.util.DomainMapper
 import kotlinx.collections.immutable.toPersistentList
@@ -18,8 +18,8 @@ class RecipeEntityMapper :
             publisher = model.publisher,
             sourceUrl = model.sourceUrl,
             ingredients = convertIngredientsToList(model.ingredients).toPersistentList(),
-            dateAdded = DateUtils.longToDate(model.dateAdded),
-            dateUpdated = DateUtils.longToDate(model.dateUpdated),
+            date = model.date,
+            dateTimestamp = model.dateTimestamp,
         )
     }
 
@@ -32,8 +32,8 @@ class RecipeEntityMapper :
             publisher = domainModel.publisher,
             sourceUrl = domainModel.sourceUrl,
             ingredients = convertIngredientListToString(domainModel.ingredients),
-            dateAdded = DateUtils.dateToLong(domainModel.dateAdded),
-            dateUpdated = DateUtils.dateToLong(domainModel.dateUpdated),
+            date = domainModel.date,
+            dateTimestamp = domainModel.dateTimestamp,
             dateCached = DateUtils.dateToLong(DateUtils.createTimestamp()),
         )
     }
@@ -59,7 +59,7 @@ class RecipeEntityMapper :
         return list
     }
 
-    fun fromEntityList(initial: List<RecipeEntity>): List<Recipe> {
+    fun toDomainList(initial: List<RecipeEntity>): List<Recipe> {
         return initial.map { mapToDomainModel(it) }
     }
 

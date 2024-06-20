@@ -16,7 +16,7 @@ import androidx.core.app.NotificationManagerCompat
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.me.recipe.R
-import com.me.recipe.core.utils.TAG
+import com.me.recipe.shared.utils.TAG
 import com.me.recipe.util.extention.encodeToUtf8
 import timber.log.Timber
 

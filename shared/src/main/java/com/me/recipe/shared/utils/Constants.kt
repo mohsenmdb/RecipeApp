@@ -1,4 +1,4 @@
-package com.me.recipe.core.utils
+package com.me.recipe.shared.utils
 
 const val TAG = "@@-->"
 

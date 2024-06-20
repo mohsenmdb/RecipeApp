@@ -1,6 +1,6 @@
 package com.me.recipe.network.core.interceptors
 
-import com.me.recipe.core.datastore.UserDataStore
+import com.me.recipe.shared.datastore.UserDataStore
 import javax.inject.Inject
 import okhttp3.Interceptor
 import okhttp3.Response

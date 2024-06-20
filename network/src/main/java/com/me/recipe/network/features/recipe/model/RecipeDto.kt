@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class RecipeNetwork(
+data class RecipeDto(
     @Json(name = "pk") var pk: Int?,
     @Json(name = "title") var title: String?,
     @Json(name = "publisher") var publisher: String?,
@@ -12,6 +12,6 @@ data class RecipeNetwork(
     @Json(name = "rating") var rating: Int = 0,
     @Json(name = "source_url") var sourceUrl: String?,
     @Json(name = "ingredients") var ingredients: List<String> = emptyList(),
-    @Json(name = "long_date_added") var longDateAdded: Long?,
-    @Json(name = "long_date_updated") var longDateUpdated: Long?,
+    @Json(name = "long_date_updated") var dateUpdatedTimeStamp: Long?,
+    @Json(name = "date_updated") var dateUpdated: String?,
 )

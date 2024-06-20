@@ -45,7 +45,7 @@ spotless {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":shared"))
     implementation(project(":network"))
     implementation(project(":domain"))
     implementation(project(":cache"))
@@ -53,5 +53,6 @@ dependencies {
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.timber)
     compileOnly(libs.spotless.gradlePlugin)
 }

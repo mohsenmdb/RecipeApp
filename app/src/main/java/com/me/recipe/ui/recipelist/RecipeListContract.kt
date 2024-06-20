@@ -14,7 +14,6 @@ interface RecipeListContract :
     sealed interface Event {
         //        data class OnPhoneNumberChanged(val phoneNumber: String) : Event
         data object NewSearchEvent : Event
-        data class NextPageEvent(val index: Int) : Event
         data class OnQueryChanged(val query: String) : Event
         data class OnSelectedCategoryChanged(val category: String) : Event
         data class OnCategoryScrollPositionChanged(val position: Int, val offset: Int) : Event
@@ -30,7 +29,7 @@ interface RecipeListContract :
 
     @Stable
     data class State(
-        val recipes: ImmutableList<com.me.recipe.domain.features.recipe.model.Recipe> = persistentListOf(),
+        val recipes: ImmutableList<Recipe> = persistentListOf(),
         val errors: GenericDialogInfo? = null,
         val query: String = "",
         val selectedCategory: FoodCategory? = null,
@@ -42,7 +41,7 @@ interface RecipeListContract :
     ) {
         companion object {
             fun testData() = State(
-                recipes = persistentListOf(com.me.recipe.domain.features.recipe.model.Recipe.testData()),
+                recipes = persistentListOf(Recipe.testData()),
                 query = FoodCategory.CHICKEN.name,
                 selectedCategory = FoodCategory.CHICKEN,
             )

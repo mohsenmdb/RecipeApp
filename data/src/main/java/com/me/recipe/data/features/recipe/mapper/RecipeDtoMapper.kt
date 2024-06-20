@@ -1,14 +1,14 @@
 package com.me.recipe.data.features.recipe.mapper
 
-import com.me.recipe.core.utils.DateUtils
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.network.features.recipe.model.RecipeNetwork
+import com.me.recipe.domain.util.DomainMapper
+import com.me.recipe.network.features.recipe.model.RecipeDto
 import kotlinx.collections.immutable.toPersistentList
 
-class RecipeMapper :
-    com.me.recipe.domain.util.DomainMapper<RecipeNetwork, Recipe> {
+class RecipeDtoMapper :
+    DomainMapper<RecipeDto, Recipe> {
 
-    override fun mapToDomainModel(model: RecipeNetwork): Recipe {
+    override fun mapToDomainModel(model: RecipeDto): Recipe {
         return Recipe(
             id = model.pk ?: -1,
             title = model.title.orEmpty(),
@@ -17,13 +17,13 @@ class RecipeMapper :
             publisher = model.publisher.orEmpty(),
             sourceUrl = model.sourceUrl.orEmpty(),
             ingredients = model.ingredients.toPersistentList(),
-            dateAdded = DateUtils.longToDate(model.longDateAdded ?: 0),
-            dateUpdated = DateUtils.longToDate(model.longDateUpdated ?: 0),
+            date = model.dateUpdated.orEmpty(),
+            dateTimestamp = model.dateUpdatedTimeStamp ?: 0L,
         )
     }
 
-    override fun mapFromDomainModel(domainModel: Recipe): RecipeNetwork {
-        return RecipeNetwork(
+    override fun mapFromDomainModel(domainModel: Recipe): RecipeDto {
+        return RecipeDto(
             pk = domainModel.id,
             title = domainModel.title,
             featuredImage = domainModel.featuredImage,
@@ -31,16 +31,16 @@ class RecipeMapper :
             publisher = domainModel.publisher,
             sourceUrl = domainModel.sourceUrl,
             ingredients = domainModel.ingredients,
-            longDateAdded = DateUtils.dateToLong(domainModel.dateAdded),
-            longDateUpdated = DateUtils.dateToLong(domainModel.dateUpdated),
+            dateUpdated = domainModel.date,
+            dateUpdatedTimeStamp = domainModel.dateTimestamp,
         )
     }
 
-    fun toDomainList(initial: List<RecipeNetwork>): List<Recipe> {
+    fun toDomainList(initial: List<RecipeDto>): List<Recipe> {
         return initial.map { mapToDomainModel(it) }
     }
 
-    fun fromDomainList(initial: List<Recipe>): List<RecipeNetwork> {
+    fun fromDomainList(initial: List<Recipe>): List<RecipeDto> {
         return initial.map { mapFromDomainModel(it) }
     }
 }

@@ -1,7 +1,6 @@
 package com.me.recipe.domain.features.recipe.model
 
 import androidx.compose.runtime.Immutable
-import java.util.Date
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -14,8 +13,8 @@ data class Recipe(
     val rating: Int,
     val sourceUrl: String,
     val ingredients: ImmutableList<String>,
-    val dateAdded: Date,
-    val dateUpdated: Date,
+    val date: String,
+    val dateTimestamp: Long,
 ) {
     companion object {
         val EMPTY = Recipe(
@@ -26,8 +25,8 @@ data class Recipe(
             rating = 0,
             sourceUrl = "",
             ingredients = persistentListOf(),
-            dateAdded = Date(),
-            dateUpdated = Date(),
+            date = "",
+            dateTimestamp = 0L,
         )
 
         fun testData() = Recipe(
@@ -38,8 +37,8 @@ data class Recipe(
             rating = 15,
             sourceUrl = "Url",
             ingredients = persistentListOf("Soup", "Meat", "Rice"),
-            dateAdded = Date(),
-            dateUpdated = Date(),
+            date = "",
+            dateTimestamp = 0L,
         )
     }
 }

@@ -45,7 +45,7 @@ spotless {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":shared"))
     api(platform(libs.compose.bom))
     implementation(libs.compose.runtime)
 

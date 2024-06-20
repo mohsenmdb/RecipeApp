@@ -1,7 +1,7 @@
 package com.me.recipe.cache.di
 
 import android.content.Context
-import com.me.recipe.core.datastore.UserDataStore
+import com.me.recipe.shared.datastore.UserDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +15,5 @@ object UserDataStoreModule {
     @Provides
     @Singleton
     internal fun provideUserDataStore(@ApplicationContext context: Context): UserDataStore =
-        com.me.recipe.core.datastore.UserDataStore(context)
+        UserDataStore(context)
 }

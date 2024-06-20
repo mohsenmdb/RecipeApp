@@ -1,6 +1,7 @@
 package com.me.recipe.data.core.di
 
-import com.me.recipe.data.features.recipe.mapper.RecipeMapper
+import com.me.recipe.data.features.recipe.mapper.RecipeDtoMapper
+import com.me.recipe.data.features.recipe.mapper.RecipeEntityMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,13 @@ object RecipeMapperModule {
 
     @Singleton
     @Provides
-    fun provideRecipeMapper(): RecipeMapper {
-        return RecipeMapper()
+    fun provideRecipeDtoMapper(): RecipeDtoMapper {
+        return RecipeDtoMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCacheRecipeMapper(): RecipeEntityMapper {
+        return RecipeEntityMapper()
     }
 }
