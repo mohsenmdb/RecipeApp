@@ -14,6 +14,7 @@ interface RecipeListContract :
     sealed interface Event {
         //        data class OnPhoneNumberChanged(val phoneNumber: String) : Event
         data object NewSearchEvent : Event
+        data object SearchClearEvent : Event
         data class OnQueryChanged(val query: String) : Event
         data class OnSelectedCategoryChanged(val category: String) : Event
         data class OnCategoryScrollPositionChanged(val position: Int, val offset: Int) : Event

@@ -1,8 +1,8 @@
 package com.me.recipe.domain.features.recipe.usecases
 
-import com.me.recipe.shared.data.DataState
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipe.repository.RecipeRepository
+import com.me.recipe.shared.data.DataState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 

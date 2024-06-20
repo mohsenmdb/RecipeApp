@@ -85,6 +85,7 @@ internal fun RecipeListScreen(
                 categoryScrollPosition = state.categoryScrollPosition,
                 onQueryChanged = { event.invoke(RecipeListContract.Event.OnQueryChanged(it)) },
                 newSearch = { event.invoke(RecipeListContract.Event.NewSearchEvent) },
+                onSearchClearClicked = { event.invoke(RecipeListContract.Event.SearchClearEvent) },
                 onSelectedCategoryChanged = {
                     event.invoke(RecipeListContract.Event.OnSelectedCategoryChanged(it))
                 },

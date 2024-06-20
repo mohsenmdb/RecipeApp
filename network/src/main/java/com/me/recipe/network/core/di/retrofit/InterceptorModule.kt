@@ -1,7 +1,7 @@
 package com.me.recipe.network.core.di.retrofit
 
-import com.me.recipe.shared.datastore.UserDataStore
 import com.me.recipe.network.core.interceptors.AuthenticationInterceptor
+import com.me.recipe.shared.datastore.UserDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
