@@ -1,7 +1,7 @@
 package com.me.recipe.data.core.di
 
-import com.me.recipe.data.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.features.recipe.mapper.RecipeDtoMapper
+import com.me.recipe.data.features.recipe.mapper.RecipeEntityMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

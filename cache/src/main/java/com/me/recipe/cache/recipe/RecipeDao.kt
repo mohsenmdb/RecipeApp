@@ -10,7 +10,7 @@ import com.me.recipe.core.utils.RECIPE_PAGINATION_PAGE_SIZE
 @Dao
 interface RecipeDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(recipe: RecipeEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -38,7 +38,7 @@ interface RecipeDao {
         SELECT * FROM recipes
         WHERE title LIKE '%' || :query || '%'
         OR ingredients LIKE '%' || :query || '%'
-        ORDER BY date_updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
+        ORDER BY id ASC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """,
     )
     suspend fun searchRecipes(
@@ -53,7 +53,7 @@ interface RecipeDao {
     @Query(
         """
         SELECT * FROM recipes
-        ORDER BY date_updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
+        ORDER BY id ASC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
     """,
     )
     suspend fun getAllRecipes(
@@ -69,7 +69,7 @@ interface RecipeDao {
         SELECT * FROM recipes
         WHERE title LIKE '%' || :query || '%'
         OR ingredients LIKE '%' || :query || '%'
-        ORDER BY date_updated DESC LIMIT (:page * :pageSize)
+        ORDER BY id ASC LIMIT (:page * :pageSize)
         """,
     )
     suspend fun restoreRecipes(
@@ -84,7 +84,7 @@ interface RecipeDao {
     @Query(
         """
         SELECT * FROM recipes
-        ORDER BY date_updated DESC LIMIT (:page * :pageSize)
+        ORDER BY id ASC LIMIT (:page * :pageSize)
     """,
     )
     suspend fun restoreAllRecipes(

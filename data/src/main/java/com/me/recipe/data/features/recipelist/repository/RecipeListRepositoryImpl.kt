@@ -1,11 +1,12 @@
 package com.me.recipe.data.features.recipelist.repository
 
 import com.me.recipe.cache.recipe.RecipeDao
-import com.me.recipe.data.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.core.data.DataState
 import com.me.recipe.core.utils.RECIPE_PAGINATION_PAGE_SIZE
 import com.me.recipe.data.features.recipe.mapper.RecipeDtoMapper
+import com.me.recipe.data.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.domain.features.recipe.model.Recipe
+import com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
 import com.me.recipe.network.features.recipe.RecipeApi
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
@@ -18,10 +19,9 @@ class RecipeListRepositoryImpl @Inject constructor(
     private val recipeDao: RecipeDao,
     private val recipeApi: RecipeApi,
     private val entityMapper: RecipeEntityMapper,
-    private val recipeDtoMapper: RecipeDtoMapper,
-) : com.me.recipe.domain.features.recipelist.repository.RecipeListRepository {
-    override suspend fun search(page: Int, query: String):
-        Flow<DataState<ImmutableList<Recipe>>> = flow {
+    private val dtoMapper: RecipeDtoMapper,
+) : RecipeListRepository {
+    override suspend fun search(page: Int, query: String): Flow<DataState<ImmutableList<Recipe>>> = flow {
         try {
             emit(DataState.loading())
             val recipes = getRecipesFromNetwork(page = page, query = query)
@@ -44,7 +44,7 @@ class RecipeListRepositoryImpl @Inject constructor(
             )
         }
 
-        val list = entityMapper.fromEntityList(cacheResult).toPersistentList()
+        val list = entityMapper.toDomainList(cacheResult).toPersistentList()
         emit(DataState.success(list))
     }
 
@@ -71,7 +71,7 @@ class RecipeListRepositoryImpl @Inject constructor(
                 }
 
                 // emit List<Recipe> from cache
-                val list = entityMapper.fromEntityList(cacheResult).toPersistentList()
+                val list = entityMapper.toDomainList(cacheResult).toPersistentList()
                 emit(DataState.success(list))
             } catch (e: Exception) {
                 emit(DataState.error(e.message ?: "Unknown Error"))
@@ -87,11 +87,7 @@ class RecipeListRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getRecipesFromNetwork(page: Int, query: String): List<Recipe> {
-        return recipeDtoMapper.toDomainList(
-            recipeApi.search(
-                page = page,
-                query = query,
-            ).results,
-        )
+        val recipes = recipeApi.search(page = page, query = query).results
+        return dtoMapper.toDomainList(recipes)
     }
 }

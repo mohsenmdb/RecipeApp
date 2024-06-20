@@ -34,17 +34,11 @@ data class RecipeEntity(
     @ColumnInfo(name = "ingredients")
     var ingredients: String = "",
 
-    /**
-     * Value from API
-     */
-    @ColumnInfo(name = "date_added")
-    var dateAdded: Long,
+    @ColumnInfo(name = "date")
+    var date: String,
 
-    /**
-     * Value from API
-     */
-    @ColumnInfo(name = "date_updated")
-    var dateUpdated: Long,
+    @ColumnInfo(name = "date_timestamp")
+    var dateTimestamp: Long,
 
     /**
      * The date this recipe was "refreshed" in the cache.

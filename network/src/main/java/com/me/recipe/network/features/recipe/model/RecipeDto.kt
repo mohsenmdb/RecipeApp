@@ -12,6 +12,6 @@ data class RecipeDto(
     @Json(name = "rating") var rating: Int = 0,
     @Json(name = "source_url") var sourceUrl: String?,
     @Json(name = "ingredients") var ingredients: List<String> = emptyList(),
-    @Json(name = "long_date_added") var longDateAdded: Long?,
-    @Json(name = "long_date_updated") var longDateUpdated: Long?,
+    @Json(name = "long_date_updated") var dateUpdatedTimeStamp: Long?,
+    @Json(name = "date_updated") var dateUpdated: String?,
 )

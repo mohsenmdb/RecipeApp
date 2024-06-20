@@ -241,7 +241,7 @@ class RecipeListViewModel @Inject constructor(
         changeRecipeListPage(state.value.page + 1)
     }
 
-    private fun changeRecipeListPage(page : Int) {
+    private fun changeRecipeListPage(page: Int) {
         savedStateHandle[STATE_KEY_PAGE] = page
     }
 

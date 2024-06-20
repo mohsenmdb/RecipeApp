@@ -1,8 +1,8 @@
 package com.me.recipe.data.core.di
 
 import com.me.recipe.cache.recipe.RecipeDao
-import com.me.recipe.data.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.features.recipe.mapper.RecipeDtoMapper
+import com.me.recipe.data.features.recipe.mapper.RecipeEntityMapper
 import com.me.recipe.data.features.recipelist.repository.RecipeListRepositoryImpl
 import com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
 import com.me.recipe.network.features.recipe.RecipeApi
