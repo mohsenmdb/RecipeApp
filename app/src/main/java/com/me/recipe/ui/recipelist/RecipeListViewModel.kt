@@ -4,11 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.R
-import com.me.recipe.shared.datastore.SettingsDataStore
-import com.me.recipe.shared.utils.TAG
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
+import com.me.recipe.shared.datastore.SettingsDataStore
+import com.me.recipe.shared.utils.TAG
 import com.me.recipe.ui.component.util.FoodCategory
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
@@ -21,6 +21,7 @@ import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnChangeRecipeScroll
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnQueryChanged
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnSelectedCategoryChanged
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.RestoreStateEvent
+import com.me.recipe.ui.recipelist.RecipeListContract.Event.SearchClearEvent
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.ToggleDarkTheme
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,7 @@ import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -59,6 +61,7 @@ class RecipeListViewModel @Inject constructor(
             try {
                 when (event) {
                     is NewSearchEvent -> fetchNewSearchRecipes()
+                    is SearchClearEvent -> clearSearch()
                     is ToggleDarkTheme -> toggleDarkTheme()
                     is RestoreStateEvent -> restoreState()
                     is OnQueryChanged -> onQueryChanged(event.query)
@@ -124,6 +127,13 @@ class RecipeListViewModel @Inject constructor(
     private suspend fun handleNewPage(page: Int) {
         setRecipeListPage(page)
         fetchNextRecipePage(page)
+    }
+
+    private suspend fun clearSearch() {
+        onQueryChanged("")
+        // delay to let query set empty, before isNewSearchSetBySelectingFromCategoryList() call
+        delay(50)
+        fetchNewSearchRecipes()
     }
 
     private suspend fun restoreState() {

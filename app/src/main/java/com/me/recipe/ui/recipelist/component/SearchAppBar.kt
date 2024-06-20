@@ -4,6 +4,7 @@ package com.me.recipe.ui.recipelist.component
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +50,7 @@ internal fun SearchAppBar(
     categoryScrollPosition: Pair<Int, Int>,
     onQueryChanged: (String) -> Unit,
     newSearch: () -> Unit,
+    onSearchClearClicked: () -> Unit,
     onSelectedCategoryChanged: (String) -> Unit,
     onCategoryScrollPositionChanged: (Int, Int) -> Unit,
     onToggleTheme: () -> Unit,
@@ -68,7 +71,7 @@ internal fun SearchAppBar(
     ) {
         Column {
             Row(modifier = Modifier.fillMaxWidth()) {
-                SearchTextField(query, onQueryChanged, newSearch)
+                SearchTextField(query, onQueryChanged, newSearch, onSearchClearClicked)
                 MoreButton(onToggleTheme)
             }
             FoodChipsRow(
@@ -87,6 +90,7 @@ private fun RowScope.SearchTextField(
     query: String,
     onQueryChanged: (String) -> Unit,
     newSearch: () -> Unit,
+    onSearchClearClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
@@ -116,6 +120,15 @@ private fun RowScope.SearchTextField(
                 Icons.Filled.Search,
                 contentDescription = "search",
             )
+        },
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                Icon(
+                    Icons.Filled.Clear,
+                    contentDescription = "Clear",
+                    modifier = Modifier.clickable { onSearchClearClicked() },
+                )
+            }
         },
         textStyle = TextStyle(
             color = MaterialTheme.colorScheme.onSurface,
@@ -169,6 +182,7 @@ private fun SearchAppBarPreview() {
                 onCategoryScrollPositionChanged = { _, _ -> },
                 onSelectedCategoryChanged = {},
                 onToggleTheme = {},
+                onSearchClearClicked = {},
             )
         }
     }

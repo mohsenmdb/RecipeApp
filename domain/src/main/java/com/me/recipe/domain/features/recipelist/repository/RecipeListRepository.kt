@@ -1,7 +1,7 @@
 package com.me.recipe.domain.features.recipelist.repository
 
-import com.me.recipe.shared.data.DataState
 import com.me.recipe.domain.features.recipe.model.Recipe
+import com.me.recipe.shared.data.DataState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 
