@@ -10,7 +10,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -22,6 +21,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.ui.home.HomeContract
+import com.me.recipe.ui.navigation.HomeDestination
 import com.me.recipe.ui.recipelist.component.RecipeCard
 import kotlinx.collections.immutable.ImmutableList
 
@@ -41,13 +41,13 @@ fun HomeSlider(
             state = pagerState,
             modifier = modifier.padding(top = 50.dp, bottom = 32.dp),
             contentPadding = PaddingValues(horizontal = 8.dp),
-            pageSpacing = 20.dp
+            pageSpacing = 20.dp,
         ) { index ->
             val pagerOffset = (pagerState.currentPage - index) + pagerState.currentPageOffsetFraction
             val imageSize by animateFloatAsState(
                 targetValue = if (pagerOffset != 0.0f) 1f else 1.05f,
                 animationSpec = tween(durationMillis = 200),
-                label = ""
+                label = "",
             )
             RecipeCard(
                 recipe = recipes[index],
@@ -59,6 +59,7 @@ fun HomeSlider(
                 },
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope,
+                recipePageStarter = HomeDestination.route,
                 modifier = Modifier.then(
                     if (pagerState.currentPage == index) {
                         Modifier
@@ -69,7 +70,7 @@ fun HomeSlider(
                             }
                     } else {
                         Modifier.fillMaxWidth()
-                    }
+                    },
                 ),
             )
         }

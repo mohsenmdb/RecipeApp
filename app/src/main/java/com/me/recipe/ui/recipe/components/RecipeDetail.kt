@@ -19,8 +19,9 @@ import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
 internal fun RecipeDetail(
-    recipe: com.me.recipe.domain.features.recipe.model.Recipe,
+    recipe: Recipe,
     isLoading: Boolean,
+    startDestination: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
@@ -34,12 +35,14 @@ internal fun RecipeDetail(
             RecipeImage(
                 id = recipe.id,
                 image = recipe.featuredImage,
+                startDestination = startDestination,
                 animatedVisibilityScope = animatedVisibilityScope,
             )
             RecipeContent(
                 recipe = recipe,
                 animatedVisibilityScope = animatedVisibilityScope,
                 isLoading = isLoading,
+                startDestination = startDestination,
             )
         }
     }
@@ -51,9 +54,10 @@ private fun RecipeDetailPreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
             RecipeDetail(
-                recipe = com.me.recipe.domain.features.recipe.model.Recipe.testData(),
+                recipe = Recipe.testData(),
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
+                startDestination = "",
                 isLoading = false,
             )
         }

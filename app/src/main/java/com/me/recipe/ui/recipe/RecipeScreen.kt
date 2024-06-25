@@ -70,6 +70,7 @@ internal fun RecipeScreen(
         RecipeDetail(
             recipe = state.recipe,
             isLoading = state.loading,
+            startDestination = state.startDestination,
             sharedTransitionScope = sharedTransitionScope,
             animatedVisibilityScope = animatedVisibilityScope,
             modifier = Modifier.padding(padding),

@@ -71,7 +71,7 @@ internal fun RecipeListScreen(
                 }
             }
             is RecipeListContract.Effect.NavigateToRecipePage -> {
-                navigateToRecipePage(effect.recipe.id, effect.recipe.title, effect.recipe.featuredImage)
+                navigateToRecipePage(effect.recipe)
             }
         }
     }
@@ -123,7 +123,7 @@ private fun RecipeListScreenPreview() {
                 event = {},
                 effect = flowOf(),
                 state = RecipeListContract.State.testData(),
-                navigateToRecipePage = { _, _, _ -> },
+                navigateToRecipePage = { _ -> },
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
             )

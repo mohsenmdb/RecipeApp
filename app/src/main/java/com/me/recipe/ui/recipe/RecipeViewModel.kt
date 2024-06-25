@@ -38,6 +38,7 @@ class RecipeViewModel @Inject constructor(
     private val itemId: Int = checkNotNull(savedStateHandle[RecipeDestination.ITEM_ID_ARG])
     private val itemTitle: String = checkNotNull(savedStateHandle[RecipeDestination.ITEM_TITLE_ARG])
     private val itemImage: String = checkNotNull(savedStateHandle[RecipeDestination.ITEM_IMAGE_ARG])
+    private val itemStartDestination: String = checkNotNull(savedStateHandle[RecipeDestination.ITEM_START_DESTINATION_ARG])
 
     init {
         viewModelScope.launch {
@@ -60,6 +61,7 @@ class RecipeViewModel @Inject constructor(
         _state.update {
             it.copy(
                 recipe = it.recipe.copy(id = itemId, title = itemTitle, featuredImage = itemImage),
+                startDestination = itemStartDestination,
             )
         }
     }

@@ -33,6 +33,7 @@ import com.me.recipe.ui.theme.RecipeTheme
 @Composable
 internal fun RecipeCard(
     recipe: Recipe,
+    recipePageStarter: String,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     sharedTransitionScope: SharedTransitionScope,
@@ -54,7 +55,7 @@ internal fun RecipeCard(
                     contentDescription = "recipe image",
                     modifier = Modifier
                         .sharedBounds(
-                            rememberSharedContentState(key = "image-${recipe.id}"),
+                            rememberSharedContentState(key = "image-${recipe.id}-$recipePageStarter"),
                             animatedVisibilityScope = animatedVisibilityScope,
                         )
                         .fillMaxWidth()
@@ -62,7 +63,7 @@ internal fun RecipeCard(
                         .testTag("testTag_RecipeCard_Image_${recipe.id}"),
                     contentScale = ContentScale.Crop,
                 )
-                RecipeInfoRow(recipe, animatedVisibilityScope)
+                RecipeInfoRow(recipe, animatedVisibilityScope, recipePageStarter)
             }
         }
     }
@@ -72,6 +73,7 @@ internal fun RecipeCard(
 private fun SharedTransitionScope.RecipeInfoRow(
     recipe: Recipe,
     animatedVisibilityScope: AnimatedVisibilityScope,
+    recipePageStarter: String,
 ) {
     Row(
         modifier = Modifier
@@ -82,7 +84,7 @@ private fun SharedTransitionScope.RecipeInfoRow(
             text = recipe.title,
             modifier = Modifier
                 .sharedBounds(
-                    rememberSharedContentState(key = "title-${recipe.id}"),
+                    rememberSharedContentState(key = "title-${recipe.id}-$recipePageStarter"),
                     animatedVisibilityScope = animatedVisibilityScope,
                 )
                 .fillMaxWidth(0.8f)
@@ -118,6 +120,7 @@ private fun RecipeCardPreview() {
                 onLongClick = {},
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
+                recipePageStarter = "",
             )
         }
     }

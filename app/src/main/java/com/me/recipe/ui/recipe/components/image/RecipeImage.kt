@@ -22,6 +22,7 @@ import com.me.recipe.ui.theme.RecipeTheme
 internal fun SharedTransitionScope.RecipeImage(
     id: Int,
     image: String,
+    startDestination: String,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
@@ -30,7 +31,7 @@ internal fun SharedTransitionScope.RecipeImage(
         contentDescription = "Recipe Featured Image",
         modifier = modifier
             .sharedBounds(
-                rememberSharedContentState(key = "image-$id"),
+                rememberSharedContentState(key = "image-$id-$startDestination"),
                 animatedVisibilityScope = animatedVisibilityScope,
             )
             .fillMaxWidth()
@@ -46,9 +47,10 @@ private fun RecipeImagePreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
             RecipeImage(
-                id = com.me.recipe.domain.features.recipe.model.Recipe.testData().id,
-                image = com.me.recipe.domain.features.recipe.model.Recipe.testData().featuredImage,
+                id = Recipe.testData().id,
+                image = Recipe.testData().featuredImage,
                 animatedVisibilityScope = it,
+                startDestination = "",
             )
         }
     }

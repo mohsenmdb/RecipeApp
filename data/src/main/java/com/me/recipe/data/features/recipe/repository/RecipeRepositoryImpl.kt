@@ -67,6 +67,7 @@ class RecipeRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getRecipeFromNetwork(recipeId: Int): Recipe {
-        return recipeDtoMapper.mapToDomainModel(recipeApi.get(recipeId))
+        val recipes = recipeApi.get(recipeId)
+        return recipeDtoMapper.mapToDomainModel(recipes)
     }
 }

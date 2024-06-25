@@ -10,6 +10,7 @@ interface RecipeApi {
     @GET("search")
     suspend fun search(
         @Query("page") page: Int,
+        @Query("size") size: Int,
         @Query("query") query: String,
     ): RecipeSearchResponse
 

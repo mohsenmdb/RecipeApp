@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipeListRepository {
     suspend fun search(page: Int, query: String): Flow<DataState<ImmutableList<Recipe>>>
+    suspend fun slider(): Flow<DataState<ImmutableList<Recipe>>>
     suspend fun restore(page: Int, query: String): Flow<DataState<ImmutableList<Recipe>>>
     suspend fun getTopRecipe(): Recipe
 }

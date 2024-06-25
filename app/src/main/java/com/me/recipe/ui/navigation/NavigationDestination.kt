@@ -16,6 +16,11 @@ object SplashDestination : NavigationDestination {
     override val titleRes = R.string.navigate_splash_title
 }
 
+object HomeDestination : NavigationDestination {
+    override val route = "Home"
+    override val titleRes = R.string.navigate_home_title
+}
+
 object RecipeListDestination : NavigationDestination {
     override val route = "RecipeList"
     override val titleRes = R.string.navigate_recipe_list_title
@@ -27,23 +32,31 @@ object RecipeDestination : NavigationDestination {
     const val ITEM_ID_ARG = "itemId"
     const val ITEM_TITLE_ARG = "itemTitle"
     const val ITEM_IMAGE_ARG = "itemImage"
-    val routeWithArgs = "$route/{$ITEM_ID_ARG}/{$ITEM_TITLE_ARG}/{$ITEM_IMAGE_ARG}"
+    const val ITEM_START_DESTINATION_ARG = "itemStartDestination"
+    val routeWithArgs =
+        "$route/{$ITEM_ID_ARG}/{$ITEM_TITLE_ARG}/{$ITEM_IMAGE_ARG}/{$ITEM_START_DESTINATION_ARG}"
     val arguments = listOf(
         navArgument(ITEM_ID_ARG) { type = NavType.IntType },
         navArgument(ITEM_TITLE_ARG) { type = NavType.StringType },
         navArgument(ITEM_IMAGE_ARG) { type = NavType.StringType },
+        navArgument(ITEM_START_DESTINATION_ARG) {
+            type = NavType.StringType
+            nullable = true
+            defaultValue = ""
+        },
     )
     val deepLinks = listOf(
-        navDeepLink { uriPattern = "recipe://composables.com/{$ITEM_ID_ARG}/{$ITEM_TITLE_ARG}/{$ITEM_IMAGE_ARG}" },
+        navDeepLink {
+            uriPattern =
+                "recipe://composables.com/{$ITEM_ID_ARG}/{$ITEM_TITLE_ARG}/{$ITEM_IMAGE_ARG}"
+        },
     )
-}
-
-object HomeDestination : NavigationDestination {
-    override val route = "Home"
-    override val titleRes = R.string.navigate_home_title
 }
 
 val bottomNavigationScreens = listOf(RecipeListDestination, HomeDestination)
+
+fun NavHostController.navigateTo(route: String) =
+    this.navigate(route)
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
@@ -51,9 +64,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         // avoid building up a large stack of destinations
         // on the back stack as users select items
         // we can use navController.graph.findStartDestination().id instead of RecipeListDestination.route (without splash)
-        popUpTo(
-            RecipeListDestination.route,
-        ) {
+        popUpTo(RecipeListDestination.route) {
             saveState = true
         }
         // Avoid multiple copies of the same destination when
@@ -62,6 +73,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         // Restore state when reselecting a previously selected item
         restoreState = true
     }
+
 fun NavHostController.navigateSingleTopFromSplash(route: String) =
     this.navigate(route) {
         popUpTo(SplashDestination.route) {

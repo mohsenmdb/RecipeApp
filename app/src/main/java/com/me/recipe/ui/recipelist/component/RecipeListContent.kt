@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.ui.component.util.GenericDialog
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
+import com.me.recipe.ui.navigation.RecipeListDestination
 import com.me.recipe.ui.recipelist.RecipeListContract
 import com.me.recipe.ui.recipelist.component.shimmer.RecipeListShimmer
 import com.me.recipe.ui.recipelist.showLoadingProgressBar
@@ -73,6 +74,7 @@ private fun RecipeList(
 
             RecipeCard(
                 recipe = recipe,
+                recipePageStarter = RecipeListDestination.route,
                 onClick = {
                     event.invoke(RecipeListContract.Event.ClickOnRecipeEvent(recipe))
                 },

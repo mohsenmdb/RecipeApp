@@ -8,6 +8,7 @@ import com.me.recipe.domain.features.recipelist.repository.RecipeListRepository
 import com.me.recipe.network.features.recipe.RecipeApi
 import com.me.recipe.shared.data.DataState
 import com.me.recipe.shared.utils.RECIPE_PAGINATION_PAGE_SIZE
+import com.me.recipe.shared.utils.RECIPE_SLIDER_PAGE_SIZE
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -43,6 +44,24 @@ class RecipeListRepositoryImpl @Inject constructor(
                 page = page,
             )
         }
+
+        val list = entityMapper.toDomainList(cacheResult).toPersistentList()
+        emit(DataState.success(list))
+    }
+    override suspend fun slider(): Flow<DataState<ImmutableList<Recipe>>> = flow {
+        try {
+            emit(DataState.loading())
+            val recipes = getRecipesFromNetwork(page = 1, size = RECIPE_SLIDER_PAGE_SIZE)
+            recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
+        } catch (e: Exception) {
+            emit(DataState.error(e))
+        }
+
+        // query the cache
+        val cacheResult = recipeDao.getAllRecipes(
+            pageSize = RECIPE_SLIDER_PAGE_SIZE,
+            page = 1,
+        )
 
         val list = entityMapper.toDomainList(cacheResult).toPersistentList()
         emit(DataState.success(list))
@@ -86,8 +105,8 @@ class RecipeListRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getRecipesFromNetwork(page: Int, query: String): List<Recipe> {
-        val recipes = recipeApi.search(page = page, query = query).results
+    private suspend fun getRecipesFromNetwork(page: Int, query: String = "", size: Int = RECIPE_PAGINATION_PAGE_SIZE): List<Recipe> {
+        val recipes = recipeApi.search(page = page, query = query, size = size).results
         return dtoMapper.toDomainList(recipes)
     }
 }

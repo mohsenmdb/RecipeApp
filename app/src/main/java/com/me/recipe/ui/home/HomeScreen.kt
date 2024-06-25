@@ -70,7 +70,7 @@ internal fun HomeScreen(
                 }
             }
             is HomeContract.Effect.NavigateToRecipePage -> {
-                navigateToRecipePage(effect.recipe.id, effect.recipe.title, effect.recipe.featuredImage)
+                navigateToRecipePage(effect.recipe)
             }
         }
     }
@@ -83,7 +83,6 @@ internal fun HomeScreen(
         },
         modifier = modifier,
     ) { padding ->
-
         HomeContent(
             padding = padding,
             state = state,
@@ -103,7 +102,7 @@ private fun RecipeListScreenPreview() {
                 event = {},
                 effect = flowOf(),
                 state = HomeContract.State.testData(),
-                navigateToRecipePage = { _, _, _ -> },
+                navigateToRecipePage = { _ -> },
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
             )

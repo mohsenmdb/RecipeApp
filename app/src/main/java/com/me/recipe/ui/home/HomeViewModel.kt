@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.R
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
+import com.me.recipe.domain.features.recipelist.usecases.SliderRecipesUsecase
 import com.me.recipe.shared.datastore.SettingsDataStore
 import com.me.recipe.shared.utils.TAG
 import com.me.recipe.ui.component.util.GenericDialogInfo
@@ -33,7 +33,7 @@ import timber.log.Timber
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
+    private val sliderRecipesUsecase: Lazy<SliderRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
     private val settingsDataStore: SettingsDataStore,
     private val errorFormatter: Lazy<ErrorFormatter>,
@@ -94,7 +94,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun fetchRecipes() {
-        searchRecipesUsecase.get().invoke(page = TOP_RECIPES_PAGE)
+        sliderRecipesUsecase.get().invoke()
             .onEach { dataState ->
                 _state.update { it.copy(loading = dataState.loading) }
 
