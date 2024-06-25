@@ -56,7 +56,7 @@ class RecipeRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            emit(DataState.error(e.message ?: "Unknown Error"))
+            emit(DataState.error(e))
         }
     }
 

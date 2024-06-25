@@ -23,6 +23,8 @@ import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnSelectedCategoryCh
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.RestoreStateEvent
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.SearchClearEvent
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.ToggleDarkTheme
+import com.me.recipe.util.errorformater.ErrorFormatter
+import com.me.recipe.util.errorformater.exceptions.RecipeDataException
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -48,6 +50,7 @@ class RecipeListViewModel @Inject constructor(
     private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
     private val settingsDataStore: SettingsDataStore,
+    private val errorFormatter: Lazy<ErrorFormatter>,
 ) : ViewModel(), RecipeListContract {
 
     private val _state = MutableStateFlow(RecipeListContract.State(loading = true))
@@ -67,6 +70,7 @@ class RecipeListViewModel @Inject constructor(
                     is OnQueryChanged -> onQueryChanged(event.query)
                     is OnSelectedCategoryChanged -> onSelectedCategoryChanged(event.category)
                     is OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
+                    is Event.ClickOnRecipeEvent -> handleOnRecipeClicked(event.recipe)
                     is OnCategoryScrollPositionChanged ->
                         onCategoryScrollPositionChanged(event.position, event.offset)
                     is LongClickOnRecipeEvent ->
@@ -114,6 +118,15 @@ class RecipeListViewModel @Inject constructor(
             event(RestoreStateEvent)
         } else {
             event(NewSearchEvent)
+        }
+    }
+
+    private fun handleOnRecipeClicked(recipe: Recipe) {
+        try {
+            if (recipe.id != Recipe.EMPTY.id) throw RecipeDataException()
+            effectChannel.trySend(RecipeListContract.Effect.NavigateToRecipePage(recipe))
+        } catch (e: Exception) {
+            effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(errorFormatter.get().format(e)))
         }
     }
 
@@ -167,7 +180,7 @@ class RecipeListViewModel @Inject constructor(
                 }
 
                 dataState.error?.let { error ->
-                    showErrorDialog(error)
+                    showErrorDialog(errorFormatter.get().format(error))
                 }
             }.launchIn(viewModelScope)
     }

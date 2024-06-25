@@ -38,12 +38,12 @@ object RecipeDestination : NavigationDestination {
     )
 }
 
-object ComingSoonDestination : NavigationDestination {
-    override val route = "ComingSoon"
-    override val titleRes = R.string.navigate_coming_soon_title
+object HomeDestination : NavigationDestination {
+    override val route = "Home"
+    override val titleRes = R.string.navigate_home_title
 }
 
-val bottomNavigationScreens = listOf(RecipeListDestination, ComingSoonDestination)
+val bottomNavigationScreens = listOf(RecipeListDestination, HomeDestination)
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {

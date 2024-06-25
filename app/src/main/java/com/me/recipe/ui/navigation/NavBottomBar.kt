@@ -48,8 +48,8 @@ internal fun NavBottomBar(navController: NavHostController) {
             )
             NavigationBarItem(
                 icon = { Icon(Icons.Filled.Face, contentDescription = null) },
-                label = { Text(stringResource(R.string.coming)) },
-                selected = currentDestination?.route == ComingSoonDestination.route,
+                label = { Text(stringResource(R.string.home)) },
+                selected = currentDestination?.route == HomeDestination.route,
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.onSurface,
                     selectedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -58,7 +58,7 @@ internal fun NavBottomBar(navController: NavHostController) {
                     unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
                 onClick = {
-                    navController.navigateSingleTopTo(ComingSoonDestination.route)
+                    navController.navigateSingleTopTo(HomeDestination.route)
                 },
             )
         }

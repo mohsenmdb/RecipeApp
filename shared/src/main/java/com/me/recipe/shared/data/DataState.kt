@@ -2,7 +2,7 @@ package com.me.recipe.shared.data
 
 data class DataState<out T>(
     val data: T? = null,
-    val error: String? = null,
+    val error: Throwable? = null,
     val loading: Boolean = false,
 ) {
     companion object {
@@ -16,7 +16,7 @@ data class DataState<out T>(
         }
 
         fun <T> error(
-            message: String,
+            message: Throwable,
         ): DataState<T> {
             return DataState(
                 error = message,

@@ -27,7 +27,7 @@ class RecipeListRepositoryImpl @Inject constructor(
             val recipes = getRecipesFromNetwork(page = page, query = query)
             recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
         } catch (e: Exception) {
-            emit(DataState.error(e.message ?: "Unknown Error"))
+            emit(DataState.error(e))
         }
 
         // query the cache
@@ -74,7 +74,7 @@ class RecipeListRepositoryImpl @Inject constructor(
                 val list = entityMapper.toDomainList(cacheResult).toPersistentList()
                 emit(DataState.success(list))
             } catch (e: Exception) {
-                emit(DataState.error(e.message ?: "Unknown Error"))
+                emit(DataState.error(e))
             }
         }
 

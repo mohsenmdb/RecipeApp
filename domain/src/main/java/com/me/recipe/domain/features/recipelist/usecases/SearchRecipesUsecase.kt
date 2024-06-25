@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 class SearchRecipesUsecase @Inject constructor(
     private val recipeListRepository: RecipeListRepository,
 ) {
-    suspend operator fun invoke(page: Int, query: String): Flow<DataState<ImmutableList<Recipe>>> {
+    suspend operator fun invoke(page: Int, query: String = ""): Flow<DataState<ImmutableList<Recipe>>> {
         return recipeListRepository.search(page, query)
     }
 }

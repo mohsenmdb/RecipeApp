@@ -21,11 +21,13 @@ interface RecipeListContract :
         data object RestoreStateEvent : Event
         data object ToggleDarkTheme : Event
         data class LongClickOnRecipeEvent(val title: String) : Event
+        data class ClickOnRecipeEvent(val recipe: Recipe) : Event
         data class OnChangeRecipeScrollPosition(val index: Int) : Event
     }
 
     sealed interface Effect {
         data class ShowSnackbar(val message: String) : Effect
+        data class NavigateToRecipePage(val recipe: Recipe) : Effect
     }
 
     @Stable

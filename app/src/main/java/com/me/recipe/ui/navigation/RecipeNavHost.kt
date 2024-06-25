@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.me.recipe.ui.comingsoon.ComingSoonScreen
+import com.me.recipe.ui.home.HomeScreen
 import com.me.recipe.ui.recipe.RecipeScreen
 import com.me.recipe.ui.recipelist.RecipeListScreen
 import com.me.recipe.ui.splash.SplashScreen
@@ -52,8 +52,14 @@ internal fun RecipeNavHost(
                     animatedVisibilityScope = this@composable,
                 )
             }
-            composable(route = ComingSoonDestination.route) {
-                ComingSoonScreen()
+            composable(route = HomeDestination.route) {
+                HomeScreen(
+                    navigateToRecipePage = { id, title, image ->
+                        navController.navigateSingleTopTo("${RecipeDestination.route}/$id/$title/$image")
+                    },
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@composable,
+                )
             }
         }
     }
