@@ -53,7 +53,7 @@ internal fun HomeScreen(
     effect: Flow<HomeContract.Effect>,
     state: HomeContract.State,
     event: (HomeContract.Event) -> Unit,
-    navigateToRecipePage: (id: Int, title: String, image: String) -> Unit,
+    navigateToRecipePage: NavigateToRecipePage,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,

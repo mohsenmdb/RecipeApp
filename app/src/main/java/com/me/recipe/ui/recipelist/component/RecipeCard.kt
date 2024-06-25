@@ -37,11 +37,12 @@ internal fun RecipeCard(
     onLongClick: () -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         shape = MaterialTheme.shapes.small,
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier
+        modifier = modifier
             .padding(bottom = 6.dp, top = 6.dp, start = 12.dp, end = 12.dp)
             .fillMaxWidth()
             .combinedClickable(onClick = onClick, onLongClick = onLongClick),

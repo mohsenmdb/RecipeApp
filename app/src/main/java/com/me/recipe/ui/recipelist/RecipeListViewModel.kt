@@ -123,7 +123,7 @@ class RecipeListViewModel @Inject constructor(
 
     private fun handleOnRecipeClicked(recipe: Recipe) {
         try {
-            if (recipe.id != Recipe.EMPTY.id) throw RecipeDataException()
+            if (recipe.id == Recipe.EMPTY.id) throw RecipeDataException()
             effectChannel.trySend(RecipeListContract.Effect.NavigateToRecipePage(recipe))
         } catch (e: Exception) {
             effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(errorFormatter.get().format(e)))

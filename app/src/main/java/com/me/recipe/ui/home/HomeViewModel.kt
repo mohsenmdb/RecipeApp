@@ -51,7 +51,6 @@ class HomeViewModel @Inject constructor(
                 when (event) {
                     is Event.ToggleDarkTheme -> toggleDarkTheme()
                     is OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
-
                     is Event.ClickOnRecipeEvent -> handleOnRecipeClicked(event.recipe)
                     is LongClickOnRecipeEvent ->
                         effectChannel.trySend(HomeContract.Effect.ShowSnackbar(event.title))
@@ -83,7 +82,7 @@ class HomeViewModel @Inject constructor(
 
     private fun handleOnRecipeClicked(recipe: Recipe) {
         try {
-            if (recipe.id != Recipe.EMPTY.id) throw RecipeDataException()
+            if (recipe.id == Recipe.EMPTY.id) throw RecipeDataException()
             effectChannel.trySend(HomeContract.Effect.NavigateToRecipePage(recipe))
         } catch (e: Exception) {
             effectChannel.trySend(HomeContract.Effect.ShowSnackbar(errorFormatter.get().format(e)))

@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.ui.home.HomeContract
-import com.me.recipe.ui.recipelist.component.RecipeCard
 import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable
@@ -35,12 +34,9 @@ internal fun HomeContent(
             .padding(padding)
             .background(MaterialTheme.colorScheme.background),
     ) {
-        RecipeCard(
-            recipe = state.recipes[0],
-            onClick = {
-                event.invoke(HomeContract.Event.ClickOnRecipeEvent(state.recipes[0]))
-            },
-            onLongClick = { },
+        HomeSlider(
+            recipes = state.recipes,
+            event = event,
             sharedTransitionScope = sharedTransitionScope,
             animatedVisibilityScope = animatedVisibilityScope,
         )
