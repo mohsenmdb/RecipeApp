@@ -2,7 +2,7 @@ package com.me.recipe.ui.recipelist
 
 import androidx.compose.runtime.Stable
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.ui.component.util.FoodCategory
+import com.me.recipe.shared.utils.FoodCategory
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.util.compose.UnidirectionalViewModel
 import kotlinx.collections.immutable.ImmutableList

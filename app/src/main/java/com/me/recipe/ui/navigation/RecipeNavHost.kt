@@ -35,7 +35,7 @@ internal fun RecipeNavHost(
             composable(route = SplashDestination.route) {
                 SplashScreen(
                     navigateToRecipeList = {
-                        navController.navigateSingleTopFromSplash(RecipeListDestination.route)
+                        navController.navigateSingleTopFromSplash(HomeDestination.route)
                     },
                 )
             }

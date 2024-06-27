@@ -53,7 +53,7 @@ object RecipeDestination : NavigationDestination {
     )
 }
 
-val bottomNavigationScreens = listOf(RecipeListDestination, HomeDestination)
+val bottomNavigationScreens = listOf(HomeDestination, RecipeListDestination)
 
 fun NavHostController.navigateTo(route: String) =
     this.navigate(route)
@@ -64,7 +64,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         // avoid building up a large stack of destinations
         // on the back stack as users select items
         // we can use navController.graph.findStartDestination().id instead of RecipeListDestination.route (without splash)
-        popUpTo(RecipeListDestination.route) {
+        popUpTo(HomeDestination.route) {
             saveState = true
         }
         // Avoid multiple copies of the same destination when

@@ -8,11 +8,13 @@ import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
 import com.me.recipe.shared.datastore.SettingsDataStore
+import com.me.recipe.shared.utils.FoodCategory
+import com.me.recipe.shared.utils.RECIPE_PAGINATION_FIRST_PAGE
+import com.me.recipe.shared.utils.RECIPE_PAGINATION_PAGE_SIZE
 import com.me.recipe.shared.utils.TAG
-import com.me.recipe.ui.component.util.FoodCategory
+import com.me.recipe.shared.utils.getFoodCategory
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
-import com.me.recipe.ui.component.util.getFoodCategory
 import com.me.recipe.ui.recipelist.RecipeListContract.Event
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.LongClickOnRecipeEvent
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.NewSearchEvent
@@ -224,7 +226,7 @@ class RecipeListViewModel @Inject constructor(
      */
     private fun resetSearchState() {
         clearRecipeList()
-        changeRecipeListPage(INITIAL_RECIPE_LIST_PAGE)
+        changeRecipeListPage(RECIPE_PAGINATION_FIRST_PAGE)
         onChangeRecipeScrollPosition(INITIAL_RECIPE_LIST_POSITION)
         if (isNewSearchSetBySelectingFromCategoryList().not()) {
             changeSelectedCategory(null)
@@ -255,8 +257,8 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private fun checkReachEndOfTheList(position: Int): Boolean {
-        if ((position + 1) < (state.value.page * PAGE_SIZE) || state.value.loading) return false
-        if ((state.value.recipeListScrollPosition + 1) < (state.value.page * PAGE_SIZE)) return false
+        if ((position + 1) < (state.value.page * RECIPE_PAGINATION_PAGE_SIZE) || state.value.loading) return false
+        if ((state.value.recipeListScrollPosition + 1) < (state.value.page * RECIPE_PAGINATION_PAGE_SIZE)) return false
         return true
     }
 
@@ -298,9 +300,7 @@ class RecipeListViewModel @Inject constructor(
     }
 
     companion object {
-        const val PAGE_SIZE = 30
         const val INITIAL_RECIPE_LIST_POSITION = 0
-        const val INITIAL_RECIPE_LIST_PAGE = 1
 
         const val STATE_KEY_PAGE = "recipe.state.page.key"
         const val STATE_KEY_QUERY = "recipe.state.query.key"

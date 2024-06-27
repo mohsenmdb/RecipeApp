@@ -1,10 +1,9 @@
 package com.me.recipe.ui.home
 
 import androidx.compose.runtime.Stable
+import com.me.recipe.domain.features.recipe.model.CategoryRecipe
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.ui.component.util.GenericDialogInfo
-import com.me.recipe.ui.recipelist.RecipeListContract.Effect
-import com.me.recipe.ui.recipelist.RecipeListContract.Event
 import com.me.recipe.util.compose.UnidirectionalViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -26,18 +25,19 @@ interface HomeContract :
 
     @Stable
     data class State(
-        val recipes: ImmutableList<Recipe> = persistentListOf(),
+        val sliderRecipes: ImmutableList<Recipe> = persistentListOf(),
+        val categoriesRecipes: ImmutableList<CategoryRecipe> = persistentListOf(),
         val errors: GenericDialogInfo? = null,
         val loading: Boolean = false,
         var recipeListScrollPosition: Int = 0,
     ) {
         companion object {
             fun testData() = State(
-                recipes = persistentListOf(Recipe.testData()),
+                sliderRecipes = persistentListOf(Recipe.testData()),
             )
         }
     }
 }
 
 val HomeContract.State.showShimmer: Boolean
-    get() = loading && recipes.isEmpty()
+    get() = loading && sliderRecipes.isEmpty()

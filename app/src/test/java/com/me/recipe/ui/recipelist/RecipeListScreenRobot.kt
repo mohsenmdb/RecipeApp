@@ -11,11 +11,10 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.test.platform.app.InstrumentationRegistry
-import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.ui.component.util.FoodCategory
+import com.me.recipe.shared.utils.FoodCategory
+import com.me.recipe.shared.utils.getAllFoodCategories
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
-import com.me.recipe.ui.component.util.getAllFoodCategories
 import com.me.recipe.ui.utils.RobotTestRule
 import javax.inject.Inject
 import kotlinx.coroutines.delay
@@ -36,7 +35,7 @@ class RecipeListScreenRobot @Inject constructor() {
                     state = state,
                     sharedTransitionScope = this,
                     animatedVisibilityScope = it,
-                    navigateToRecipePage = { _, _, _ -> },
+                    navigateToRecipePage = { _ -> },
                 )
             }
         }
@@ -58,7 +57,7 @@ class RecipeListScreenRobot @Inject constructor() {
                     state = state,
                     sharedTransitionScope = this,
                     animatedVisibilityScope = it,
-                    navigateToRecipePage = { _, _, _ -> },
+                    navigateToRecipePage = { _ -> },
                 )
             }
             LaunchedEffect(Unit) {

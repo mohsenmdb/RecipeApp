@@ -36,9 +36,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.me.recipe.ui.component.util.FoodCategory
+import com.me.recipe.shared.utils.FoodCategory
+import com.me.recipe.shared.utils.getAllFoodCategories
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
-import com.me.recipe.ui.component.util.getAllFoodCategories
 import com.me.recipe.ui.recipelist.component.button.MoreButton
 import com.me.recipe.ui.recipelist.component.chip.FoodCategoryChip
 import com.me.recipe.ui.theme.RecipeTheme

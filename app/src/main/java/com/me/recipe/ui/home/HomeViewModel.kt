@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.R
 import com.me.recipe.domain.features.recipe.model.Recipe
+import com.me.recipe.domain.features.recipelist.usecases.CategoriesRecipesUsecase
 import com.me.recipe.domain.features.recipelist.usecases.SliderRecipesUsecase
 import com.me.recipe.shared.datastore.SettingsDataStore
 import com.me.recipe.shared.utils.TAG
+import com.me.recipe.shared.utils.getAllFoodCategories
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
 import com.me.recipe.ui.home.HomeContract.Event
@@ -34,6 +36,7 @@ import timber.log.Timber
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val sliderRecipesUsecase: Lazy<SliderRecipesUsecase>,
+    private val categoriesRecipesUsecase: Lazy<CategoriesRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
     private val settingsDataStore: SettingsDataStore,
     private val errorFormatter: Lazy<ErrorFormatter>,
@@ -70,7 +73,8 @@ class HomeViewModel @Inject constructor(
     init {
         // todo fix me
         viewModelScope.launch {
-            fetchRecipes()
+            fetchSliderRecipes()
+            fetchCategoryRecipes()
         }
         viewModelScope.launch {
             savedStateHandle.getStateFlow(STATE_KEY_LIST_POSITION, 0)
@@ -93,13 +97,26 @@ class HomeViewModel @Inject constructor(
         setRecipeScrollPosition(position)
     }
 
-    private suspend fun fetchRecipes() {
+    private suspend fun fetchSliderRecipes() {
         sliderRecipesUsecase.get().invoke()
             .onEach { dataState ->
                 _state.update { it.copy(loading = dataState.loading) }
 
                 dataState.data?.let { list ->
-                    _state.update { it.copy(recipes = list) }
+                    _state.update { it.copy(sliderRecipes = list) }
+                }
+
+                dataState.error?.let { error ->
+                    showErrorDialog(errorFormatter.get().format(error))
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    private suspend fun fetchCategoryRecipes() {
+        categoriesRecipesUsecase.get().invoke(getAllFoodCategories())
+            .onEach { dataState ->
+                dataState.data?.let { list ->
+                    _state.update { it.copy(categoriesRecipes = list) }
                 }
 
                 dataState.error?.let { error ->

@@ -32,21 +32,6 @@ internal fun NavBottomBar(navController: NavHostController) {
             containerColor = MaterialTheme.colorScheme.primaryContainer,
         ) {
             NavigationBarItem(
-                icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
-                label = { Text(stringResource(R.string.recipes)) },
-                selected = currentDestination?.route == RecipeListDestination.route,
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.onSurface,
-                    selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                    indicatorColor = MaterialTheme.colorScheme.tertiary,
-                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
-                onClick = {
-                    navController.navigateSingleTopTo(RecipeListDestination.route)
-                },
-            )
-            NavigationBarItem(
                 icon = { Icon(Icons.Filled.Face, contentDescription = null) },
                 label = { Text(stringResource(R.string.home)) },
                 selected = currentDestination?.route == HomeDestination.route,
@@ -59,6 +44,21 @@ internal fun NavBottomBar(navController: NavHostController) {
                 ),
                 onClick = {
                     navController.navigateSingleTopTo(HomeDestination.route)
+                },
+            )
+            NavigationBarItem(
+                icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
+                label = { Text(stringResource(R.string.recipes)) },
+                selected = currentDestination?.route == RecipeListDestination.route,
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.onSurface,
+                    selectedTextColor = MaterialTheme.colorScheme.onSurface,
+                    indicatorColor = MaterialTheme.colorScheme.tertiary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
+                onClick = {
+                    navController.navigateSingleTopTo(RecipeListDestination.route)
                 },
             )
         }
