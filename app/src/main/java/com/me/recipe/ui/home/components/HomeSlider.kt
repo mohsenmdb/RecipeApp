@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.ui.home.HomeContract
 import com.me.recipe.ui.navigation.HomeDestination
-import com.me.recipe.ui.recipelist.component.RecipeCard
 import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -39,8 +38,8 @@ fun HomeSlider(
     Box {
         HorizontalPager(
             state = pagerState,
-            modifier = modifier.padding(top = 50.dp, bottom = 32.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp),
+            modifier = modifier.padding(vertical = 26.dp),
+            contentPadding = PaddingValues(horizontal = 32.dp),
             pageSpacing = 20.dp,
         ) { index ->
             val pagerOffset = (pagerState.currentPage - index) + pagerState.currentPageOffsetFraction
@@ -49,7 +48,7 @@ fun HomeSlider(
                 animationSpec = tween(durationMillis = 200),
                 label = "",
             )
-            RecipeCard(
+            SliderCard(
                 recipe = recipes[index],
                 onClick = {
                     event.invoke(HomeContract.Event.ClickOnRecipeEvent(recipes[index]))
