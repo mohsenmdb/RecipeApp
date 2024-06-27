@@ -3,14 +3,16 @@ package com.me.recipe.data.features.recipe.mapper
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.util.DomainMapper
 import com.me.recipe.network.features.recipe.model.RecipeDto
+import java.util.UUID
 import kotlinx.collections.immutable.toPersistentList
 
 class RecipeDtoMapper :
     DomainMapper<RecipeDto, Recipe> {
 
-    override fun mapToDomainModel(model: RecipeDto): Recipe {
+    override fun mapToDomainModel(model: RecipeDto, uid: String?): Recipe {
         return Recipe(
             id = model.pk ?: -1,
+            uid = uid ?: UUID.randomUUID().toString(),
             title = model.title.orEmpty(),
             featuredImage = model.featuredImage.orEmpty(),
             rating = model.rating,

@@ -17,12 +17,12 @@ interface RecipeContract :
 
     @Stable
     data class State(
-        val recipe: com.me.recipe.domain.features.recipe.model.Recipe = com.me.recipe.domain.features.recipe.model.Recipe.EMPTY,
+        val recipe: Recipe = Recipe.EMPTY,
         val loading: Boolean = false,
     ) {
         companion object {
             fun testData() = State(
-                recipe = com.me.recipe.domain.features.recipe.model.Recipe.testData(),
+                recipe = Recipe.testData(),
             )
         }
     }

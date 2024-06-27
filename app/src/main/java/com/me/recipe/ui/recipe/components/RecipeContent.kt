@@ -41,7 +41,7 @@ internal fun SharedTransitionScope.RecipeContent(
             .padding(16.dp),
     ) {
         TitleRow(
-            id = recipe.id,
+            uid = recipe.uid,
             title = recipe.title,
             rank = recipe.rating.toString(),
             animatedVisibilityScope = animatedVisibilityScope,
@@ -61,7 +61,7 @@ internal fun SharedTransitionScope.RecipeContent(
 
 @Composable
 private fun SharedTransitionScope.TitleRow(
-    id: Int,
+    uid: String,
     title: String,
     rank: String,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -78,7 +78,7 @@ private fun SharedTransitionScope.TitleRow(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .sharedBounds(
-                    rememberSharedContentState(key = "title-$id"),
+                    rememberSharedContentState(key = "title-$uid"),
                     animatedVisibilityScope = animatedVisibilityScope,
                 )
                 .wrapContentWidth(Alignment.Start)

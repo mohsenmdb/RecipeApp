@@ -36,6 +36,7 @@ class RecipeViewModel @Inject constructor(
 
     // sent by navigation args
     private val itemId: Int = checkNotNull(savedStateHandle[RecipeDestination.ITEM_ID_ARG])
+    private val itemUid: String = checkNotNull(savedStateHandle[RecipeDestination.ITEM_UID_ARG])
     private val itemTitle: String = checkNotNull(savedStateHandle[RecipeDestination.ITEM_TITLE_ARG])
     private val itemImage: String = checkNotNull(savedStateHandle[RecipeDestination.ITEM_IMAGE_ARG])
 
@@ -43,7 +44,7 @@ class RecipeViewModel @Inject constructor(
         viewModelScope.launch {
             setOfflineData()
             try {
-                getRecipe(itemId)
+                getRecipe(itemId, itemUid)
             } catch (e: Exception) {
                 _state.update { it.copy(loading = false) }
                 if (e.message != null) {
@@ -59,13 +60,13 @@ class RecipeViewModel @Inject constructor(
         if (itemTitle.isEmpty() && itemImage.isEmpty()) return
         _state.update {
             it.copy(
-                recipe = it.recipe.copy(id = itemId, title = itemTitle, featuredImage = itemImage),
+                recipe = it.recipe.copy(id = itemId, uid = itemUid, title = itemTitle, featuredImage = itemImage),
             )
         }
     }
 
-    private suspend fun getRecipe(id: Int) {
-        getRecipeUsecase.get().invoke(id, true).onEach { dataState ->
+    private suspend fun getRecipe(id: Int, uid: String) {
+        getRecipeUsecase.get().invoke(id, uid).onEach { dataState ->
             _state.update { it.copy(loading = dataState.loading) }
 
             dataState.data?.let { recipe ->

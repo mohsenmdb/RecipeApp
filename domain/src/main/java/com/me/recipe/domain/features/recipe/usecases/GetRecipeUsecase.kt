@@ -14,8 +14,8 @@ class GetRecipeUsecase @Inject constructor(
 ) {
     suspend operator fun invoke(
         recipeId: Int,
-        isNetworkAvailable: Boolean,
+        uid: String,
     ): Flow<DataState<Recipe>> {
-        return recipeRepository.getRecipe(recipeId, isNetworkAvailable)
+        return recipeRepository.getRecipe(recipeId, uid)
     }
 }

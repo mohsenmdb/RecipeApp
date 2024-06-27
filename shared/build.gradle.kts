@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.compose.runtime)
 
     implementation(libs.datastore.preferences)
+    implementation(libs.kotlinx.collections.immutable)
 
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)

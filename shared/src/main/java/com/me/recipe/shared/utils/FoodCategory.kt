@@ -1,4 +1,7 @@
-package com.me.recipe.ui.component.util
+package com.me.recipe.shared.utils
+
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 enum class FoodCategory(val value: String) {
     CHICKEN("Chicken"),
@@ -12,8 +15,8 @@ enum class FoodCategory(val value: String) {
     DONUT("Donut"),
 }
 
-fun getAllFoodCategories(): List<FoodCategory> {
-    return FoodCategory.entries
+fun getAllFoodCategories(): ImmutableList<FoodCategory> {
+    return FoodCategory.entries.toPersistentList()
 }
 
 fun getFoodCategory(value: String): FoodCategory {
