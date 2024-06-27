@@ -17,21 +17,22 @@ import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.ui.component.image.CoilImage
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.ui.theme.RecipeTheme
+import timber.log.Timber
 
 @Composable
 internal fun SharedTransitionScope.RecipeImage(
-    id: Int,
+    uid: String,
     image: String,
-    startDestination: String,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
+    Timber.d("RecipeImage RecipeUid = $uid")
     CoilImage(
         data = image,
         contentDescription = "Recipe Featured Image",
         modifier = modifier
             .sharedBounds(
-                rememberSharedContentState(key = "image-$id-$startDestination"),
+                rememberSharedContentState(key = "image-$uid"),
                 animatedVisibilityScope = animatedVisibilityScope,
             )
             .fillMaxWidth()
@@ -47,10 +48,9 @@ private fun RecipeImagePreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
             RecipeImage(
-                id = Recipe.testData().id,
+                uid = Recipe.testData().uid,
                 image = Recipe.testData().featuredImage,
                 animatedVisibilityScope = it,
-                startDestination = "",
             )
         }
     }

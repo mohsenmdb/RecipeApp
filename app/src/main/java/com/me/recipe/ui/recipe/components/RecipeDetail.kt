@@ -21,7 +21,6 @@ import com.me.recipe.ui.theme.RecipeTheme
 internal fun RecipeDetail(
     recipe: Recipe,
     isLoading: Boolean,
-    startDestination: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
@@ -33,16 +32,14 @@ internal fun RecipeDetail(
     ) {
         with(sharedTransitionScope) {
             RecipeImage(
-                id = recipe.id,
+                uid = recipe.uid,
                 image = recipe.featuredImage,
-                startDestination = startDestination,
                 animatedVisibilityScope = animatedVisibilityScope,
             )
             RecipeContent(
                 recipe = recipe,
                 animatedVisibilityScope = animatedVisibilityScope,
                 isLoading = isLoading,
-                startDestination = startDestination,
             )
         }
     }
@@ -57,7 +54,6 @@ private fun RecipeDetailPreview() {
                 recipe = Recipe.testData(),
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
-                startDestination = "",
                 isLoading = false,
             )
         }

@@ -4,14 +4,16 @@ import com.me.recipe.cache.recipe.model.RecipeEntity
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.util.DomainMapper
 import com.me.recipe.shared.utils.DateUtils
+import java.util.UUID
 import kotlinx.collections.immutable.toPersistentList
 
 class RecipeEntityMapper :
     DomainMapper<RecipeEntity, Recipe> {
 
-    override fun mapToDomainModel(model: RecipeEntity): Recipe {
+    override fun mapToDomainModel(model: RecipeEntity, uid: String?): Recipe {
         return Recipe(
             id = model.id,
+            uid = uid ?: UUID.randomUUID().toString(),
             title = model.title,
             featuredImage = model.featuredImage,
             rating = model.rating,

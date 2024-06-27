@@ -18,7 +18,6 @@ interface RecipeContract :
     @Stable
     data class State(
         val recipe: Recipe = Recipe.EMPTY,
-        val startDestination: String = "",
         val loading: Boolean = false,
     ) {
         companion object {

@@ -32,14 +32,14 @@ object RecipeDestination : NavigationDestination {
     const val ITEM_ID_ARG = "itemId"
     const val ITEM_TITLE_ARG = "itemTitle"
     const val ITEM_IMAGE_ARG = "itemImage"
-    const val ITEM_START_DESTINATION_ARG = "itemStartDestination"
+    const val ITEM_UID_ARG = "itemUid"
     val routeWithArgs =
-        "$route/{$ITEM_ID_ARG}/{$ITEM_TITLE_ARG}/{$ITEM_IMAGE_ARG}/{$ITEM_START_DESTINATION_ARG}"
+        "$route/{$ITEM_ID_ARG}/{$ITEM_TITLE_ARG}/{$ITEM_IMAGE_ARG}/{$ITEM_UID_ARG}"
     val arguments = listOf(
         navArgument(ITEM_ID_ARG) { type = NavType.IntType },
         navArgument(ITEM_TITLE_ARG) { type = NavType.StringType },
         navArgument(ITEM_IMAGE_ARG) { type = NavType.StringType },
-        navArgument(ITEM_START_DESTINATION_ARG) {
+        navArgument(ITEM_UID_ARG) {
             type = NavType.StringType
             nullable = true
             defaultValue = ""

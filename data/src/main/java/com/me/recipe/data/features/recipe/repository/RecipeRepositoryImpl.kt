@@ -20,7 +20,7 @@ class RecipeRepositoryImpl @Inject constructor(
 ) : RecipeRepository {
     override suspend fun getRecipe(
         recipeId: Int,
-        isNetworkAvailable: Boolean,
+        uid: String,
     ): Flow<DataState<Recipe>> = flow {
         try {
             emit(DataState.loading())
@@ -28,25 +28,19 @@ class RecipeRepositoryImpl @Inject constructor(
             // just to show loading, cache is fast
             delay(1000)
 
-            var recipe = getRecipeFromCache(recipeId = recipeId)
+            var recipe = getRecipeFromCache(recipeId = recipeId, uid = uid)
 
             if (recipe != null) {
                 emit(DataState.success(recipe))
             } else {
                 // if the recipe is null, it means it was not in the cache for some reason. So get from network.
-                if (isNetworkAvailable) {
-                    // get recipe from network
-                    val networkRecipe = getRecipeFromNetwork(recipeId) // dto -> domain
-
-                    // insert into cache
-                    recipeDao.insertRecipe(
-                        // map domain -> entity
-                        entityMapper.mapFromDomainModel(networkRecipe),
-                    )
-                }
-
+                val networkRecipe = getRecipeFromNetwork(recipeId)
+                // insert into cache
+                recipeDao.insertRecipe(
+                    entityMapper.mapFromDomainModel(networkRecipe),
+                )
                 // get from cache
-                recipe = getRecipeFromCache(recipeId = recipeId)
+                recipe = getRecipeFromCache(recipeId = recipeId, uid = uid)
 
                 // emit and finish
                 if (recipe != null) {
@@ -60,9 +54,9 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getRecipeFromCache(recipeId: Int): Recipe? {
+    private suspend fun getRecipeFromCache(recipeId: Int, uid: String): Recipe? {
         return recipeDao.getRecipeById(recipeId)?.let { recipeEntity ->
-            entityMapper.mapToDomainModel(recipeEntity)
+            entityMapper.mapToDomainModel(recipeEntity, uid)
         }
     }
 

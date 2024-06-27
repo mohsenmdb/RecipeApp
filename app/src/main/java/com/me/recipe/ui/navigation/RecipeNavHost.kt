@@ -22,8 +22,8 @@ internal fun RecipeNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
-    fun navigateToRecipePage(recipe: Recipe, startDestination: String) {
-        navController.navigateTo("${RecipeDestination.route}/${recipe.id}/${recipe.title}/${recipe.featuredImage.encodeToUtf8()}/$startDestination")
+    fun navigateToRecipePage(recipe: Recipe) {
+        navController.navigateTo("${RecipeDestination.route}/${recipe.id}/${recipe.title}/${recipe.featuredImage.encodeToUtf8()}/${recipe.uid}")
     }
 
     SharedTransitionLayout {
@@ -41,7 +41,7 @@ internal fun RecipeNavHost(
             }
             composable(route = RecipeListDestination.route) {
                 RecipeListScreen(
-                    navigateToRecipePage = { navigateToRecipePage(it, RecipeListDestination.route) },
+                    navigateToRecipePage = { navigateToRecipePage(it) },
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this@composable,
                 )
@@ -58,7 +58,7 @@ internal fun RecipeNavHost(
             }
             composable(route = HomeDestination.route) {
                 HomeScreen(
-                    navigateToRecipePage = { navigateToRecipePage(it, HomeDestination.route) },
+                    navigateToRecipePage = { navigateToRecipePage(it) },
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this@composable,
                 )

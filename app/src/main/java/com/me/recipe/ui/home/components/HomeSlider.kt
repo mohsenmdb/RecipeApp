@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.ui.home.HomeContract
-import com.me.recipe.ui.navigation.HomeDestination
 import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -58,7 +57,6 @@ fun HomeSlider(
                 },
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope,
-                recipePageStarter = HomeDestination.route,
                 modifier = Modifier.then(
                     if (pagerState.currentPage == index) {
                         Modifier

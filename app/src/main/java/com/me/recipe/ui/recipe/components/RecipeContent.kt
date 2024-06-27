@@ -32,7 +32,6 @@ import kotlinx.collections.immutable.ImmutableList
 internal fun SharedTransitionScope.RecipeContent(
     recipe: com.me.recipe.domain.features.recipe.model.Recipe,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    startDestination: String,
     isLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -42,12 +41,11 @@ internal fun SharedTransitionScope.RecipeContent(
             .padding(16.dp),
     ) {
         TitleRow(
-            id = recipe.id,
+            uid = recipe.uid,
             title = recipe.title,
             rank = recipe.rating.toString(),
             animatedVisibilityScope = animatedVisibilityScope,
             isLoading = isLoading,
-            startDestination = startDestination,
         )
         if (!isLoading) {
             RecipeInfoView(
@@ -63,12 +61,11 @@ internal fun SharedTransitionScope.RecipeContent(
 
 @Composable
 private fun SharedTransitionScope.TitleRow(
-    id: Int,
+    uid: String,
     title: String,
     rank: String,
     animatedVisibilityScope: AnimatedVisibilityScope,
     isLoading: Boolean,
-    startDestination: String,
 ) {
     Row(
         modifier = Modifier
@@ -81,7 +78,7 @@ private fun SharedTransitionScope.TitleRow(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .sharedBounds(
-                    rememberSharedContentState(key = "title-$id-$startDestination"),
+                    rememberSharedContentState(key = "title-$uid"),
                     animatedVisibilityScope = animatedVisibilityScope,
                 )
                 .wrapContentWidth(Alignment.Start)
@@ -141,7 +138,6 @@ private fun RecipeContentPreview() {
             RecipeContent(
                 recipe = com.me.recipe.domain.features.recipe.model.Recipe.testData(),
                 animatedVisibilityScope = it,
-                startDestination = "",
                 isLoading = false,
             )
         }
