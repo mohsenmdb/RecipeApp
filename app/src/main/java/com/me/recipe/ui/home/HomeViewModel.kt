@@ -70,7 +70,6 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        // todo fix me
         viewModelScope.launch {
             fetchSliderRecipes()
             fetchCategoriesRecipes()
@@ -112,7 +111,6 @@ class HomeViewModel @Inject constructor(
     private suspend fun fetchCategoriesRecipes() {
         categoriesRecipesUsecase.get().invoke(getAllFoodCategories())
             .onEach { dataState ->
-                Timber.d("HomeContent fetchCategoriesRecipes: %s", dataState.loading)
                 _state.update { it.copy(categoriesLoading = dataState.loading) }
                 dataState.data?.let { list ->
                     _state.update { it.copy(categoriesRecipes = list) }

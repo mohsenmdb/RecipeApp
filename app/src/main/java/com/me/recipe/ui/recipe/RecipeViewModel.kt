@@ -3,7 +3,6 @@ package com.me.recipe.ui.recipe
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.me.recipe.shared.utils.TAG
 import com.me.recipe.ui.navigation.RecipeDestination
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,8 +49,6 @@ class RecipeViewModel @Inject constructor(
                 if (e.message != null) {
                     effectChannel.trySend(RecipeContract.Effect.ShowSnackbar(e.message!!))
                 }
-            } finally {
-                Timber.tag(TAG).d("launchJob: finally called.")
             }
         }
     }
