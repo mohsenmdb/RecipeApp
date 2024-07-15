@@ -19,6 +19,7 @@ import com.me.recipe.ui.component.util.DefaultSnackbar
 import com.me.recipe.ui.component.util.NavigateToRecipePage
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.ui.home.components.HomeContent
+import com.me.recipe.ui.home.components.shimmer.HomeShimmer
 import com.me.recipe.ui.theme.RecipeTheme
 import com.me.recipe.util.compose.collectInLaunchedEffect
 import com.me.recipe.util.compose.use
@@ -83,6 +84,10 @@ internal fun HomeScreen(
         },
         modifier = modifier,
     ) { padding ->
+        if (state.loading){
+            HomeShimmer()
+            return@Scaffold
+        }
         HomeContent(
             padding = padding,
             state = state,
