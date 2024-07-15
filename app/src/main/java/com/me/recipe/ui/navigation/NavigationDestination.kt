@@ -59,11 +59,11 @@ fun NavHostController.navigateTo(route: String) =
     this.navigate(route)
 
 fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route) {
+    navigate(route) {
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
         // on the back stack as users select items
-        // we can use navController.graph.findStartDestination().id instead of RecipeListDestination.route (without splash)
+        // we can use graph.findStartDestination().id instead of RecipeListDestination.route (without splash)
         popUpTo(HomeDestination.route) {
             saveState = true
         }
@@ -75,7 +75,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
     }
 
 fun NavHostController.navigateSingleTopFromSplash(route: String) =
-    this.navigate(route) {
+    navigate(route) {
         popUpTo(SplashDestination.route) {
             inclusive = true
         }

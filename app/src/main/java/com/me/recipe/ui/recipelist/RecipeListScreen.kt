@@ -2,6 +2,7 @@
 
 package com.me.recipe.ui.recipelist
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -16,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.me.recipe.R
 import com.me.recipe.ui.component.util.DefaultSnackbar
+import com.me.recipe.ui.component.util.NavigateToHomePage
 import com.me.recipe.ui.component.util.NavigateToRecipePage
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.ui.recipelist.component.RecipeListContent
@@ -31,6 +33,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun RecipeListScreen(
     navigateToRecipePage: NavigateToRecipePage,
+    navigateToHomePage: NavigateToHomePage,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
@@ -42,6 +45,7 @@ internal fun RecipeListScreen(
         state = state,
         event = event,
         modifier = modifier,
+        navigateToHomePage = navigateToHomePage,
         navigateToRecipePage = navigateToRecipePage,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
@@ -54,6 +58,7 @@ internal fun RecipeListScreen(
     effect: Flow<RecipeListContract.Effect>,
     state: RecipeListContract.State,
     event: (RecipeListContract.Event) -> Unit,
+    navigateToHomePage: NavigateToHomePage,
     navigateToRecipePage: NavigateToRecipePage,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -62,6 +67,10 @@ internal fun RecipeListScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val actionOk = stringResource(id = R.string.ok)
+
+    BackHandler {
+        navigateToHomePage.invoke()
+    }
 
     effect.collectInLaunchedEffect { effect ->
         when (effect) {
@@ -124,6 +133,7 @@ private fun RecipeListScreenPreview() {
                 effect = flowOf(),
                 state = RecipeListContract.State.testData(),
                 navigateToRecipePage = { _ -> },
+                navigateToHomePage = {},
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
             )

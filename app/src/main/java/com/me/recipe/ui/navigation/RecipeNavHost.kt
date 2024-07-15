@@ -39,9 +39,17 @@ internal fun RecipeNavHost(
                     },
                 )
             }
+            composable(route = HomeDestination.route) {
+                HomeScreen(
+                    navigateToRecipePage = { navigateToRecipePage(it) },
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@composable,
+                )
+            }
             composable(route = RecipeListDestination.route) {
                 RecipeListScreen(
                     navigateToRecipePage = { navigateToRecipePage(it) },
+                    navigateToHomePage = { navController.navigateSingleTopTo(HomeDestination.route) },
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this@composable,
                 )
@@ -52,13 +60,6 @@ internal fun RecipeNavHost(
                 deepLinks = RecipeDestination.deepLinks,
             ) {
                 RecipeScreen(
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedVisibilityScope = this@composable,
-                )
-            }
-            composable(route = HomeDestination.route) {
-                HomeScreen(
-                    navigateToRecipePage = { navigateToRecipePage(it) },
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this@composable,
                 )
