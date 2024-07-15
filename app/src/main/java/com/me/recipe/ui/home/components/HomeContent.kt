@@ -28,8 +28,6 @@ internal fun HomeContent(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
-    if (state.sliderRecipes.isEmpty()) return
-    if (state.categoriesRecipes.isEmpty()) return
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

@@ -4,10 +4,12 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,10 +19,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -91,7 +96,7 @@ internal fun HomeShimmer(
 private fun HomeShimmerContent(
     padding: Dp,
     imageHeight: Dp,
-    brush: Brush
+    brush: Brush,
 ) {
     Column(modifier = Modifier.padding(padding)) {
         HomeSliderShimmer(imageHeight, brush)
@@ -101,13 +106,13 @@ private fun HomeShimmerContent(
 
 @Composable
 private fun RecipeCategoriesShimmer(
-    brush: Brush
+    brush: Brush,
 ) {
     (1..3).forEach { index ->
         Spacer(modifier = Modifier.height(16.dp))
         RecipeRowShimmer(
             isHorizontalItemType = index == 1,
-            brush = brush
+            brush = brush,
         )
     }
 }
@@ -117,28 +122,55 @@ private fun RecipeRowShimmer(
     isHorizontalItemType: Boolean,
     brush: Brush,
 ) {
-    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)){
-        (1..3).forEach { _ ->
-            Surface(
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier
-                    .padding(vertical = 8.dp),
-            ) {
-                Spacer(
+    Column {
+        RecipeRowTitleShimmer()
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            (1..3).forEach { _ ->
+                Surface(
+                    shape = MaterialTheme.shapes.small,
                     modifier = Modifier
-                        .width(if (isHorizontalItemType) 250.dp else 200.dp)
-                        .height(if (isHorizontalItemType)150.dp else 200.dp)
-                        .background(brush = brush),
-                )
+                        .padding(vertical = 8.dp),
+                ) {
+                    Spacer(
+                        modifier = Modifier
+                            .width(if (isHorizontalItemType) 250.dp else 200.dp)
+                            .height(if (isHorizontalItemType) 150.dp else 200.dp)
+                            .background(brush = brush),
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
+private fun RecipeRowTitleShimmer() {
+    val alpha by rememberInfiniteTransition(label = "").animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 1000
+                0.2f at 0
+                0.7f at 500
+            },
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "alpha",
+    )
+    Box(
+        modifier = Modifier
+            .width(100.dp)
+            .height(28.dp)
+            .clip(CircleShape)
+            .background(Color.LightGray.copy(alpha = alpha)),
+    )
+}
+
+@Composable
 private fun HomeSliderShimmer(
     imageHeight: Dp,
-    brush: Brush
+    brush: Brush,
 ) {
     Surface(
         shape = MaterialTheme.shapes.small,

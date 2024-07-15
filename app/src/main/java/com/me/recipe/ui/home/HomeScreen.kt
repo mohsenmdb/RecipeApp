@@ -5,6 +5,7 @@ package com.me.recipe.ui.home
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -84,8 +85,8 @@ internal fun HomeScreen(
         },
         modifier = modifier,
     ) { padding ->
-        if (state.loading){
-            HomeShimmer()
+        if (state.showShimmer) {
+            HomeShimmer(modifier = Modifier.padding(padding))
             return@Scaffold
         }
         HomeContent(

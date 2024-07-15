@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
     private val errorFormatter: Lazy<ErrorFormatter>,
 ) : ViewModel(), HomeContract {
 
-    private val _state = MutableStateFlow(HomeContract.State(loading = true))
+    private val _state = MutableStateFlow(HomeContract.State(sliderLoading = true, categoriesLoading = true))
     override val state: StateFlow<HomeContract.State> = _state.asStateFlow()
 
     private val effectChannel = Channel<HomeContract.Effect>(Channel.UNLIMITED)
@@ -60,7 +60,6 @@ class HomeViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Timber.tag(TAG).e("Exception: %s", e)
-                _state.update { it.copy(loading = false) }
                 if (e.message != null) {
                     effectChannel.trySend(HomeContract.Effect.ShowSnackbar(e.message!!))
                 }
@@ -74,7 +73,7 @@ class HomeViewModel @Inject constructor(
         // todo fix me
         viewModelScope.launch {
             fetchSliderRecipes()
-            fetchCategoryRecipes()
+            fetchCategoriesRecipes()
         }
         viewModelScope.launch {
             savedStateHandle.getStateFlow(STATE_KEY_LIST_POSITION, 0)
@@ -100,25 +99,24 @@ class HomeViewModel @Inject constructor(
     private suspend fun fetchSliderRecipes() {
         sliderRecipesUsecase.get().invoke()
             .onEach { dataState ->
-                _state.update { it.copy(loading = dataState.loading) }
-
+                _state.update { it.copy(sliderLoading = dataState.loading) }
                 dataState.data?.let { list ->
                     _state.update { it.copy(sliderRecipes = list) }
                 }
-
                 dataState.error?.let { error ->
                     showErrorDialog(errorFormatter.get().format(error))
                 }
             }.launchIn(viewModelScope)
     }
 
-    private suspend fun fetchCategoryRecipes() {
+    private suspend fun fetchCategoriesRecipes() {
         categoriesRecipesUsecase.get().invoke(getAllFoodCategories())
             .onEach { dataState ->
+                Timber.d("HomeContent fetchCategoriesRecipes: %s", dataState.loading)
+                _state.update { it.copy(categoriesLoading = dataState.loading) }
                 dataState.data?.let { list ->
                     _state.update { it.copy(categoriesRecipes = list) }
                 }
-
                 dataState.error?.let { error ->
                     showErrorDialog(errorFormatter.get().format(error))
                 }

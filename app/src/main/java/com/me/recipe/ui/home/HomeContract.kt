@@ -28,7 +28,8 @@ interface HomeContract :
         val sliderRecipes: ImmutableList<Recipe> = persistentListOf(),
         val categoriesRecipes: ImmutableList<CategoryRecipe> = persistentListOf(),
         val errors: GenericDialogInfo? = null,
-        val loading: Boolean = false,
+        val sliderLoading: Boolean = false,
+        val categoriesLoading: Boolean = false,
         var recipeListScrollPosition: Int = 0,
     ) {
         companion object {
@@ -40,4 +41,4 @@ interface HomeContract :
 }
 
 val HomeContract.State.showShimmer: Boolean
-    get() = loading && sliderRecipes.isEmpty()
+    get() = sliderLoading || categoriesLoading
