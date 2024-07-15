@@ -1,11 +1,11 @@
 @file:OptIn(ExperimentalSharedTransitionApi::class)
 
-package com.me.recipe.ui.recipelist
+package com.me.recipe.ui.home
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -17,11 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.me.recipe.R
 import com.me.recipe.ui.component.util.DefaultSnackbar
-import com.me.recipe.ui.component.util.NavigateToHomePage
 import com.me.recipe.ui.component.util.NavigateToRecipePage
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
-import com.me.recipe.ui.recipelist.component.RecipeListContent
-import com.me.recipe.ui.recipelist.component.SearchAppBar
+import com.me.recipe.ui.home.components.HomeContent
+import com.me.recipe.ui.home.components.shimmer.HomeShimmer
 import com.me.recipe.ui.theme.RecipeTheme
 import com.me.recipe.util.compose.collectInLaunchedEffect
 import com.me.recipe.util.compose.use
@@ -31,21 +30,19 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun RecipeListScreen(
+internal fun HomeScreen(
     navigateToRecipePage: NavigateToRecipePage,
-    navigateToHomePage: NavigateToHomePage,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
-    viewModel: RecipeListViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
-    RecipeListScreen(
+    HomeScreen(
         effect = effect,
         state = state,
         event = event,
         modifier = modifier,
-        navigateToHomePage = navigateToHomePage,
         navigateToRecipePage = navigateToRecipePage,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
@@ -54,11 +51,10 @@ internal fun RecipeListScreen(
 
 @Composable
 @OptIn(InternalCoroutinesApi::class)
-internal fun RecipeListScreen(
-    effect: Flow<RecipeListContract.Effect>,
-    state: RecipeListContract.State,
-    event: (RecipeListContract.Event) -> Unit,
-    navigateToHomePage: NavigateToHomePage,
+internal fun HomeScreen(
+    effect: Flow<HomeContract.Effect>,
+    state: HomeContract.State,
+    event: (HomeContract.Event) -> Unit,
     navigateToRecipePage: NavigateToRecipePage,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -68,18 +64,14 @@ internal fun RecipeListScreen(
     val coroutineScope = rememberCoroutineScope()
     val actionOk = stringResource(id = R.string.ok)
 
-    BackHandler {
-        navigateToHomePage.invoke()
-    }
-
     effect.collectInLaunchedEffect { effect ->
         when (effect) {
-            is RecipeListContract.Effect.ShowSnackbar -> {
+            is HomeContract.Effect.ShowSnackbar -> {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar(effect.message, actionOk)
                 }
             }
-            is RecipeListContract.Effect.NavigateToRecipePage -> {
+            is HomeContract.Effect.NavigateToRecipePage -> {
                 navigateToRecipePage(effect.recipe)
             }
         }
@@ -91,29 +83,13 @@ internal fun RecipeListScreen(
                 snackbarHostState.currentSnackbarData?.dismiss()
             }
         },
-        topBar = {
-            SearchAppBar(
-                query = state.query,
-                selectedCategory = state.selectedCategory,
-                categoryScrollPosition = state.categoryScrollPosition,
-                onQueryChanged = { event.invoke(RecipeListContract.Event.OnQueryChanged(it)) },
-                newSearch = { event.invoke(RecipeListContract.Event.NewSearchEvent) },
-                onSearchClearClicked = { event.invoke(RecipeListContract.Event.SearchClearEvent) },
-                onSelectedCategoryChanged = {
-                    event.invoke(RecipeListContract.Event.OnSelectedCategoryChanged(it))
-                },
-                onCategoryScrollPositionChanged = { position, offset ->
-                    event.invoke(
-                        RecipeListContract.Event.OnCategoryScrollPositionChanged(position, offset),
-                    )
-                },
-                onToggleTheme = { event.invoke(RecipeListContract.Event.ToggleDarkTheme) },
-            )
-        },
         modifier = modifier,
     ) { padding ->
-
-        RecipeListContent(
+        if (state.showShimmer) {
+            HomeShimmer(modifier = Modifier.padding(padding))
+            return@Scaffold
+        }
+        HomeContent(
             padding = padding,
             state = state,
             event = event,
@@ -128,12 +104,11 @@ internal fun RecipeListScreen(
 private fun RecipeListScreenPreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
-            RecipeListScreen(
+            HomeScreen(
                 event = {},
                 effect = flowOf(),
-                state = RecipeListContract.State.testData(),
+                state = HomeContract.State.testData(),
                 navigateToRecipePage = { _ -> },
-                navigateToHomePage = {},
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
             )

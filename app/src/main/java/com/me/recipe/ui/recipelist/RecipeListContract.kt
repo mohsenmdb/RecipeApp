@@ -2,7 +2,7 @@ package com.me.recipe.ui.recipelist
 
 import androidx.compose.runtime.Stable
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.ui.component.util.FoodCategory
+import com.me.recipe.shared.utils.FoodCategory
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.util.compose.UnidirectionalViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -21,11 +21,13 @@ interface RecipeListContract :
         data object RestoreStateEvent : Event
         data object ToggleDarkTheme : Event
         data class LongClickOnRecipeEvent(val title: String) : Event
+        data class ClickOnRecipeEvent(val recipe: Recipe) : Event
         data class OnChangeRecipeScrollPosition(val index: Int) : Event
     }
 
     sealed interface Effect {
         data class ShowSnackbar(val message: String) : Effect
+        data class NavigateToRecipePage(val recipe: Recipe) : Effect
     }
 
     @Stable

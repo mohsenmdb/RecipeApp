@@ -7,6 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Immutable
 data class Recipe(
     val id: Int,
+    val uid: String,
     val title: String,
     val publisher: String,
     val featuredImage: String,
@@ -19,6 +20,7 @@ data class Recipe(
     companion object {
         val EMPTY = Recipe(
             id = -1,
+            uid = "uid",
             title = "",
             publisher = "",
             featuredImage = "",
@@ -31,6 +33,7 @@ data class Recipe(
 
         fun testData() = Recipe(
             id = 1,
+            uid = "uid",
             title = "Thai Soup",
             publisher = "Thai Kitchen",
             featuredImage = "Url",

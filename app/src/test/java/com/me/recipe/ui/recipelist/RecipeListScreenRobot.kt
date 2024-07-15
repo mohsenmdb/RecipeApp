@@ -12,10 +12,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.test.platform.app.InstrumentationRegistry
 import com.me.recipe.domain.features.recipe.model.Recipe
-import com.me.recipe.ui.component.util.FoodCategory
+import com.me.recipe.shared.utils.FoodCategory
+import com.me.recipe.shared.utils.getAllFoodCategories
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
-import com.me.recipe.ui.component.util.getAllFoodCategories
 import com.me.recipe.ui.utils.RobotTestRule
 import javax.inject.Inject
 import kotlinx.coroutines.delay
@@ -36,7 +36,7 @@ class RecipeListScreenRobot @Inject constructor() {
                     state = state,
                     sharedTransitionScope = this,
                     animatedVisibilityScope = it,
-                    navigateToRecipePage = { _, _, _ -> },
+                    navigateToRecipePage = { _ -> },
                 )
             }
         }
@@ -58,7 +58,7 @@ class RecipeListScreenRobot @Inject constructor() {
                     state = state,
                     sharedTransitionScope = this,
                     animatedVisibilityScope = it,
-                    navigateToRecipePage = { _, _, _ -> },
+                    navigateToRecipePage = { _ -> },
                 )
             }
             LaunchedEffect(Unit) {
@@ -165,37 +165,37 @@ class RecipeListScreenRobot @Inject constructor() {
     }
 
     context (RobotTestRule)
-    private fun assertFirstRecipeImageIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
+    private fun assertFirstRecipeImageIsDisplayed(recipe: Recipe) {
         composeTestRule.onNodeWithTag("testTag_RecipeCard_Image_${recipe.id}", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertFirstRecipeTitleIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
+    private fun assertFirstRecipeTitleIsDisplayed(recipe: Recipe) {
         composeTestRule.onNodeWithText(recipe.title, useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertFirstRecipeRatingIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
+    private fun assertFirstRecipeRatingIsDisplayed(recipe: Recipe) {
         composeTestRule.onNodeWithText(recipe.rating.toString(), useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertLastRecipeImageIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
+    private fun assertLastRecipeImageIsDisplayed(recipe: Recipe) {
         composeTestRule.onNodeWithTag("testTag_RecipeCard_Image_${recipe.id}", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertLastRecipeTitleIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
+    private fun assertLastRecipeTitleIsDisplayed(recipe: Recipe) {
         composeTestRule.onNodeWithText(recipe.title, useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
-    private fun assertLastRecipeRatingIsDisplayed(recipe: com.me.recipe.domain.features.recipe.model.Recipe) {
+    private fun assertLastRecipeRatingIsDisplayed(recipe: Recipe) {
         composeTestRule.onNodeWithText(recipe.rating.toString(), useUnmergedTree = true)
             .assertIsDisplayed()
     }

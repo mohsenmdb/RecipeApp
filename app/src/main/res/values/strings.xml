@@ -3,12 +3,16 @@
     <string name="hide">Hide</string>
     <string name="recipe_error">something wrong with recipe</string>
     <string name="recipes">Recipes</string>
-    <string name="coming">Coming</string>
+    <string name="home">Home</string>
+
+    <string name="not_connected_to_internet">It seems you have no internet connection. Check your connection and try again!</string>
+    <string name="connection_timeout_exception">Something went wrong, please try again a bit later.</string>
+    <string name="server_error_retry">Error occurred, try again later</string>
 
     <string name="navigate_splash_title">Splash</string>
     <string name="navigate_recipe_list_title">Recipe list</string>
     <string name="navigate_recipe_title">Recipe</string>
-    <string name="navigate_coming_soon_title">Coming Soon</string>
+    <string name="navigate_home_title">Home</string>
     <string name="recipe_date_and_publisher">Updated %1$s by %2$s</string>
     <string name="something_went_wrong">something went wrong</string>
     <string name="ok">OK</string>
