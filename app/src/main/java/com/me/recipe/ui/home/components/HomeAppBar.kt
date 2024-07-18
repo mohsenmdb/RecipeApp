@@ -28,6 +28,7 @@ internal fun HomeAppBar(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.primaryContainer,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -37,6 +38,7 @@ internal fun HomeAppBar(
             Text(
                 text = stringResource(id = R.string.app_name),
                 style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Icon(
                 painter = painterResource(id = if (isDark)R.drawable.ic_light_mode_24 else R.drawable.ic_night_mode_24),

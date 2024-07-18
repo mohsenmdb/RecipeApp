@@ -4,6 +4,7 @@
     <string name="recipe_error">something wrong with recipe</string>
     <string name="recipes">Recipes</string>
     <string name="home">Home</string>
+    <string name="search">Search</string>
 
     <string name="not_connected_to_internet">It seems you have no internet connection. Check your connection and try again!</string>
     <string name="connection_timeout_exception">Something went wrong, please try again a bit later.</string>

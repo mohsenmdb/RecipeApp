@@ -4,8 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -23,6 +23,13 @@ import com.me.recipe.R
 internal fun NavBottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val itemColors = NavigationBarItemDefaults.colors(
+        indicatorColor = MaterialTheme.colorScheme.tertiary,
+        selectedIconColor = MaterialTheme.colorScheme.surface,
+        selectedTextColor = MaterialTheme.colorScheme.onSurface,
+        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
     AnimatedVisibility(
         visible = bottomNavigationScreens.any { it.route == currentDestination?.route },
         enter = expandVertically(),
@@ -32,31 +39,19 @@ internal fun NavBottomBar(navController: NavHostController) {
             containerColor = MaterialTheme.colorScheme.primaryContainer,
         ) {
             NavigationBarItem(
-                icon = { Icon(Icons.Filled.Face, contentDescription = null) },
+                icon = { Icon(Icons.Filled.Home, contentDescription = null) },
                 label = { Text(stringResource(R.string.home)) },
                 selected = currentDestination?.route == HomeDestination.route,
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.onSurface,
-                    selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                    indicatorColor = MaterialTheme.colorScheme.tertiary,
-                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
+                colors = itemColors,
                 onClick = {
                     navController.navigateSingleTopTo(HomeDestination.route)
                 },
             )
             NavigationBarItem(
-                icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
-                label = { Text(stringResource(R.string.recipes)) },
+                icon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                label = { Text(stringResource(R.string.search)) },
                 selected = currentDestination?.route == RecipeListDestination.route,
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.onSurface,
-                    selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                    indicatorColor = MaterialTheme.colorScheme.tertiary,
-                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
+                colors = itemColors,
                 onClick = {
                     navController.navigateSingleTopTo(RecipeListDestination.route)
                 },
