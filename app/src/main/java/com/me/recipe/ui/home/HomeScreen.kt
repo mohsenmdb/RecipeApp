@@ -19,6 +19,7 @@ import com.me.recipe.R
 import com.me.recipe.ui.component.util.DefaultSnackbar
 import com.me.recipe.ui.component.util.NavigateToRecipePage
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
+import com.me.recipe.ui.home.components.HomeAppBar
 import com.me.recipe.ui.home.components.HomeContent
 import com.me.recipe.ui.home.components.shimmer.HomeShimmer
 import com.me.recipe.ui.theme.RecipeTheme
@@ -82,6 +83,12 @@ internal fun HomeScreen(
             DefaultSnackbar(snackbarHostState = snackbarHostState) {
                 snackbarHostState.currentSnackbarData?.dismiss()
             }
+        },
+        topBar = {
+            HomeAppBar(
+                isDark = state.isDark,
+                onToggleTheme = { event.invoke(HomeContract.Event.ToggleDarkTheme) },
+            )
         },
         modifier = modifier,
     ) { padding ->

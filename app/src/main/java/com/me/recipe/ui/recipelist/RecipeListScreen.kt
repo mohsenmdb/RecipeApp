@@ -107,7 +107,6 @@ internal fun RecipeListScreen(
                         RecipeListContract.Event.OnCategoryScrollPositionChanged(position, offset),
                     )
                 },
-                onToggleTheme = { event.invoke(RecipeListContract.Event.ToggleDarkTheme) },
             )
         },
         modifier = modifier,

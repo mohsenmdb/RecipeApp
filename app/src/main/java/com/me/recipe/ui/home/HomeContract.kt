@@ -14,7 +14,6 @@ interface HomeContract :
     sealed interface Event {
         data class ClickOnRecipeEvent(val recipe: Recipe) : Event
         data class LongClickOnRecipeEvent(val title: String) : Event
-        data class OnChangeRecipeScrollPosition(val index: Int) : Event
         data object ToggleDarkTheme : Event
     }
 
@@ -30,7 +29,7 @@ interface HomeContract :
         val errors: GenericDialogInfo? = null,
         val sliderLoading: Boolean = false,
         val categoriesLoading: Boolean = false,
-        var recipeListScrollPosition: Int = 0,
+        val isDark: Boolean = false,
     ) {
         companion object {
             fun testData() = State(
