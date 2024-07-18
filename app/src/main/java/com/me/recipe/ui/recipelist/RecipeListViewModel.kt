@@ -7,7 +7,6 @@ import com.me.recipe.R
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.usecases.RestoreRecipesUsecase
 import com.me.recipe.domain.features.recipelist.usecases.SearchRecipesUsecase
-import com.me.recipe.shared.datastore.SettingsDataStore
 import com.me.recipe.shared.utils.FoodCategory
 import com.me.recipe.shared.utils.RECIPE_PAGINATION_FIRST_PAGE
 import com.me.recipe.shared.utils.RECIPE_PAGINATION_PAGE_SIZE
@@ -24,7 +23,6 @@ import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnQueryChanged
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnSelectedCategoryChanged
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.RestoreStateEvent
 import com.me.recipe.ui.recipelist.RecipeListContract.Event.SearchClearEvent
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.ToggleDarkTheme
 import com.me.recipe.util.errorformater.ErrorFormatter
 import com.me.recipe.util.errorformater.exceptions.RecipeDataException
 import dagger.Lazy
@@ -51,7 +49,6 @@ class RecipeListViewModel @Inject constructor(
     private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
     private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
-    private val settingsDataStore: SettingsDataStore,
     private val errorFormatter: Lazy<ErrorFormatter>,
 ) : ViewModel(), RecipeListContract {
 
@@ -67,7 +64,6 @@ class RecipeListViewModel @Inject constructor(
                 when (event) {
                     is NewSearchEvent -> fetchNewSearchRecipes()
                     is SearchClearEvent -> clearSearch()
-                    is ToggleDarkTheme -> toggleDarkTheme()
                     is RestoreStateEvent -> restoreState()
                     is OnQueryChanged -> onQueryChanged(event.query)
                     is OnSelectedCategoryChanged -> onSelectedCategoryChanged(event.category)
@@ -293,10 +289,6 @@ class RecipeListViewModel @Inject constructor(
 
     private fun onCategoryScrollPositionChanged(position: Int, offset: Int) {
         _state.update { it.copy(categoryScrollPosition = position to offset) }
-    }
-
-    private fun toggleDarkTheme() {
-        settingsDataStore.toggleTheme()
     }
 
     companion object {

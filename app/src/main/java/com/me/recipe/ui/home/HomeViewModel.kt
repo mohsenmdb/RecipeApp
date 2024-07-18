@@ -1,6 +1,5 @@
 package com.me.recipe.ui.home
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.me.recipe.R
@@ -8,13 +7,14 @@ import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.domain.features.recipelist.usecases.CategoriesRecipesUsecase
 import com.me.recipe.domain.features.recipelist.usecases.SliderRecipesUsecase
 import com.me.recipe.shared.datastore.SettingsDataStore
+import com.me.recipe.shared.datastore.SettingsDataStore.Companion.DARK_THEME_KEY
 import com.me.recipe.shared.utils.TAG
 import com.me.recipe.shared.utils.getAllFoodCategories
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
 import com.me.recipe.ui.home.HomeContract.Event
 import com.me.recipe.ui.home.HomeContract.Event.LongClickOnRecipeEvent
-import com.me.recipe.ui.home.HomeContract.Event.OnChangeRecipeScrollPosition
+import com.me.recipe.ui.home.HomeContract.Event.ToggleDarkTheme
 import com.me.recipe.util.errorformater.ErrorFormatter
 import com.me.recipe.util.errorformater.exceptions.RecipeDataException
 import dagger.Lazy
@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -37,7 +36,6 @@ import timber.log.Timber
 class HomeViewModel @Inject constructor(
     private val sliderRecipesUsecase: Lazy<SliderRecipesUsecase>,
     private val categoriesRecipesUsecase: Lazy<CategoriesRecipesUsecase>,
-    private val savedStateHandle: SavedStateHandle,
     private val settingsDataStore: SettingsDataStore,
     private val errorFormatter: Lazy<ErrorFormatter>,
 ) : ViewModel(), HomeContract {
@@ -52,8 +50,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 when (event) {
-                    is Event.ToggleDarkTheme -> toggleDarkTheme()
-                    is OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
+                    is ToggleDarkTheme -> toggleDarkTheme()
                     is Event.ClickOnRecipeEvent -> handleOnRecipeClicked(event.recipe)
                     is LongClickOnRecipeEvent ->
                         effectChannel.trySend(HomeContract.Effect.ShowSnackbar(event.title))
@@ -70,15 +67,11 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
+        observeThemeState()
+
         viewModelScope.launch {
             fetchSliderRecipes()
             fetchCategoriesRecipes()
-        }
-        viewModelScope.launch {
-            savedStateHandle.getStateFlow(STATE_KEY_LIST_POSITION, 0)
-                .collectLatest { page ->
-                    handleHomePositionChanged(page)
-                }
         }
     }
 
@@ -89,10 +82,6 @@ class HomeViewModel @Inject constructor(
         } catch (e: Exception) {
             effectChannel.trySend(HomeContract.Effect.ShowSnackbar(errorFormatter.get().format(e)))
         }
-    }
-
-    private fun handleHomePositionChanged(position: Int) {
-        setRecipeScrollPosition(position)
     }
 
     private suspend fun fetchSliderRecipes() {
@@ -138,24 +127,13 @@ class HomeViewModel @Inject constructor(
         _state.update { it.copy(errors = errors) }
     }
 
-    private fun onChangeRecipeScrollPosition(position: Int) {
-        changeRecipeScrollPosition(position)
-    }
-
-    private fun changeRecipeScrollPosition(position: Int) {
-        savedStateHandle[STATE_KEY_LIST_POSITION] = position
-    }
-
-    private fun setRecipeScrollPosition(position: Int) {
-        _state.update { it.copy(recipeListScrollPosition = position) }
-    }
-
     private fun toggleDarkTheme() {
         settingsDataStore.toggleTheme()
     }
 
-    companion object {
-        const val TOP_RECIPES_PAGE = 1
-        const val STATE_KEY_LIST_POSITION = "recipe.state.query.list_position"
+    private fun observeThemeState() {
+        settingsDataStore.observeIsDark().onEach { isDark ->
+            _state.update { it.copy(isDark = isDark[DARK_THEME_KEY] == true) }
+        }.launchIn(viewModelScope)
     }
 }

@@ -12,6 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -46,8 +47,12 @@ constructor(@ApplicationContext val context: Context) {
         }.launchIn(scope)
     }
 
+    fun observeIsDark() = context.dataStore.data.filter { preferences ->
+        preferences[DARK_THEME_KEY] != null
+    }
+
     companion object {
-        private val DARK_THEME_KEY = booleanPreferencesKey("dark_theme_key")
+        val DARK_THEME_KEY = booleanPreferencesKey("dark_theme_key")
 
         private const val APP_PREFERENCE_NAME = "settings"
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(

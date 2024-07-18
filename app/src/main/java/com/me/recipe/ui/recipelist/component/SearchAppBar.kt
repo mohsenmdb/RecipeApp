@@ -8,9 +8,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import com.me.recipe.shared.utils.FoodCategory
 import com.me.recipe.shared.utils.getAllFoodCategories
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
-import com.me.recipe.ui.recipelist.component.button.MoreButton
 import com.me.recipe.ui.recipelist.component.chip.FoodCategoryChip
 import com.me.recipe.ui.theme.RecipeTheme
 
@@ -53,7 +52,6 @@ internal fun SearchAppBar(
     onSearchClearClicked: () -> Unit,
     onSelectedCategoryChanged: (String) -> Unit,
     onCategoryScrollPositionChanged: (Int, Int) -> Unit,
-    onToggleTheme: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberLazyListState()
@@ -70,10 +68,7 @@ internal fun SearchAppBar(
         shadowElevation = 4.dp,
     ) {
         Column {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                SearchTextField(query, onQueryChanged, newSearch, onSearchClearClicked)
-                MoreButton(onToggleTheme)
-            }
+            SearchTextField(query, onQueryChanged, newSearch, onSearchClearClicked)
             FoodChipsRow(
                 scrollState,
                 selectedCategory,
@@ -81,12 +76,13 @@ internal fun SearchAppBar(
                 onSelectedCategoryChanged,
                 onCategoryScrollPositionChanged,
             )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-private fun RowScope.SearchTextField(
+private fun SearchTextField(
     query: String,
     onQueryChanged: (String) -> Unit,
     newSearch: () -> Unit,
@@ -98,7 +94,7 @@ private fun RowScope.SearchTextField(
         value = query,
         onValueChange = { onQueryChanged(it) },
         modifier = modifier
-            .weight(1f)
+            .fillMaxWidth()
             .padding(8.dp)
             .background(MaterialTheme.colorScheme.surface)
             .testTag("testTag_SearchTextField"),
@@ -181,7 +177,6 @@ private fun SearchAppBarPreview() {
                 newSearch = {},
                 onCategoryScrollPositionChanged = { _, _ -> },
                 onSelectedCategoryChanged = {},
-                onToggleTheme = {},
                 onSearchClearClicked = {},
             )
         }

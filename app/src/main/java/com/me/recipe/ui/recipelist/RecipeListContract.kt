@@ -19,7 +19,6 @@ interface RecipeListContract :
         data class OnSelectedCategoryChanged(val category: String) : Event
         data class OnCategoryScrollPositionChanged(val position: Int, val offset: Int) : Event
         data object RestoreStateEvent : Event
-        data object ToggleDarkTheme : Event
         data class LongClickOnRecipeEvent(val title: String) : Event
         data class ClickOnRecipeEvent(val recipe: Recipe) : Event
         data class OnChangeRecipeScrollPosition(val index: Int) : Event
