@@ -3,19 +3,17 @@
 package com.me.recipe.ui.recipelist.component
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -23,15 +21,16 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,7 +63,7 @@ internal fun SearchAppBar(
 
     Surface(
         modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface,
+        color = MaterialTheme.colorScheme.primaryContainer,
         shadowElevation = 4.dp,
     ) {
         Column {
@@ -76,7 +75,6 @@ internal fun SearchAppBar(
                 onSelectedCategoryChanged,
                 onCategoryScrollPositionChanged,
             )
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -90,15 +88,16 @@ private fun SearchTextField(
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
-    TextField(
+    OutlinedTextField(
         value = query,
         onValueChange = { onQueryChanged(it) },
+        singleLine = true,
+        shape = CircleShape,
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .background(MaterialTheme.colorScheme.surface)
             .testTag("testTag_SearchTextField"),
-        label = {
+        placeholder = {
             Text(text = "Search")
         },
         keyboardOptions = KeyboardOptions(
@@ -126,8 +125,13 @@ private fun SearchTextField(
                 )
             }
         },
-        textStyle = TextStyle(
-            color = MaterialTheme.colorScheme.onSurface,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            focusedBorderColor = MaterialTheme.colorScheme.outline,
+            unfocusedBorderColor = Color.Transparent,
         ),
     )
 }
@@ -143,7 +147,7 @@ private fun FoodChipsRow(
 ) {
     LazyRow(
         state = scrollState,
-        contentPadding = PaddingValues(horizontal = 8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.testTag("testTag_FoodChipsRow"),
     ) {

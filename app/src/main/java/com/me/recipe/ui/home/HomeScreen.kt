@@ -108,7 +108,7 @@ internal fun HomeScreen(
 
 @Preview
 @Composable
-private fun RecipeListScreenPreview() {
+private fun HomeScreenPreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
             HomeScreen(
