@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 internal fun SplashScreen(
-    navigateToRecipeList: () -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     val animationState = remember { mutableStateOf(false) }
 
@@ -49,7 +49,7 @@ internal fun SplashScreen(
         delay(500)
         animationState.value = true
         delay(2000)
-        navigateToRecipeList()
+        navigateToHome()
     }
 }
 
@@ -109,6 +109,6 @@ private fun Rocket(
 @Composable
 private fun DefaultPreview() {
     RecipeTheme {
-        SplashScreen(navigateToRecipeList = {})
+        SplashScreen(navigateToHome = {})
     }
 }

@@ -1,4 +1,4 @@
-package com.me.recipe.ui.recipelist.component.shimmer
+package com.me.recipe.ui.search.component.shimmer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

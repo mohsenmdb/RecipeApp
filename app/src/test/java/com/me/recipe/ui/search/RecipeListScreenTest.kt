@@ -1,4 +1,4 @@
-package com.me.recipe.ui.recipelist
+package com.me.recipe.ui.search
 
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.utils.RobotTestRule
@@ -33,7 +33,7 @@ class RecipeListScreenTest {
 
     @Test
     fun `when all data is available then show recipe correctly`() {
-        val state = RecipeListContract.State.testData()
+        val state = SearchContract.State.testData()
         robot(robotTestRule) {
             setRecipeListScreen(state)
             checkScreenWhenStateIsLoaded(state)
@@ -42,8 +42,8 @@ class RecipeListScreenTest {
 
     @Test
     fun `when state change from loading to loaded show correctly loading and loaded screens`() {
-        val loadedState = RecipeListContract.State.testData()
-        val loadingState = RecipeListContract.State.testData().copy(
+        val loadedState = SearchContract.State.testData()
+        val loadingState = SearchContract.State.testData().copy(
             recipes = persistentListOf(),
             loading = true,
         )
@@ -59,7 +59,7 @@ class RecipeListScreenTest {
 
     @Test
     fun `while load more data show loading progress bar correctly`() {
-        val state = RecipeListContract.State.testData().copy(loading = true)
+        val state = SearchContract.State.testData().copy(loading = true)
         robot(robotTestRule) {
             setRecipeListScreen(state)
             checkScreenWhenStateIsLoadedMore()
@@ -68,7 +68,7 @@ class RecipeListScreenTest {
 
     @Test
     fun `when has error check error dialog show correctly`() {
-        val state = RecipeListContract.State.testData().copy(
+        val state = SearchContract.State.testData().copy(
             errors = GenericDialogInfo.testDate(),
         )
         robot(robotTestRule) {

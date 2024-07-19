@@ -1,4 +1,4 @@
-package com.me.recipe.ui.recipelist
+package com.me.recipe.ui.search
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -14,15 +14,15 @@ import com.me.recipe.shared.utils.TAG
 import com.me.recipe.shared.utils.getFoodCategory
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
-import com.me.recipe.ui.recipelist.RecipeListContract.Event
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.LongClickOnRecipeEvent
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.NewSearchEvent
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnCategoryScrollPositionChanged
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnChangeRecipeScrollPosition
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnQueryChanged
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.OnSelectedCategoryChanged
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.RestoreStateEvent
-import com.me.recipe.ui.recipelist.RecipeListContract.Event.SearchClearEvent
+import com.me.recipe.ui.search.SearchContract.Event
+import com.me.recipe.ui.search.SearchContract.Event.LongClickOnRecipeEvent
+import com.me.recipe.ui.search.SearchContract.Event.NewSearchEvent
+import com.me.recipe.ui.search.SearchContract.Event.OnCategoryScrollPositionChanged
+import com.me.recipe.ui.search.SearchContract.Event.OnChangeRecipeScrollPosition
+import com.me.recipe.ui.search.SearchContract.Event.OnQueryChanged
+import com.me.recipe.ui.search.SearchContract.Event.OnSelectedCategoryChanged
+import com.me.recipe.ui.search.SearchContract.Event.RestoreStateEvent
+import com.me.recipe.ui.search.SearchContract.Event.SearchClearEvent
 import com.me.recipe.util.errorformater.ErrorFormatter
 import com.me.recipe.util.errorformater.exceptions.RecipeDataException
 import dagger.Lazy
@@ -45,18 +45,18 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @HiltViewModel
-class RecipeListViewModel @Inject constructor(
+class SearchViewModel @Inject constructor(
     private val searchRecipesUsecase: Lazy<SearchRecipesUsecase>,
     private val restoreRecipesUsecase: Lazy<RestoreRecipesUsecase>,
     private val savedStateHandle: SavedStateHandle,
     private val errorFormatter: Lazy<ErrorFormatter>,
-) : ViewModel(), RecipeListContract {
+) : ViewModel(), SearchContract {
 
-    private val _state = MutableStateFlow(RecipeListContract.State(loading = true))
-    override val state: StateFlow<RecipeListContract.State> = _state.asStateFlow()
+    private val _state = MutableStateFlow(SearchContract.State(loading = true))
+    override val state: StateFlow<SearchContract.State> = _state.asStateFlow()
 
-    private val effectChannel = Channel<RecipeListContract.Effect>(Channel.UNLIMITED)
-    override val effect: Flow<RecipeListContract.Effect> = effectChannel.receiveAsFlow()
+    private val effectChannel = Channel<SearchContract.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<SearchContract.Effect> = effectChannel.receiveAsFlow()
 
     override fun event(event: Event) {
         viewModelScope.launch {
@@ -72,13 +72,13 @@ class RecipeListViewModel @Inject constructor(
                     is OnCategoryScrollPositionChanged ->
                         onCategoryScrollPositionChanged(event.position, event.offset)
                     is LongClickOnRecipeEvent ->
-                        effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(event.title))
+                        effectChannel.trySend(SearchContract.Effect.ShowSnackbar(event.title))
                 }
             } catch (e: Exception) {
                 Timber.tag(TAG).e("Exception: %s", e)
                 _state.update { it.copy(loading = false) }
                 if (e.message != null) {
-                    effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(e.message!!))
+                    effectChannel.trySend(SearchContract.Effect.ShowSnackbar(e.message!!))
                 }
             } finally {
                 Timber.tag(TAG).d("launchJob: finally called.")
@@ -122,9 +122,9 @@ class RecipeListViewModel @Inject constructor(
     private fun handleOnRecipeClicked(recipe: Recipe) {
         try {
             if (recipe.id == Recipe.EMPTY.id) throw RecipeDataException()
-            effectChannel.trySend(RecipeListContract.Effect.NavigateToRecipePage(recipe))
+            effectChannel.trySend(SearchContract.Effect.NavigateToRecipePage(recipe))
         } catch (e: Exception) {
-            effectChannel.trySend(RecipeListContract.Effect.ShowSnackbar(errorFormatter.get().format(e)))
+            effectChannel.trySend(SearchContract.Effect.ShowSnackbar(errorFormatter.get().format(e)))
         }
     }
 

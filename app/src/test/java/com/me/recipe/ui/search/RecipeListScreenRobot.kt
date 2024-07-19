@@ -1,4 +1,4 @@
-package com.me.recipe.ui.recipelist
+package com.me.recipe.ui.search
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.LaunchedEffect
@@ -26,11 +26,11 @@ class RecipeListScreenRobot @Inject constructor() {
 
     context (RobotTestRule)
     fun setRecipeListScreen(
-        state: RecipeListContract.State,
+        state: SearchContract.State,
     ) {
         composeTestRule.setContent {
             SharedTransitionLayoutPreview {
-                RecipeListScreen(
+                SearchScreen(
                     event = {},
                     effect = flowOf(),
                     state = state,
@@ -44,15 +44,15 @@ class RecipeListScreenRobot @Inject constructor() {
 
     context (RobotTestRule)
     fun setRecipeListScreenLoadingThenLoaded(
-        loadingState: RecipeListContract.State,
-        loadedState: RecipeListContract.State,
+        loadingState: SearchContract.State,
+        loadedState: SearchContract.State,
     ) {
         composeTestRule.setContent {
             var state by remember {
                 mutableStateOf(loadingState)
             }
             SharedTransitionLayoutPreview {
-                RecipeListScreen(
+                SearchScreen(
                     event = {},
                     effect = flowOf(),
                     state = state,
@@ -84,7 +84,7 @@ class RecipeListScreenRobot @Inject constructor() {
 
     context (RobotTestRule)
     fun checkScreenWhenStateIsLoaded(
-        state: RecipeListContract.State,
+        state: SearchContract.State,
     ) {
         assertSearchTextFieldIsDisplayed()
         assertMoreButtonIsDisplayed()
@@ -160,7 +160,7 @@ class RecipeListScreenRobot @Inject constructor() {
 
     context (RobotTestRule)
     private fun recipeListScrollToIndex(index: Int) {
-        composeTestRule.onNodeWithTag("testTag_RecipeList", useUnmergedTree = true)
+        composeTestRule.onNodeWithTag("testTag_recipeList", useUnmergedTree = true)
             .performScrollToIndex(index)
     }
 
@@ -202,13 +202,13 @@ class RecipeListScreenRobot @Inject constructor() {
 
     context (RobotTestRule)
     private fun assertRecipeListShimmerIsDisplayed() {
-        composeTestRule.onNodeWithTag("testTag_RecipeListShimmer", useUnmergedTree = true)
+        composeTestRule.onNodeWithTag("testTag_SearchShimmer", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     context (RobotTestRule)
     private fun recipeListShimmerScrollToIndex(index: Int) {
-        composeTestRule.onNodeWithTag("testTag_RecipeListShimmer", useUnmergedTree = true)
+        composeTestRule.onNodeWithTag("testTag_SearchShimmer", useUnmergedTree = true)
             .performScrollToIndex(index)
     }
 

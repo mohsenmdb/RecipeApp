@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 
-package com.me.recipe.ui.recipelist.component
+package com.me.recipe.ui.search.component
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibilityScope
