@@ -10,17 +10,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.ui.component.util.GenericDialog
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
-import com.me.recipe.ui.search.RecipeList
 import com.me.recipe.ui.search.SearchContract
 import com.me.recipe.ui.search.component.shimmer.SearchShimmer
 import com.me.recipe.ui.search.showLoadingProgressBar
@@ -45,7 +41,7 @@ internal fun SearchContent(
             SearchShimmer(250.dp)
         } else {
             RecipeList(
-                state = state,
+                recipes = state.recipes,
                 event = event,
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope,
