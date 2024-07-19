@@ -48,11 +48,11 @@ internal fun RecipeCategoryVerticalItem(
             .padding(vertical = 16.dp)
             .background(MaterialTheme.colorScheme.background),
     ) {
-        Text(
-            text = category.category.value,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
+        CategoryTitleRow(
+            category = category.category,
+            onCategoryClicked = {
+                event.invoke(HomeContract.Event.OnCategoryClick(it))
+            },
         )
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -64,10 +64,10 @@ internal fun RecipeCategoryVerticalItem(
                     sharedTransitionScope = sharedTransitionScope,
                     animatedVisibilityScope = animatedVisibilityScope,
                     onClick = {
-                        event.invoke(HomeContract.Event.ClickOnRecipeEvent(it))
+                        event.invoke(HomeContract.Event.OnRecipeClick(it))
                     },
                     onLongClick = {
-                        event.invoke(HomeContract.Event.LongClickOnRecipeEvent(it.title))
+                        event.invoke(HomeContract.Event.OnRecipeLongClick(it.title))
                     },
                 )
             }

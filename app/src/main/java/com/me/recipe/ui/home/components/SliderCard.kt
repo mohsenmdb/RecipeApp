@@ -47,7 +47,7 @@ internal fun SliderCard(
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = modifier
             .fillMaxWidth()
-            .height(350.dp)
+            .height(300.dp)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick),
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {

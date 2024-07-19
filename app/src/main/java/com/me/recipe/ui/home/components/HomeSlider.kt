@@ -50,10 +50,10 @@ fun HomeSlider(
             SliderCard(
                 recipe = recipes[index],
                 onClick = {
-                    event.invoke(HomeContract.Event.ClickOnRecipeEvent(recipes[index]))
+                    event.invoke(HomeContract.Event.OnRecipeClick(recipes[index]))
                 },
                 onLongClick = {
-                    event.invoke(HomeContract.Event.LongClickOnRecipeEvent(recipes[index].title))
+                    event.invoke(HomeContract.Event.OnRecipeLongClick(recipes[index].title))
                 },
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope,

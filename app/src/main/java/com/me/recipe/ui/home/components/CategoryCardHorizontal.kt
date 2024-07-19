@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -48,11 +47,11 @@ internal fun RecipeCategoryHorizontalItem(
             .padding(vertical = 16.dp)
             .background(MaterialTheme.colorScheme.background),
     ) {
-        Text(
-            text = category.category.value,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
+        CategoryTitleRow(
+            category = category.category,
+            onCategoryClicked = {
+                event.invoke(HomeContract.Event.OnCategoryClick(it))
+            },
         )
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -64,10 +63,10 @@ internal fun RecipeCategoryHorizontalItem(
                     sharedTransitionScope = sharedTransitionScope,
                     animatedVisibilityScope = animatedVisibilityScope,
                     onClick = {
-                        event.invoke(HomeContract.Event.ClickOnRecipeEvent(it))
+                        event.invoke(HomeContract.Event.OnRecipeClick(it))
                     },
                     onLongClick = {
-                        event.invoke(HomeContract.Event.LongClickOnRecipeEvent(it.title))
+                        event.invoke(HomeContract.Event.OnRecipeLongClick(it.title))
                     },
                 )
             }

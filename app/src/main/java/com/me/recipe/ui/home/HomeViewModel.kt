@@ -8,12 +8,13 @@ import com.me.recipe.domain.features.recipelist.usecases.CategoriesRecipesUsecas
 import com.me.recipe.domain.features.recipelist.usecases.SliderRecipesUsecase
 import com.me.recipe.shared.datastore.SettingsDataStore
 import com.me.recipe.shared.datastore.SettingsDataStore.Companion.DARK_THEME_KEY
+import com.me.recipe.shared.utils.FoodCategory
 import com.me.recipe.shared.utils.TAG
 import com.me.recipe.shared.utils.getAllFoodCategories
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
 import com.me.recipe.ui.home.HomeContract.Event
-import com.me.recipe.ui.home.HomeContract.Event.LongClickOnRecipeEvent
+import com.me.recipe.ui.home.HomeContract.Event.OnRecipeLongClick
 import com.me.recipe.ui.home.HomeContract.Event.ToggleDarkTheme
 import com.me.recipe.util.errorformater.ErrorFormatter
 import com.me.recipe.util.errorformater.exceptions.RecipeDataException
@@ -51,9 +52,11 @@ class HomeViewModel @Inject constructor(
             try {
                 when (event) {
                     is ToggleDarkTheme -> toggleDarkTheme()
-                    is Event.ClickOnRecipeEvent -> handleOnRecipeClicked(event.recipe)
-                    is LongClickOnRecipeEvent ->
+                    is Event.OnRecipeClick -> handleOnRecipeClicked(event.recipe)
+                    is OnRecipeLongClick ->
                         effectChannel.trySend(HomeContract.Effect.ShowSnackbar(event.title))
+                    is Event.OnCategoryClick ->
+                        handleOnCategoryClicked(event.category)
                 }
             } catch (e: Exception) {
                 Timber.tag(TAG).e("Exception: %s", e)
@@ -82,6 +85,10 @@ class HomeViewModel @Inject constructor(
         } catch (e: Exception) {
             effectChannel.trySend(HomeContract.Effect.ShowSnackbar(errorFormatter.get().format(e)))
         }
+    }
+
+    private fun handleOnCategoryClicked(category: FoodCategory) {
+        effectChannel.trySend(HomeContract.Effect.NavigateToRecipeListPage(category))
     }
 
     private suspend fun fetchSliderRecipes() {

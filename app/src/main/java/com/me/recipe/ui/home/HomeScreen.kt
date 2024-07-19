@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.me.recipe.R
 import com.me.recipe.ui.component.util.DefaultSnackbar
+import com.me.recipe.ui.component.util.NavigateToRecipeListPage
 import com.me.recipe.ui.component.util.NavigateToRecipePage
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
 import com.me.recipe.ui.home.components.HomeAppBar
@@ -33,6 +34,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun HomeScreen(
     navigateToRecipePage: NavigateToRecipePage,
+    navigateToRecipeListPage: NavigateToRecipeListPage,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
@@ -45,6 +47,7 @@ internal fun HomeScreen(
         event = event,
         modifier = modifier,
         navigateToRecipePage = navigateToRecipePage,
+        navigateToRecipeListPage = navigateToRecipeListPage,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
     )
@@ -52,11 +55,12 @@ internal fun HomeScreen(
 
 @Composable
 @OptIn(InternalCoroutinesApi::class)
-internal fun HomeScreen(
+private fun HomeScreen(
     effect: Flow<HomeContract.Effect>,
     state: HomeContract.State,
     event: (HomeContract.Event) -> Unit,
     navigateToRecipePage: NavigateToRecipePage,
+    navigateToRecipeListPage: NavigateToRecipeListPage,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
@@ -72,9 +76,8 @@ internal fun HomeScreen(
                     snackbarHostState.showSnackbar(effect.message, actionOk)
                 }
             }
-            is HomeContract.Effect.NavigateToRecipePage -> {
-                navigateToRecipePage(effect.recipe)
-            }
+            is HomeContract.Effect.NavigateToRecipePage -> navigateToRecipePage(effect.recipe)
+            is HomeContract.Effect.NavigateToRecipeListPage -> navigateToRecipeListPage(effect.category)
         }
     }
 
@@ -116,6 +119,7 @@ private fun HomeScreenPreview() {
                 effect = flowOf(),
                 state = HomeContract.State.testData(),
                 navigateToRecipePage = { _ -> },
+                navigateToRecipeListPage = { _ -> },
                 sharedTransitionScope = this,
                 animatedVisibilityScope = it,
             )
