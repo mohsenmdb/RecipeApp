@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSharedTransitionApi::class)
 
-package com.me.recipe.ui.recipelist.component
+package com.me.recipe.ui.search.component
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.clickable
@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.me.recipe.shared.utils.FoodCategory
 import com.me.recipe.shared.utils.getAllFoodCategories
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
-import com.me.recipe.ui.recipelist.component.chip.FoodCategoryChip
+import com.me.recipe.ui.search.component.chip.FoodCategoryChip
 import com.me.recipe.ui.theme.RecipeTheme
 
 @Composable

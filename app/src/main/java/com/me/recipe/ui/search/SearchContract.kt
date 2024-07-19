@@ -1,4 +1,4 @@
-package com.me.recipe.ui.recipelist
+package com.me.recipe.ui.search
 
 import androidx.compose.runtime.Stable
 import com.me.recipe.domain.features.recipe.model.Recipe
@@ -8,8 +8,8 @@ import com.me.recipe.util.compose.UnidirectionalViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-interface RecipeListContract :
-    UnidirectionalViewModel<RecipeListContract.Event, RecipeListContract.Effect, RecipeListContract.State> {
+interface SearchContract :
+    UnidirectionalViewModel<SearchContract.Event, SearchContract.Effect, SearchContract.State> {
 
     sealed interface Event {
         //        data class OnPhoneNumberChanged(val phoneNumber: String) : Event
@@ -51,7 +51,7 @@ interface RecipeListContract :
     }
 }
 
-val RecipeListContract.State.showShimmer: Boolean
+val SearchContract.State.showShimmer: Boolean
     get() = loading && recipes.isEmpty()
-val RecipeListContract.State.showLoadingProgressBar: Boolean
+val SearchContract.State.showLoadingProgressBar: Boolean
     get() = loading && recipes.isNotEmpty()

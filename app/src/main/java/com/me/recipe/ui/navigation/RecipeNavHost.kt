@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.me.recipe.domain.features.recipe.model.Recipe
 import com.me.recipe.ui.home.HomeScreen
 import com.me.recipe.ui.recipe.RecipeScreen
-import com.me.recipe.ui.recipelist.RecipeListScreen
+import com.me.recipe.ui.search.SearchScreen
 import com.me.recipe.ui.splash.SplashScreen
 import com.me.recipe.util.extention.encodeToUtf8
 
@@ -34,7 +34,7 @@ internal fun RecipeNavHost(
         ) {
             composable(route = SplashDestination.route) {
                 SplashScreen(
-                    navigateToRecipeList = {
+                    navigateToHome = {
                         navController.navigateSingleTopFromSplash(HomeDestination.route)
                     },
                 )
@@ -46,8 +46,8 @@ internal fun RecipeNavHost(
                     animatedVisibilityScope = this@composable,
                 )
             }
-            composable(route = RecipeListDestination.route) {
-                RecipeListScreen(
+            composable(route = ScreenDestination.route) {
+                SearchScreen(
                     navigateToRecipePage = { navigateToRecipePage(it) },
                     navigateToHomePage = { navController.navigateSingleTopTo(HomeDestination.route) },
                     sharedTransitionScope = this@SharedTransitionLayout,

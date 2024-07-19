@@ -20,9 +20,9 @@ object HomeDestination : NavigationDestination {
     override val titleRes = R.string.navigate_home_title
 }
 
-object RecipeListDestination : NavigationDestination {
-    override val route = "RecipeList"
-    override val titleRes = R.string.navigate_recipe_list_title
+object ScreenDestination : NavigationDestination {
+    override val route = "Screen"
+    override val titleRes = R.string.navigate_search_title
 }
 
 object RecipeDestination : NavigationDestination {

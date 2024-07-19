@@ -1,4 +1,4 @@
-package com.me.recipe.ui.recipelist.component
+package com.me.recipe.ui.search.component
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

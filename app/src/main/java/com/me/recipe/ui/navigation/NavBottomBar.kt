@@ -50,10 +50,10 @@ internal fun NavBottomBar(navController: NavHostController) {
             NavigationBarItem(
                 icon = { Icon(Icons.Filled.Search, contentDescription = null) },
                 label = { Text(stringResource(R.string.search)) },
-                selected = currentDestination?.route == RecipeListDestination.route,
+                selected = currentDestination?.route == ScreenDestination.route,
                 colors = itemColors,
                 onClick = {
-                    navController.navigateSingleTopTo(RecipeListDestination.route)
+                    navController.navigateSingleTopTo(ScreenDestination.route)
                 },
             )
         }

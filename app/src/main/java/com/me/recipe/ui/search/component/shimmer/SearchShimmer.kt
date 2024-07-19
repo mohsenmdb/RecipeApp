@@ -1,4 +1,4 @@
-package com.me.recipe.ui.recipelist.component.shimmer
+package com.me.recipe.ui.search.component.shimmer
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -21,7 +21,7 @@ import com.me.recipe.ui.theme.RecipeTheme
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-internal fun RecipeListShimmer(
+internal fun SearchShimmer(
     imageHeight: Dp,
     modifier: Modifier = Modifier,
     padding: Dp = 16.dp,
@@ -69,7 +69,7 @@ internal fun RecipeListShimmer(
 
         LazyColumn(
             modifier = Modifier
-                .testTag("testTag_RecipeListShimmer"),
+                .testTag("testTag_SearchShimmer"),
         ) {
             items(5) {
                 ShimmerRecipeCardItem(
@@ -88,8 +88,8 @@ internal fun RecipeListShimmer(
 
 @Preview
 @Composable
-private fun RecipeListShimmerPreview() {
+private fun SearchShimmerPreview() {
     RecipeTheme(true) {
-        RecipeListShimmer(imageHeight = 250.dp)
+        SearchShimmer(imageHeight = 250.dp)
     }
 }

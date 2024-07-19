@@ -10,7 +10,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
         // on the back stack as users select items
-        // we can use graph.findStartDestination().id instead of RecipeListDestination.route (without splash)
+        // we can use graph.findStartDestination().id instead of HomeDestination.route (without splash)
         popUpTo(HomeDestination.route) {
             saveState = true
         }

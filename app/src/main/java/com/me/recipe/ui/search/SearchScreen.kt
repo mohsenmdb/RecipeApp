@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSharedTransitionApi::class)
 
-package com.me.recipe.ui.recipelist
+package com.me.recipe.ui.search
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -20,8 +20,8 @@ import com.me.recipe.ui.component.util.DefaultSnackbar
 import com.me.recipe.ui.component.util.NavigateToHomePage
 import com.me.recipe.ui.component.util.NavigateToRecipePage
 import com.me.recipe.ui.component.util.SharedTransitionLayoutPreview
-import com.me.recipe.ui.recipelist.component.RecipeListContent
-import com.me.recipe.ui.recipelist.component.SearchAppBar
+import com.me.recipe.ui.search.component.SearchContent
+import com.me.recipe.ui.search.component.SearchAppBar
 import com.me.recipe.ui.theme.RecipeTheme
 import com.me.recipe.util.compose.collectInLaunchedEffect
 import com.me.recipe.util.compose.use
@@ -31,16 +31,16 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun RecipeListScreen(
+internal fun SearchScreen(
     navigateToRecipePage: NavigateToRecipePage,
     navigateToHomePage: NavigateToHomePage,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
-    viewModel: RecipeListViewModel = hiltViewModel(),
+    viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val (state, effect, event) = use(viewModel = viewModel)
-    RecipeListScreen(
+    SearchScreen(
         effect = effect,
         state = state,
         event = event,
@@ -54,10 +54,10 @@ internal fun RecipeListScreen(
 
 @Composable
 @OptIn(InternalCoroutinesApi::class)
-internal fun RecipeListScreen(
-    effect: Flow<RecipeListContract.Effect>,
-    state: RecipeListContract.State,
-    event: (RecipeListContract.Event) -> Unit,
+internal fun SearchScreen(
+    effect: Flow<SearchContract.Effect>,
+    state: SearchContract.State,
+    event: (SearchContract.Event) -> Unit,
     navigateToHomePage: NavigateToHomePage,
     navigateToRecipePage: NavigateToRecipePage,
     sharedTransitionScope: SharedTransitionScope,
@@ -74,12 +74,12 @@ internal fun RecipeListScreen(
 
     effect.collectInLaunchedEffect { effect ->
         when (effect) {
-            is RecipeListContract.Effect.ShowSnackbar -> {
+            is SearchContract.Effect.ShowSnackbar -> {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar(effect.message, actionOk)
                 }
             }
-            is RecipeListContract.Effect.NavigateToRecipePage -> {
+            is SearchContract.Effect.NavigateToRecipePage -> {
                 navigateToRecipePage(effect.recipe)
             }
         }
@@ -96,15 +96,15 @@ internal fun RecipeListScreen(
                 query = state.query,
                 selectedCategory = state.selectedCategory,
                 categoryScrollPosition = state.categoryScrollPosition,
-                onQueryChanged = { event.invoke(RecipeListContract.Event.OnQueryChanged(it)) },
-                newSearch = { event.invoke(RecipeListContract.Event.NewSearchEvent) },
-                onSearchClearClicked = { event.invoke(RecipeListContract.Event.SearchClearEvent) },
+                onQueryChanged = { event.invoke(SearchContract.Event.OnQueryChanged(it)) },
+                newSearch = { event.invoke(SearchContract.Event.NewSearchEvent) },
+                onSearchClearClicked = { event.invoke(SearchContract.Event.SearchClearEvent) },
                 onSelectedCategoryChanged = {
-                    event.invoke(RecipeListContract.Event.OnSelectedCategoryChanged(it))
+                    event.invoke(SearchContract.Event.OnSelectedCategoryChanged(it))
                 },
                 onCategoryScrollPositionChanged = { position, offset ->
                     event.invoke(
-                        RecipeListContract.Event.OnCategoryScrollPositionChanged(position, offset),
+                        SearchContract.Event.OnCategoryScrollPositionChanged(position, offset),
                     )
                 },
             )
@@ -112,7 +112,7 @@ internal fun RecipeListScreen(
         modifier = modifier,
     ) { padding ->
 
-        RecipeListContent(
+        SearchContent(
             padding = padding,
             state = state,
             event = event,
@@ -124,13 +124,13 @@ internal fun RecipeListScreen(
 
 @Preview
 @Composable
-private fun RecipeListScreenPreview() {
+private fun SearchScreenPreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
-            RecipeListScreen(
+            SearchScreen(
                 event = {},
                 effect = flowOf(),
-                state = RecipeListContract.State.testData(),
+                state = SearchContract.State.testData(),
                 navigateToRecipePage = { _ -> },
                 navigateToHomePage = {},
                 sharedTransitionScope = this,

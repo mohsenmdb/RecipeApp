@@ -1,4 +1,4 @@
-package com.me.recipe.ui.recipelist.component.chip
+package com.me.recipe.ui.search.component.chip
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding

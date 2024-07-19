@@ -64,7 +64,7 @@ internal fun HomeContent(
 
 @Preview
 @Composable
-private fun RecipeListContentPreview() {
+private fun HomeContentPreview() {
     RecipeTheme(true) {
         SharedTransitionLayoutPreview {
             HomeContent(
