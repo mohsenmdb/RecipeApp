@@ -99,12 +99,9 @@ internal fun SearchScreen(
                 onQueryChanged = { event.invoke(SearchContract.Event.OnQueryChanged(it)) },
                 newSearch = { event.invoke(SearchContract.Event.NewSearchEvent) },
                 onSearchClearClicked = { event.invoke(SearchContract.Event.SearchClearEvent) },
-                onSelectedCategoryChanged = {
-                    event.invoke(SearchContract.Event.OnSelectedCategoryChanged(it))
-                },
-                onCategoryScrollPositionChanged = { position, offset ->
+                onSelectedCategoryChanged = { category, position, offset ->
                     event.invoke(
-                        SearchContract.Event.OnCategoryScrollPositionChanged(position, offset),
+                        SearchContract.Event.OnSelectedCategoryChanged(category, position, offset),
                     )
                 },
             )

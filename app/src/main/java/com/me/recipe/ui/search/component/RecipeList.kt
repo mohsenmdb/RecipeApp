@@ -41,7 +41,7 @@ internal fun RecipeList(
                     event.invoke(SearchContract.Event.OnRecipeClick(recipe))
                 },
                 onLongClick = {
-                    event.invoke(SearchContract.Event.LongClickOnRecipeEvent(recipe.title))
+                    event.invoke(SearchContract.Event.OnRecipeLongClick(recipe.title))
                 },
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope,

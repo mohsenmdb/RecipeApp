@@ -49,8 +49,7 @@ internal fun SearchAppBar(
     onQueryChanged: (String) -> Unit,
     newSearch: () -> Unit,
     onSearchClearClicked: () -> Unit,
-    onSelectedCategoryChanged: (String) -> Unit,
-    onCategoryScrollPositionChanged: (Int, Int) -> Unit,
+    onSelectedCategoryChanged: (category: String, position: Int, offset: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberLazyListState()
@@ -71,9 +70,13 @@ internal fun SearchAppBar(
             FoodChipsRow(
                 scrollState,
                 selectedCategory,
-                newSearch,
-                onSelectedCategoryChanged,
-                onCategoryScrollPositionChanged,
+                onSelectedCategoryChanged = {
+                    onSelectedCategoryChanged(
+                        it,
+                        scrollState.firstVisibleItemIndex,
+                        scrollState.firstVisibleItemScrollOffset,
+                    )
+                },
             )
         }
     }
@@ -140,9 +143,7 @@ private fun SearchTextField(
 private fun FoodChipsRow(
     scrollState: LazyListState,
     selectedCategory: FoodCategory?,
-    newSearch: () -> Unit,
     onSelectedCategoryChanged: (String) -> Unit,
-    onCategoryScrollPositionChanged: (Int, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -155,13 +156,8 @@ private fun FoodChipsRow(
             FoodCategoryChip(
                 category = category.value,
                 isSelected = selectedCategory == category,
-                onClick = { newSearch() },
                 onSelectedCategoryChanged = {
                     onSelectedCategoryChanged(it)
-                    onCategoryScrollPositionChanged(
-                        scrollState.firstVisibleItemIndex,
-                        scrollState.firstVisibleItemScrollOffset,
-                    )
                 },
             )
         }
@@ -179,8 +175,7 @@ private fun SearchAppBarPreview() {
                 categoryScrollPosition = Pair(0, 0),
                 onQueryChanged = {},
                 newSearch = {},
-                onCategoryScrollPositionChanged = { _, _ -> },
-                onSelectedCategoryChanged = {},
+                onSelectedCategoryChanged = { _, _, _ -> },
                 onSearchClearClicked = {},
             )
         }

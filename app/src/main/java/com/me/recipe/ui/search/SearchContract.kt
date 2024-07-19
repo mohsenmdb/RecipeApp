@@ -16,10 +16,9 @@ interface SearchContract :
         data object NewSearchEvent : Event
         data object SearchClearEvent : Event
         data class OnQueryChanged(val query: String) : Event
-        data class OnSelectedCategoryChanged(val category: String) : Event
-        data class OnCategoryScrollPositionChanged(val position: Int, val offset: Int) : Event
+        data class OnSelectedCategoryChanged(val category: String, val position: Int = 0, val offset: Int = 0) : Event
         data object RestoreStateEvent : Event
-        data class LongClickOnRecipeEvent(val title: String) : Event
+        data class OnRecipeLongClick(val title: String) : Event
         data class OnRecipeClick(val recipe: Recipe) : Event
         data class OnChangeRecipeScrollPosition(val index: Int) : Event
     }

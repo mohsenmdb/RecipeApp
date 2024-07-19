@@ -18,7 +18,6 @@ import com.me.recipe.ui.theme.RecipeTheme
 internal fun FoodCategoryChip(
     category: String,
     isSelected: Boolean,
-    onClick: () -> Unit,
     onSelectedCategoryChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -30,7 +29,6 @@ internal fun FoodCategoryChip(
         ),
         onClick = {
             onSelectedCategoryChanged(category)
-            onClick()
         },
         border = isSelected.takeIf { it }?.let {
             BorderStroke(
@@ -56,7 +54,6 @@ private fun FoodCategoryChipPreview() {
         FoodCategoryChip(
             category = "Chips",
             isSelected = true,
-            onClick = {},
             onSelectedCategoryChanged = {},
         )
     }
@@ -69,7 +66,6 @@ private fun FoodCategoryChipPreview2() {
         FoodCategoryChip(
             category = "Chips",
             isSelected = false,
-            onClick = {},
             onSelectedCategoryChanged = {},
         )
     }

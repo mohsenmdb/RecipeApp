@@ -16,12 +16,11 @@ import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
 import com.me.recipe.ui.navigation.RecipeListDestination
 import com.me.recipe.ui.search.SearchContract.Event
-import com.me.recipe.ui.search.SearchContract.Event.LongClickOnRecipeEvent
 import com.me.recipe.ui.search.SearchContract.Event.NewSearchEvent
-import com.me.recipe.ui.search.SearchContract.Event.OnCategoryScrollPositionChanged
 import com.me.recipe.ui.search.SearchContract.Event.OnChangeRecipeScrollPosition
 import com.me.recipe.ui.search.SearchContract.Event.OnQueryChanged
 import com.me.recipe.ui.search.SearchContract.Event.OnRecipeClick
+import com.me.recipe.ui.search.SearchContract.Event.OnRecipeLongClick
 import com.me.recipe.ui.search.SearchContract.Event.OnSelectedCategoryChanged
 import com.me.recipe.ui.search.SearchContract.Event.RestoreStateEvent
 import com.me.recipe.ui.search.SearchContract.Event.SearchClearEvent
@@ -61,7 +60,8 @@ class SearchViewModel @Inject constructor(
     override val effect: Flow<SearchContract.Effect> = effectChannel.receiveAsFlow()
 
     // sent by navigation args
-    private val categoryTitleArg: String? = savedStateHandle[RecipeListDestination.CATEGORY_TITLE_ARG]
+    private val categoryTitleArg: String? =
+        savedStateHandle[RecipeListDestination.CATEGORY_TITLE_ARG]
 
     override fun event(event: Event) {
         viewModelScope.launch {
@@ -71,12 +71,11 @@ class SearchViewModel @Inject constructor(
                     is SearchClearEvent -> clearSearch()
                     is RestoreStateEvent -> restoreState()
                     is OnQueryChanged -> onQueryChanged(event.query)
-                    is OnSelectedCategoryChanged -> onSelectedCategoryChanged(event.category)
                     is OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
                     is OnRecipeClick -> handleOnRecipeClicked(event.recipe)
-                    is OnCategoryScrollPositionChanged ->
-                        onCategoryScrollPositionChanged(event.position, event.offset)
-                    is LongClickOnRecipeEvent ->
+                    is OnSelectedCategoryChanged ->
+                        onSelectedCategoryChanged(event.category, event.position, event.offset)
+                    is OnRecipeLongClick ->
                         effectChannel.trySend(SearchContract.Effect.ShowSnackbar(event.title))
                 }
             } catch (e: Exception) {
@@ -117,14 +116,15 @@ class SearchViewModel @Inject constructor(
                 }
         }
 
-        if (!categoryTitleArg.isNullOrEmpty()) {
-            event(OnSelectedCategoryChanged(categoryTitleArg))
-        }
+        when {
+            state.value.recipeListScrollPosition != 0 ->
+                event(RestoreStateEvent)
 
-        if (state.value.recipeListScrollPosition != 0) {
-            event(RestoreStateEvent)
-        } else {
-            event(NewSearchEvent)
+            !categoryTitleArg.isNullOrEmpty() ->
+                event(OnSelectedCategoryChanged(categoryTitleArg))
+
+            else ->
+                event(NewSearchEvent)
         }
     }
 
@@ -133,7 +133,9 @@ class SearchViewModel @Inject constructor(
             if (recipe.id == Recipe.EMPTY.id) throw RecipeDataException()
             effectChannel.trySend(SearchContract.Effect.NavigateToRecipePage(recipe))
         } catch (e: Exception) {
-            effectChannel.trySend(SearchContract.Effect.ShowSnackbar(errorFormatter.get().format(e)))
+            effectChannel.trySend(
+                SearchContract.Effect.ShowSnackbar(errorFormatter.get().format(e)),
+            )
         }
     }
 
@@ -252,9 +254,13 @@ class SearchViewModel @Inject constructor(
         savedStateHandle[STATE_KEY_QUERY] = query
     }
 
-    private fun onSelectedCategoryChanged(category: String) {
+    private fun onSelectedCategoryChanged(category: String, position: Int, offset: Int) {
         changeSelectedCategory(getFoodCategory(category))
         onQueryChanged(category)
+        onCategoryScrollPositionChanged(position, offset)
+        viewModelScope.launch {
+            fetchNewSearchRecipes()
+        }
     }
 
     private fun setRecipeScrollPosition(position: Int) {
