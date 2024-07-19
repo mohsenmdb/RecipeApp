@@ -1,18 +1,18 @@
 package com.me.recipe.ui.search.component.chip
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.me.recipe.ui.theme.RecipeTheme
-import com.me.recipe.util.compose.ifElse
 
 @Composable
 internal fun FoodCategoryChip(
@@ -22,34 +22,31 @@ internal fun FoodCategoryChip(
     onSelectedCategoryChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        shadowElevation = 4.dp,
+    AssistChip(
+        modifier = modifier,
         shape = CircleShape,
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        modifier = modifier
-            .ifElse(
-                condition = isSelected,
-                ifTrueModifier = Modifier.border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = CircleShape,
-                ),
+        colors = AssistChipDefaults.assistChipColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
+        onClick = {
+            onSelectedCategoryChanged(category)
+            onClick()
+        },
+        border = isSelected.takeIf { it }?.let {
+            BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outline,
             )
-            .toggleable(
-                value = isSelected,
-                onValueChange = {
-                    onSelectedCategoryChanged(category)
-                    onClick()
-                },
-            ),
-    ) {
-        Text(
-            text = category,
-            style = MaterialTheme.typography.labelLarge,
-            modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-    }
+        },
+        label = {
+            Text(
+                text = category,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(vertical = 8.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        },
+    )
 }
 
 @Preview

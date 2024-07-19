@@ -4,6 +4,10 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.me.recipe.R
+import com.me.recipe.ui.navigation.RecipeDestination.ITEM_ID_ARG
+import com.me.recipe.ui.navigation.RecipeDestination.ITEM_IMAGE_ARG
+import com.me.recipe.ui.navigation.RecipeDestination.ITEM_TITLE_ARG
+import com.me.recipe.ui.navigation.RecipeDestination.ITEM_UID_ARG
 
 interface NavigationDestination {
     val route: String
@@ -20,9 +24,20 @@ object HomeDestination : NavigationDestination {
     override val titleRes = R.string.navigate_home_title
 }
 
-object ScreenDestination : NavigationDestination {
-    override val route = "Screen"
+object SearchDestination : NavigationDestination {
+    override val route = "Search"
     override val titleRes = R.string.navigate_search_title
+}
+
+object RecipeListDestination : NavigationDestination {
+    override val route = "RecipeList"
+    override val titleRes = R.string.navigate_recipe_list_title
+    const val CATEGORY_TITLE_ARG = "categoryTitleArg"
+    val routeWithArgs =
+        "$route/{$CATEGORY_TITLE_ARG}"
+    val arguments = listOf(
+        navArgument(CATEGORY_TITLE_ARG) { type = NavType.StringType },
+    )
 }
 
 object RecipeDestination : NavigationDestination {

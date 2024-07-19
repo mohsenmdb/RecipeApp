@@ -14,12 +14,14 @@ import com.me.recipe.shared.utils.TAG
 import com.me.recipe.shared.utils.getFoodCategory
 import com.me.recipe.ui.component.util.GenericDialogInfo
 import com.me.recipe.ui.component.util.PositiveAction
+import com.me.recipe.ui.navigation.RecipeListDestination
 import com.me.recipe.ui.search.SearchContract.Event
 import com.me.recipe.ui.search.SearchContract.Event.LongClickOnRecipeEvent
 import com.me.recipe.ui.search.SearchContract.Event.NewSearchEvent
 import com.me.recipe.ui.search.SearchContract.Event.OnCategoryScrollPositionChanged
 import com.me.recipe.ui.search.SearchContract.Event.OnChangeRecipeScrollPosition
 import com.me.recipe.ui.search.SearchContract.Event.OnQueryChanged
+import com.me.recipe.ui.search.SearchContract.Event.OnRecipeClick
 import com.me.recipe.ui.search.SearchContract.Event.OnSelectedCategoryChanged
 import com.me.recipe.ui.search.SearchContract.Event.RestoreStateEvent
 import com.me.recipe.ui.search.SearchContract.Event.SearchClearEvent
@@ -58,6 +60,9 @@ class SearchViewModel @Inject constructor(
     private val effectChannel = Channel<SearchContract.Effect>(Channel.UNLIMITED)
     override val effect: Flow<SearchContract.Effect> = effectChannel.receiveAsFlow()
 
+    // sent by navigation args
+    private val categoryTitleArg: String? = savedStateHandle[RecipeListDestination.CATEGORY_TITLE_ARG]
+
     override fun event(event: Event) {
         viewModelScope.launch {
             try {
@@ -68,7 +73,7 @@ class SearchViewModel @Inject constructor(
                     is OnQueryChanged -> onQueryChanged(event.query)
                     is OnSelectedCategoryChanged -> onSelectedCategoryChanged(event.category)
                     is OnChangeRecipeScrollPosition -> onChangeRecipeScrollPosition(event.index)
-                    is Event.ClickOnRecipeEvent -> handleOnRecipeClicked(event.recipe)
+                    is OnRecipeClick -> handleOnRecipeClicked(event.recipe)
                     is OnCategoryScrollPositionChanged ->
                         onCategoryScrollPositionChanged(event.position, event.offset)
                     is LongClickOnRecipeEvent ->
@@ -110,6 +115,10 @@ class SearchViewModel @Inject constructor(
                 .collectLatest { category ->
                     setSelectedCategory(category)
                 }
+        }
+
+        if (!categoryTitleArg.isNullOrEmpty()) {
+            event(OnSelectedCategoryChanged(categoryTitleArg))
         }
 
         if (state.value.recipeListScrollPosition != 0) {

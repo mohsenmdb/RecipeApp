@@ -20,7 +20,7 @@ interface SearchContract :
         data class OnCategoryScrollPositionChanged(val position: Int, val offset: Int) : Event
         data object RestoreStateEvent : Event
         data class LongClickOnRecipeEvent(val title: String) : Event
-        data class ClickOnRecipeEvent(val recipe: Recipe) : Event
+        data class OnRecipeClick(val recipe: Recipe) : Event
         data class OnChangeRecipeScrollPosition(val index: Int) : Event
     }
 
