@@ -8,7 +8,23 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_MOHSEN_ID }}
+                  token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+                  format: markdown
+                  message: 'Hi sir build branch *[${{ github.head_ref }}]* get started! 🚀'
+
             - uses: actions/checkout@v3
+
+            - name: Share checkout complete on Telegram
+              env:
+                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
+                  MESSAGE: '*[${{ github.head_ref }}]* checkout branch complete! 🌟✨✅🚀'
+              run: |
+                  curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHANNEL_ID} -d message_thread_id=${TELEGRAM_TOPIC_ID} -d text="${MESSAGE}"
 
             - name: Set Up JDK
               uses: actions/setup-java@v3
@@ -26,6 +42,27 @@ jobs:
             - name: Run Tests
               continue-on-error: false
               run: ./gradlew testDebugUnitTest
+
+            - name: Share unit test Success on Telegram
+              if: ${{ success() }}
+              env:
+                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
+                  MESSAGE: '*[${{ github.head_ref }}]* unit tests SUCCESS ✅🎉🔬👍'
+              run: |
+                  curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHANNEL_ID} -d message_thread_id=${TELEGRAM_TOPIC_ID} -d text="${MESSAGE}"
+
+            - name: Share unit test failure on Telegram
+              if: ${{ failure() }}
+              env:
+                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
+                  MESSAGE: 'unit tests FAILED *[${{ github.head_ref }}]* 😲❌ Check for details! 🕵️‍♂️📊'
+              run: |
+                  curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHANNEL_ID} -d message_thread_id=${TELEGRAM_TOPIC_ID} -d text="${MESSAGE}"
+
 
             - name: Build Project
               run: ./gradlew assemble
