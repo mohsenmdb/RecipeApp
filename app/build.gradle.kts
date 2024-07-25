@@ -54,8 +54,8 @@ android {
     }
     testOptions {
         unitTests {
-            isReturnDefaultValues = true
             isIncludeAndroidResources = true
+            isReturnDefaultValues = true
         }
     }
     kotlinOptions {
