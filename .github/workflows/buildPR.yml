@@ -16,6 +16,7 @@ jobs:
                   token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
                   format: markdown
                   message: '🌟✨ *[${{ github.head_ref }}]* checkout branch complete! ✅🚀'
+                  data: '{"chat_id": "${{ secrets.TELEGRAM_CHANNEL_ID }}", "message_thread_id": "2"}'
 
             - uses: appleboy/telegram-action@master
               with:
