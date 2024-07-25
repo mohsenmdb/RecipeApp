@@ -16,6 +16,9 @@ jobs:
                 distribution: 'zulu'
                 java-version: 17
 
+            - name: Change wrapper permissions
+              run: chmod +x ./gradlew
+
             - name: Spotless Check
               continue-on-error: false
               run: ./gradlew spotlessCheck --no-configuration-cache
