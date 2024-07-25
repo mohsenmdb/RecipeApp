@@ -10,6 +10,13 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
+            - uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+                  token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+                  format: markdown
+                  message: '🌟✨ *[${{ github.head_ref }}]* checkout branch complete! ✅🚀'
+
             - name: Set Up JDK
               uses: actions/setup-java@v3
               with:
