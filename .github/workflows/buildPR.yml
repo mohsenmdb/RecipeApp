@@ -1,0 +1,31 @@
+name: Android Build
+
+on: pull_request
+
+jobs:
+    build:
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Set Up JDK
+              uses: actions/setup-java@v3
+              with:
+                distribution: 'zulu'
+                java-version: 17
+
+            - name: Change wrapper permissions
+              run: chmod +x ./gradlew
+
+            - name: Spotless Check
+              continue-on-error: false
+              run: ./gradlew spotlessCheck --no-configuration-cache
+
+            - name: Run Tests
+              continue-on-error: false
+              run: ./gradlew testDebugUnitTest
+
+            - name: Build Project
+              run: ./gradlew assemble

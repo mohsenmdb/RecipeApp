@@ -37,6 +37,7 @@ class RecipeListScreenRobot @Inject constructor() {
                     sharedTransitionScope = this,
                     animatedVisibilityScope = it,
                     navigateToRecipePage = { _ -> },
+                    navigateToHomePage = { },
                 )
             }
         }
@@ -59,6 +60,7 @@ class RecipeListScreenRobot @Inject constructor() {
                     sharedTransitionScope = this,
                     animatedVisibilityScope = it,
                     navigateToRecipePage = { _ -> },
+                    navigateToHomePage = { },
                 )
             }
             LaunchedEffect(Unit) {
@@ -87,7 +89,6 @@ class RecipeListScreenRobot @Inject constructor() {
         state: SearchContract.State,
     ) {
         assertSearchTextFieldIsDisplayed()
-        assertMoreButtonIsDisplayed()
         assertFoodChipsRowIsDisplayed()
 
         val category = getAllFoodCategories()
@@ -125,12 +126,6 @@ class RecipeListScreenRobot @Inject constructor() {
     context (RobotTestRule)
     private fun assertSearchTextFieldIsDisplayed() {
         composeTestRule.onNodeWithTag("testTag_SearchTextField", useUnmergedTree = true)
-            .assertIsDisplayed()
-    }
-
-    context (RobotTestRule)
-    private fun assertMoreButtonIsDisplayed() {
-        composeTestRule.onNodeWithTag("testTag_MoreButton", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
