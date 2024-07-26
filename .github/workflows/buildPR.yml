@@ -35,52 +35,61 @@ jobs:
             - name: Change wrapper permissions
               run: chmod +x ./gradlew
 
-            - name: Spotless Check
-              continue-on-error: false
-              run: ./gradlew spotlessCheck --no-configuration-cache
-
-            - name: Run Tests
-              continue-on-error: false
-              run: ./gradlew testDebugUnitTest
-
-            - name: Share unit test Success on Telegram
-              if: ${{ success() }}
-              env:
-                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
-                  MESSAGE: '*[${{ github.head_ref }}]* unit tests SUCCESS ✅🎉🔬👍'
-              run: |
-                  curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHANNEL_ID} -d message_thread_id=${TELEGRAM_TOPIC_ID} -d text="${MESSAGE}"
-
-            - name: Share unit test failure on Telegram
-              if: ${{ failure() }}
-              env:
-                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
-                  MESSAGE: 'unit tests FAILED on branch *[${{ github.head_ref }}]* 😲❌ Check for details! 🕵️‍♂️📊'
-              run: |
-                  curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHANNEL_ID} -d message_thread_id=${TELEGRAM_TOPIC_ID} -d text="${MESSAGE}"
+#            - name: Spotless Check
+#              continue-on-error: false
+#              run: ./gradlew spotlessCheck --no-configuration-cache
+#
+#            - name: Run Tests
+#              continue-on-error: false
+#              run: ./gradlew testDebugUnitTest
+#
+#            - name: Share unit test Success on Telegram
+#              if: ${{ success() }}
+#              env:
+#                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+#                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
+#                  MESSAGE: '*[${{ github.head_ref }}]* unit tests SUCCESS ✅🎉🔬👍'
+#              run: |
+#                  curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHANNEL_ID} -d message_thread_id=${TELEGRAM_TOPIC_ID} -d text="${MESSAGE}"
+#
+#            - name: Share unit test failure on Telegram
+#              if: ${{ failure() }}
+#              env:
+#                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+#                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
+#                  MESSAGE: 'unit tests FAILED on branch *[${{ github.head_ref }}]* 😲❌ Check for details! 🕵️‍♂️📊'
+#              run: |
+#                  curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHANNEL_ID} -d message_thread_id=${TELEGRAM_TOPIC_ID} -d text="${MESSAGE}"
 
 
             - name: Build Project
               run: ./gradlew assemble
 
-            - name: Share Apk on Telegram
-              if: ${{ success() }}
-              env:
-                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
-                  MESSAGE: 'Debug APK Build for branch *[${{ github.head_ref }}]* in Progress! 🏗️📱⬇️🚀📎 Keep an Eye'
-                  APK_PATH: ${{ github.workspace }}/app/build/outputs/apk/debug/**.apk
-              run: |
-                curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
-                  -F chat_id="${TELEGRAM_CHANNEL_ID}" \
-                  -F message_thread_id="${TELEGRAM_TOPIC_ID}" \
-                  -F document=@"${APK_PATH}" \
-                  -F caption="${MESSAGE}"
+
+            - uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_MOHSEN_ID }}
+                  token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+                  format: markdown
+                  message: 'Hi sir build branch *[${{ github.head_ref }}]* get started! 🚀'
+                  document: ${{ github.workspace }}/app/build/outputs/apk/debug/**.apk
+
+#            - name: Share Apk on Telegram
+#              if: ${{ success() }}
+#              env:
+#                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+#                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
+#                  MESSAGE: 'Debug APK Build for branch *[${{ github.head_ref }}]* in Progress! 🏗️📱⬇️🚀📎 Keep an Eye'
+#                  APK_PATH: ${{ github.workspace }}/app/build/outputs/apk/debug/**.apk
+#              run: |
+#                curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
+#                  -F chat_id="${TELEGRAM_CHANNEL_ID}" \
+#                  -F message_thread_id="${TELEGRAM_TOPIC_ID}" \
+#                  -F document=@"${APK_PATH}" \
+#                  -F caption="${MESSAGE}"
 
             - name: Share app build failure on Telegram
               if: ${{ failure() }}
