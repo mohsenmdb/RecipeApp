@@ -1,3 +1,7 @@
+import com.android.utils.NdkUtils
+import java.io.ByteArrayOutputStream
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -23,7 +27,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -31,6 +34,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+        }
+    }
+    applicationVariants.all {
+        outputs.all {
+            val branchName = getGitBranchName()
+            val apkName = "${name}-${branchName}.apk"
+            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output.outputFileName = apkName
         }
     }
     compileOptions {
@@ -119,4 +130,14 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso)
     androidTestImplementation(libs.androidx.navigation.testing)
     compileOnly(libs.spotless.gradlePlugin)
+}
+
+
+fun getGitBranchName(): String {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine = listOf("git", "rev-parse", "--abbrev-ref", "HEAD")
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().replace("/", "-")
 }
