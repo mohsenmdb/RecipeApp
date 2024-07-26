@@ -1,4 +1,3 @@
-import com.android.utils.NdkUtils
 import java.io.ByteArrayOutputStream
 
 
@@ -39,7 +38,7 @@ android {
     applicationVariants.all {
         outputs.all {
             val branchName = getGitBranchName()
-            val apkName = "${name}-${branchName}.apk"
+            val apkName = "$name-$branchName.apk"
             val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
             output.outputFileName = apkName
         }
@@ -131,7 +130,6 @@ dependencies {
     androidTestImplementation(libs.androidx.navigation.testing)
     compileOnly(libs.spotless.gradlePlugin)
 }
-
 
 fun getGitBranchName(): String {
     val stdout = ByteArrayOutputStream()
