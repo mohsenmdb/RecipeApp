@@ -85,8 +85,13 @@ jobs:
                   MESSAGE: 'Debug APK Build for branch *[${{ github.head_ref }}]* in Progress! 🏗️📱⬇️🚀📎 Keep an Eye'
                   APK_PATH: ${{ github.workspace }}/app/build/outputs/apk/debug/**.apk
               run: |
-                  curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" -F chat_id="${TELEGRAM_CHANNEL_ID}" -F message_thread_id="${TELEGRAM_TOPIC_ID}" -F document=@"${APK_PATH}" -F caption="${MESSAGE}"
-
+                  curl -4 -s -S -L -w"\n" -o- \
+                    -F document=@"${APK_PATH}" \
+                    -F parse_mode='Markdown' \
+                    -F caption="${MESSAGE}" \
+                    -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument \
+                    -F chat_id="${TELEGRAM_CHANNEL_ID}" \
+                    -F message_thread_id=${TELEGRAM_TOPIC_ID}
 
             - name: Share app build failure on Telegram
               if: ${{ failure() }}
