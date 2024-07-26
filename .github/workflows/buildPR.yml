@@ -76,20 +76,17 @@ jobs:
                   message: 'Hi sir build branch *[${{ github.head_ref }}]* get started! 🚀'
                   document: ${{ github.workspace }}/app/build/outputs/apk/debug/**.apk
 
-#            - name: Share Apk on Telegram
-#              if: ${{ success() }}
-#              env:
-#                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-#                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-#                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
-#                  MESSAGE: 'Debug APK Build for branch *[${{ github.head_ref }}]* in Progress! 🏗️📱⬇️🚀📎 Keep an Eye'
-#                  APK_PATH: ${{ github.workspace }}/app/build/outputs/apk/debug/**.apk
-#              run: |
-#                curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
-#                  -F chat_id="${TELEGRAM_CHANNEL_ID}" \
-#                  -F message_thread_id="${TELEGRAM_TOPIC_ID}" \
-#                  -F document=@"${APK_PATH}" \
-#                  -F caption="${MESSAGE}"
+            - name: Share Apk on Telegram
+              if: ${{ success() }}
+              env:
+                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+                  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+                  TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_CHANNEL_TOPIC_ID }}
+                  MESSAGE: 'Debug APK Build for branch *[${{ github.head_ref }}]* in Progress! 🏗️📱⬇️🚀📎 Keep an Eye'
+                  APK_PATH: ${{ github.workspace }}/app/build/outputs/apk/debug/**.apk
+              run: |
+                  curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" -F chat_id="${TELEGRAM_CHANNEL_ID}" -F message_thread_id="${TELEGRAM_TOPIC_ID}" -F document=@"${APK_PATH}" -F caption="${MESSAGE}"
+
 
             - name: Share app build failure on Telegram
               if: ${{ failure() }}
